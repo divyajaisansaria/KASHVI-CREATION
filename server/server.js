@@ -32,7 +32,7 @@ mongoose
     console.error("❌ MongoDB Connection Error:", error.message);
     process.exit(1); // Stop the server if MongoDB fails
   });
-
+  app.use(cookieParser());
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://localhost:5174"], // ✅ Allow both ports
@@ -48,7 +48,7 @@ app.use(
   })
 );
 
-app.use(cookieParser());
+
 app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/admin/products", adminProductsRouter);
@@ -63,4 +63,5 @@ app.use("/api/shop/review", shopReviewRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
 
-app.listen(PORT, () => console.log(`🚀 Server is running on port ${PORT}`));
+app.listen(PORT, "0.0.0.0", () => console.log(`🚀 Server is running on port ${PORT}`));
+
