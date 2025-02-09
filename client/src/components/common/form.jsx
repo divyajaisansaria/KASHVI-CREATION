@@ -31,6 +31,7 @@ function CommonForm({
             id={getControlItem.name}
             type={getControlItem.type}
             value={value}
+            className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-700 focus:border-[#0a373b] focus:ring-2 focus:ring-[#0a373b]"
             onChange={(event) =>
               setFormData({
                 ...formData,
@@ -39,7 +40,6 @@ function CommonForm({
             }
           />
         );
-
         break;
       case "select":
         element = (
@@ -52,13 +52,17 @@ function CommonForm({
             }
             value={value}
           >
-            <SelectTrigger className="w-full">
+            <SelectTrigger className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-700 focus:border-[#0a373b] focus:ring-2 focus:ring-[#0a373b]">
               <SelectValue placeholder={getControlItem.label} />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="rounded-md border border-gray-300 bg-white shadow-md">
               {getControlItem.options && getControlItem.options.length > 0
                 ? getControlItem.options.map((optionItem) => (
-                    <SelectItem key={optionItem.id} value={optionItem.id}>
+                    <SelectItem
+                      key={optionItem.id}
+                      value={optionItem.id}
+                      className="hover:bg-gray-100"
+                    >
                       {optionItem.label}
                     </SelectItem>
                   ))
@@ -66,7 +70,6 @@ function CommonForm({
             </SelectContent>
           </Select>
         );
-
         break;
       case "textarea":
         element = (
@@ -75,6 +78,7 @@ function CommonForm({
             placeholder={getControlItem.placeholder}
             id={getControlItem.id}
             value={value}
+            className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-700 focus:border-[#0a373b] focus:ring-2 focus:ring-[#0a373b]"
             onChange={(event) =>
               setFormData({
                 ...formData,
@@ -83,9 +87,7 @@ function CommonForm({
             }
           />
         );
-
         break;
-
       default:
         element = (
           <Input
@@ -94,6 +96,7 @@ function CommonForm({
             id={getControlItem.name}
             type={getControlItem.type}
             value={value}
+            className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-700 focus:border-[#0a373b] focus:ring-2 focus:ring-[#0a373b]"
             onChange={(event) =>
               setFormData({
                 ...formData,
@@ -109,16 +112,20 @@ function CommonForm({
   }
 
   return (
-    <form onSubmit={onSubmit}>
-      <div className="flex flex-col gap-3">
+    <form onSubmit={onSubmit} className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+      <div className="flex flex-col gap-4">
         {formControls.map((controlItem) => (
-          <div className="grid w-full gap-1.5" key={controlItem.name}>
-            <Label className="mb-1">{controlItem.label}</Label>
+          <div className="grid w-full gap-2" key={controlItem.name}>
+            <Label className="text-[#0a373b] font-medium">{controlItem.label}</Label>
             {renderInputsByComponentType(controlItem)}
           </div>
         ))}
       </div>
-      <Button disabled={isBtnDisabled} type="submit" className="mt-2 w-full">
+      <Button
+        disabled={isBtnDisabled}
+        type="submit"
+        className="mt-6 w-full bg-[#0a373b] text-white font-semibold py-3 rounded-md hover:bg-[#085c5c] transition duration-300 disabled:bg-gray-400"
+      >
         {buttonText || "Submit"}
       </Button>
     </form>
