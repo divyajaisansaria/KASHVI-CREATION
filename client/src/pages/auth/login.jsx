@@ -36,10 +36,10 @@ function AuthLogin() {
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
       <div className="text-center">
-      <h4 className="text-3xl font-bold tracking-tight text-foreground text-[#0a373b]">
+      <h4 className="text-3xl font-bold tracking-tight text-foreground text-black">
           Welcome to Kashvi Creation!
         </h4>
-        <p className="text-[#0a373b]">Login to your account</p>
+        <p className="">Login to your account</p>
         
       </div>
       <CommonForm
@@ -49,7 +49,7 @@ function AuthLogin() {
         setFormData={setFormData}
         onSubmit={onSubmit}
       />
-      <p className="mt-2 text-center text-[#0a373b]">
+      <p className="mt-2 text-center">
           Don't have an account?<br/>
           <Link
             className="font-medium ml-2 text-primary hover:underline"

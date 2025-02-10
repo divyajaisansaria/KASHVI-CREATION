@@ -23,10 +23,10 @@ const initialFormData = {
   image: null,
   title: "",
   description: "",
-  category: "",
-  brand: "",
-  price: "",
-  salePrice: "",
+  saree_type: "",
+  occassion: "",
+  fabric: "",
+  color: "",
   totalStock: "",
   averageReview: 0,
 };
@@ -105,7 +105,8 @@ function AdminProducts() {
   return (
     <Fragment>
       <div className="mb-5 w-full flex justify-end">
-        <Button onClick={() => setOpenCreateProductsDialog(true)}>
+        <Button onClick={() => setOpenCreateProductsDialog(true)} 
+  className="bg-[#0a373b] text-white hover:bg-[#0a373b]/90">
           Add New Product
         </Button>
       </div>
