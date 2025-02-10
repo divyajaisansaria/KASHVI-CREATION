@@ -27,10 +27,10 @@ const addProduct = async (req, res) => {
       image,
       title,
       description,
-      category,
-      brand,
-      price,
-      salePrice,
+      sareeType,
+      occassion,
+      fabric,
+      color,
       totalStock,
       averageReview,
     } = req.body;
@@ -41,10 +41,10 @@ const addProduct = async (req, res) => {
       image,
       title,
       description,
-      category,
-      brand,
-      price,
-      salePrice,
+      sareeType,
+      occassion,
+      fabric,
+      color,
       totalStock,
       averageReview,
     });
@@ -89,10 +89,10 @@ const editProduct = async (req, res) => {
       image,
       title,
       description,
-      category,
-      brand,
-      price,
-      salePrice,
+      sareeType,
+      occassion,
+      fabric,
+      color,
       totalStock,
       averageReview,
     } = req.body;
@@ -106,11 +106,10 @@ const editProduct = async (req, res) => {
 
     findProduct.title = title || findProduct.title;
     findProduct.description = description || findProduct.description;
-    findProduct.category = category || findProduct.category;
-    findProduct.brand = brand || findProduct.brand;
-    findProduct.price = price === "" ? 0 : price || findProduct.price;
-    findProduct.salePrice =
-      salePrice === "" ? 0 : salePrice || findProduct.salePrice;
+    findProduct.sareeType = sareeType|| findProduct.sareeType;
+    findProduct.occassion = occassion || findProduct.occassion;
+    findProduct.fabric = fabric || findProduct.fabric;
+    findProduct.color = color || findProduct.color;
     findProduct.totalStock = totalStock || findProduct.totalStock;
     findProduct.image = image || findProduct.image;
     findProduct.averageReview = averageReview || findProduct.averageReview;

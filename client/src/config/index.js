@@ -55,7 +55,7 @@ export const addProductFormElements = [
   },
   {
     label: "Saree Type",
-    name: "saree_type",
+    name: "sareeType",
     componentType: "select",
     options: [
       { id: "plain_sarees", label: "Plain Sarees" },
@@ -72,7 +72,7 @@ export const addProductFormElements = [
   },
   {
     label: "Occasion",
-    name: "occasion",
+    name: "occassion",
     componentType: "select",
     options: [
       { id: "wedding_sarees", label: "Wedding Sarees" },

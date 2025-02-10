@@ -23,7 +23,7 @@ const initialFormData = {
   image: null,
   title: "",
   description: "",
-  saree_type: "",
+  sareeType: "",
   occassion: "",
   fabric: "",
   color: "",
