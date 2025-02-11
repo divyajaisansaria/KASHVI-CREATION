@@ -40,7 +40,6 @@ function AuthLogin() {
           Welcome to Kashvi Creation!
         </h4>
         <p className="">Login to your account</p>
-        
       </div>
       <CommonForm
         formControls={loginFormControls}
@@ -58,6 +57,14 @@ function AuthLogin() {
             Register now
           </Link>
         </p>
+      <div className="text-center">
+        <Link
+          className="text-sm text-primary hover:underline"
+          to="/auth/forgot-password"
+        >
+          Forgot Password?
+        </Link>
+      </div>
     </div>
   );
 }

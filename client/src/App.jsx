@@ -2,6 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
+import ForgotPassword from "./pages/auth/ForgotPassword"; // Fixed import
+import ResetPassword from "./pages/auth/ResetPassword"; // Fixed import
 import AdminLayout from "./components/admin-view/layout";
 import AdminDashboard from "./pages/admin-view/dashboard";
 import AdminProducts from "./pages/admin-view/products";
@@ -59,7 +61,9 @@ function App() {
         >
           <Route path="login" element={<AuthLogin />} />
           <Route path="register" element={<AuthRegister />} />
-        </Route>
+          <Route path="forgot-password" element={<ForgotPassword />} /> {/* Added Forgot Password Route */}
+          <Route path="/auth/reset-password/:token" element={<ResetPassword />} />
+          </Route>
         <Route
           path="/admin"
           element={
