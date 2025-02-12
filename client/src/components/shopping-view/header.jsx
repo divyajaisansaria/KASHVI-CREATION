@@ -1,10 +1,5 @@
-import { HousePlug, LogOut, Menu, ShoppingCart, UserCog } from "lucide-react";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { LogOut, Menu, ShoppingCart, Search, UserCog } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,48 +17,55 @@ import { logoutUser } from "@/store/auth-slice";
 import UserCartWrapper from "./cart-wrapper";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice";
+import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import logo from "../../assets/logo.jpg";
 
-function MenuItems() {
+// Updated MenuItems with dropdowns
+function MenuItems({ isColumn = false }) {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [searchParams, setSearchParams] = useSearchParams();
 
-  function handleNavigate(getCurrentMenuItem) {
-    sessionStorage.removeItem("filters");
-    const currentFilter =
-      getCurrentMenuItem.id !== "home" &&
-      getCurrentMenuItem.id !== "products" &&
-      getCurrentMenuItem.id !== "search"
-        ? {
-            category: [getCurrentMenuItem.id],
-          }
-        : null;
-
-    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
-
-    location.pathname.includes("listing") && currentFilter !== null
-      ? setSearchParams(
-          new URLSearchParams(`?category=${getCurrentMenuItem.id}`)
-        )
-      : navigate(getCurrentMenuItem.path);
-  }
+  const handleItemClick = (path) => {
+    navigate(path);
+  };
 
   return (
-    <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
+    <nav className={`flex ${isColumn ? "flex-col gap-4" : "justify-center gap-6"} py-4 bg-[#F8F4F0] border-t shadow-sm`}>
       {shoppingViewHeaderMenuItems.map((menuItem) => (
-        <Label
-          onClick={() => handleNavigate(menuItem)}
-          className="text-sm font-medium cursor-pointer"
-          key={menuItem.id}
-        >
-          {menuItem.label}
-        </Label>
+        <div key={menuItem.id}>
+          {/* Main Menu Item */}
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Label
+                onClick={() => handleItemClick(menuItem.path)}
+                className="text-sm font-semibold text-gray-700 cursor-pointer transition-all duration-200 hover:text-[#b2996c] hover:scale-105"
+              >
+                {menuItem.label}
+              </Label>
+            </DropdownMenuTrigger>
+
+            {/* Dropdown Menu for Submenu Items */}
+            {menuItem.subMenu && (
+              <DropdownMenuContent side="bottom" className="w-56 bg-[#F8F4F0]">
+                {menuItem.subMenu.map((subItem) => (
+                  <DropdownMenuItem
+                    key={subItem.id}
+                    onClick={() => handleItemClick(subItem.path)}
+                    className="hover:bg-[#b2996c] hover:text-white"
+                  >
+                    {subItem.label}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            )}
+          </DropdownMenu>
+        </div>
       ))}
     </nav>
   );
 }
 
+// HeaderRightContent for user and cart
 function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
@@ -76,13 +78,14 @@ function HeaderRightContent() {
   }
 
   useEffect(() => {
-    dispatch(fetchCartItems(user?.id));
-  }, [dispatch]);
-
-  console.log(cartItems, "sangam");
+    if (user) {
+      dispatch(fetchCartItems(user?.id));
+    }
+  }, [dispatch, user?.id]);
 
   return (
-    <div className="flex lg:items-center lg:flex-row flex-col gap-4">
+    <div className="flex items-center gap-4">
+      {/* Shopping Cart */}
       <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
         <Button
           onClick={() => setOpenCartSheet(true)}
@@ -91,78 +94,144 @@ function HeaderRightContent() {
           className="relative"
         >
           <ShoppingCart className="w-6 h-6" />
-          <span className="absolute top-[-5px] right-[2px] font-bold text-sm">
-            {cartItems?.items?.length || 0}
-          </span>
-          <span className="sr-only">User cart</span>
+          {cartItems?.items?.length > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              {cartItems?.items?.length}
+            </span>
+          )}
         </Button>
         <UserCartWrapper
           setOpenCartSheet={setOpenCartSheet}
-          cartItems={
-            cartItems && cartItems.items && cartItems.items.length > 0
-              ? cartItems.items
-              : []
-          }
+          cartItems={cartItems?.items?.length > 0 ? cartItems.items : []}
         />
       </Sheet>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Avatar className="bg-black">
-            <AvatarFallback className="bg-black text-white font-extrabold">
-              {user?.userName[0].toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent side="right" className="w-56">
-          <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => navigate("/shop/account")}>
-            <UserCog className="mr-2 h-4 w-4" />
-            Account
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={handleLogout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {/* User Account Dropdown */}
+      {user ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Avatar className="bg-[#b2996c] hover:bg-[#a38a5f] transition-colors duration-200 cursor-pointer">
+              <AvatarFallback className="text-white font-extrabold">
+                {user?.userName?.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent side="right" className="w-56 bg-[#F8F4F0]">
+            <DropdownMenuLabel className="text-[#b2996c]">Logged in as {user?.userName}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => navigate("/shop/account")} className="hover:bg-[#b2996c] hover:text-white">
+              <UserCog className="mr-2 h-4 w-4" />
+              Account
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleLogout} className="hover:bg-[#b2996c] hover:text-white">
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <Button
+          variant="outline"
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 px-4 py-2 border border-[#b2996c] text-[#b2996c] hover:bg-[#b2996c] hover:text-white transition-colors duration-200"
+        >
+          <UserCog className="h-4 w-4" />
+          Login
+        </Button>
+      )}
     </div>
   );
 }
 
+// Main ShoppingHeader component
 function ShoppingHeader() {
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const [searchQuery, setSearchQuery] = useState(""); // Manage search query
+  const navigate = useNavigate();
+
+  const handleSearchClick = () => {
+    if (searchQuery) {
+      navigate(`/shop/search?q=${searchQuery}`); // Navigate to search page with query
+    }
+  };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background">
-      <div className="flex h-16 items-center justify-between px-4 md:px-6">
-        <Link to="/shop/home" className="flex items-center gap-2">
-          <HousePlug className="h-6 w-6" />
-          <span className="font-bold">Ecommerce</span>
-        </Link>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="lg:hidden">
-              <Menu className="h-6 w-6" />
-              <span className="sr-only">Toggle header menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-full max-w-xs">
-            <MenuItems />
-            <HeaderRightContent />
-          </SheetContent>
-        </Sheet>
-        <div className="hidden lg:block">
-          <MenuItems />
-        </div>
+    <>
+      {/* Main Header */}
+      <header className="sticky top-0 z-50 w-full bg-white shadow-md">
+        <div className="flex h-16 items-center justify-between px-4 md:px-8">
+          
+          {/* Logo */}
+          <Link to="/shop/home" className="flex items-center ml-4">
+            <img
+              src={logo}
+              alt="Logo"
+              className="h-12 w-auto object-contain transition-transform duration-300 hover:scale-110 md:h-14"
+            />
+          </Link>
 
-        <div className="hidden lg:block">
-          <HeaderRightContent />
+          {/* Search Bar (Visible on Medium+ Screens) */}
+          <div className="hidden sm:flex flex-1 align-center px-4">
+            <div className="relative w-full mx-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
+              <Search className="absolute left-3 top-3 h-5 w-5 text-gray-500 pointer-events-none" />
+              <Input
+                type="text"
+                placeholder="Search for products..."
+                value={searchQuery} // Controlled input
+                onChange={(e) => setSearchQuery(e.target.value)} // Update query on change
+                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg 
+                         transition-all duration-200
+                         focus:ring-2 focus:ring-[#b2996c] focus:border-[#b2996c]
+                         hover:border-[#b2996c] hover:shadow-md"
+                style={{
+                  '--tw-ring-color': '#b2996c',
+                  '--tw-ring-opacity': '0.5'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Right Content (Icons) - Hidden on Mobile */}
+          <div className="hidden lg:flex">
+            <HeaderRightContent />
+          </div>
+
+          {/* Search Button - Trigger Search */}
+          <button
+            onClick={handleSearchClick}
+            className="lg:hidden p-2 bg-[#b2996c] text-white rounded-full"
+          >
+            <Search className="h-5 w-5" />
+          </button>
+
+          {/* Mobile Menu Button (Hamburger) */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button 
+                variant="outline" 
+                size="icon" 
+                className="lg:hidden hover:border-[#b2996c] transition-all duration-200"
+              >
+                <Menu className="h-6 w-6 text-gray-600 hover:text-[#b2996c]" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-full max-w-xs bg-[#F8F4F0]">
+              <div className="flex flex-col gap-6 p-4">
+                {/* Menu Items in Column */}
+                <MenuItems isColumn />
+                {/* Icons in Sidebar */}
+                <HeaderRightContent />
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
+      </header>
+
+      {/* Menu Bar Below Header - Hidden on Small Screens */}
+      <div className="hidden lg:block">
+        <MenuItems />
       </div>
-    </header>
+    </>
   );
 }
 
