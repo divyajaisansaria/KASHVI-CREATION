@@ -63,7 +63,9 @@ function App() {
           <Route path="register" element={<AuthRegister />} />
           <Route path="forgot-password" element={<ForgotPassword />} /> {/* Added Forgot Password Route */}
           <Route path="/auth/reset-password/:token" element={<ResetPassword />} />
-          </Route>
+        </Route>
+        
+        {/* Admin routes */}
         <Route
           path="/admin"
           element={
@@ -77,22 +79,26 @@ function App() {
           <Route path="orders" element={<AdminOrders />} />
           <Route path="features" element={<AdminFeatures />} />
         </Route>
-        <Route
-          path="/shop"
-          element={
-            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-              <ShoppingLayout />
-            </CheckAuth>
-          }
-        >
+        
+        {/* Shopping routes (No authentication required) */}
+        <Route path="/shop" element={<ShoppingLayout />}>
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
-          <Route path="checkout" element={<ShoppingCheckout />} />
+          {/* Checkout now requires authentication */}
+          <Route
+            path="checkout"
+            element={
+              <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+                <ShoppingCheckout />
+              </CheckAuth>
+            }
+          />
           <Route path="account" element={<ShoppingAccount />} />
           <Route path="paypal-return" element={<PaypalReturnPage />} />
           <Route path="payment-success" element={<PaymentSuccessPage />} />
           <Route path="search" element={<SearchProducts />} />
         </Route>
+
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
