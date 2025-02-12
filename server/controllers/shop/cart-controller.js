@@ -1,6 +1,19 @@
 const Cart = require("../../models/Cart");
 const Product = require("../../models/Product");
+const mongoose = require("mongoose");
 
+// Helper function to map cart items
+const mapCartItems = (items) => {
+  return items.map((item) => ({
+    productId: item.productId ? item.productId._id : null,
+    image: item.productId ? item.productId.image : null,
+    title: item.productId ? item.productId.title : "Product not found",
+    designNumber: item.productId ? item.productId.designNumber : null,
+    quantity: item.quantity,
+  }));
+};
+
+// Add item to the cart
 const addToCart = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
@@ -9,6 +22,13 @@ const addToCart = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Invalid data provided!",
+      });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid product ID",
       });
     }
 
@@ -46,11 +66,12 @@ const addToCart = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Error",
+      message: "Error while adding item to cart",
     });
   }
 };
 
+// Fetch cart items
 const fetchCartItems = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -58,13 +79,13 @@ const fetchCartItems = async (req, res) => {
     if (!userId) {
       return res.status(400).json({
         success: false,
-        message: "User id is manadatory!",
+        message: "User id is mandatory!",
       });
     }
 
     const cart = await Cart.findOne({ userId }).populate({
       path: "items.productId",
-      select: "image title price salePrice",
+      select: "image title designNumber",
     });
 
     if (!cart) {
@@ -83,14 +104,7 @@ const fetchCartItems = async (req, res) => {
       await cart.save();
     }
 
-    const populateCartItems = validItems.map((item) => ({
-      productId: item.productId._id,
-      image: item.productId.image,
-      title: item.productId.title,
-      price: item.productId.price,
-      salePrice: item.productId.salePrice,
-      quantity: item.quantity,
-    }));
+    const populateCartItems = mapCartItems(validItems);
 
     res.status(200).json({
       success: true,
@@ -103,11 +117,12 @@ const fetchCartItems = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Error",
+      message: "Error while fetching cart items",
     });
   }
 };
 
+// Update cart item quantity
 const updateCartItemQty = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
@@ -134,7 +149,7 @@ const updateCartItemQty = async (req, res) => {
     if (findCurrentProductIndex === -1) {
       return res.status(404).json({
         success: false,
-        message: "Cart item not present !",
+        message: "Cart item not found!",
       });
     }
 
@@ -143,17 +158,10 @@ const updateCartItemQty = async (req, res) => {
 
     await cart.populate({
       path: "items.productId",
-      select: "image title price salePrice",
+      select: "image title designNumber",
     });
 
-    const populateCartItems = cart.items.map((item) => ({
-      productId: item.productId ? item.productId._id : null,
-      image: item.productId ? item.productId.image : null,
-      title: item.productId ? item.productId.title : "Product not found",
-      price: item.productId ? item.productId.price : null,
-      salePrice: item.productId ? item.productId.salePrice : null,
-      quantity: item.quantity,
-    }));
+    const populateCartItems = mapCartItems(cart.items);
 
     res.status(200).json({
       success: true,
@@ -166,14 +174,16 @@ const updateCartItemQty = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Error",
+      message: "Error while updating cart item",
     });
   }
 };
 
+// Delete cart item
 const deleteCartItem = async (req, res) => {
   try {
     const { userId, productId } = req.params;
+
     if (!userId || !productId) {
       return res.status(400).json({
         success: false,
@@ -201,17 +211,10 @@ const deleteCartItem = async (req, res) => {
 
     await cart.populate({
       path: "items.productId",
-      select: "image title price salePrice",
+      select: "image title designNumber",
     });
 
-    const populateCartItems = cart.items.map((item) => ({
-      productId: item.productId ? item.productId._id : null,
-      image: item.productId ? item.productId.image : null,
-      title: item.productId ? item.productId.title : "Product not found",
-      price: item.productId ? item.productId.price : null,
-      salePrice: item.productId ? item.productId.salePrice : null,
-      quantity: item.quantity,
-    }));
+    const populateCartItems = mapCartItems(cart.items);
 
     res.status(200).json({
       success: true,
@@ -224,7 +227,7 @@ const deleteCartItem = async (req, res) => {
     console.log(error);
     res.status(500).json({
       success: false,
-      message: "Error",
+      message: "Error while deleting cart item",
     });
   }
 };

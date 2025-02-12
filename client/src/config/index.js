@@ -41,6 +41,13 @@ export const loginFormControls = [
 
 export const addProductFormElements = [
   {
+    label: "Design Number",
+    name: "designNumber",
+    componentType: "input",
+    type: "text",
+    placeholder: "Enter design number",
+  },
+  {
     label: "Title",
     name: "title",
     componentType: "input",
@@ -55,7 +62,7 @@ export const addProductFormElements = [
   },
   {
     label: "Saree Type",
-    name: "sareeType",
+    name: "category",
     componentType: "select",
     options: [
       { id: "plain_sarees", label: "Plain Sarees" },
@@ -72,7 +79,7 @@ export const addProductFormElements = [
   },
   {
     label: "Occasion",
-    name: "occassion",
+    name: "occasion",
     componentType: "select",
     options: [
       { id: "wedding_sarees", label: "Wedding Sarees" },
@@ -239,22 +246,22 @@ export const shoppingViewHeaderMenuItems = [
 ];
 
 
-export const categoryOptionsMap = {
-  men: "Men",
-  women: "Women",
-  kids: "Kids",
-  accessories: "Accessories",
-  footwear: "Footwear",
-};
+// export const categoryOptionsMap = {
+//   men: "Men",
+//   women: "Women",
+//   kids: "Kids",
+//   accessories: "Accessories",
+//   footwear: "Footwear",
+// };
 
-export const brandOptionsMap = {
-  nike: "Nike",
-  adidas: "Adidas",
-  puma: "Puma",
-  levi: "Levi",
-  zara: "Zara",
-  "h&m": "H&M",
-};
+// export const brandOptionsMap = {
+//   nike: "Nike",
+//   adidas: "Adidas",
+//   puma: "Puma",
+//   levi: "Levi",
+//   zara: "Zara",
+//   "h&m": "H&M",
+// };
 
 export const filterOptions = {
   Category: [
@@ -312,7 +319,10 @@ export const filterOptions = {
 export const sortOptions = [
   { id: "title-atoz", label: "Title: A to Z" },
   { id: "title-ztoa", label: "Title: Z to A" },
+  { id: "designnumber-1to10", label: "Design Number: 1 to 10" },
+  { id: "designnumber-10to1", label: "Design Number: 10 to 1" },
 ];
+
 
 export const addressFormControls = [
   {

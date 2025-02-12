@@ -25,10 +25,11 @@ const addProduct = async (req, res) => {
   try {
     const {
       image,
+      designNumber,
       title,
       description,
-      sareeType,
-      occassion,
+      category,
+      occasion,
       fabric,
       color,
       totalStock,
@@ -39,10 +40,11 @@ const addProduct = async (req, res) => {
 
     const newlyCreatedProduct = new Product({
       image,
+      designNumber,
       title,
       description,
-      sareeType,
-      occassion,
+      category,
+      occasion,
       fabric,
       color,
       totalStock,
@@ -87,10 +89,11 @@ const editProduct = async (req, res) => {
     const { id } = req.params;
     const {
       image,
+      designNumber,
       title,
       description,
-      sareeType,
-      occassion,
+      category,
+      occasion,
       fabric,
       color,
       totalStock,
@@ -104,10 +107,11 @@ const editProduct = async (req, res) => {
         message: "Product not found",
       });
 
+    findProduct.designNumber = designNumber || findProduct.designNumber;
     findProduct.title = title || findProduct.title;
     findProduct.description = description || findProduct.description;
-    findProduct.sareeType = sareeType|| findProduct.sareeType;
-    findProduct.occassion = occassion || findProduct.occassion;
+    findProduct.category = category|| findProduct.category;
+    findProduct.occasion = occasion || findProduct.occasion;
     findProduct.fabric = fabric || findProduct.fabric;
     findProduct.color = color || findProduct.color;
     findProduct.totalStock = totalStock || findProduct.totalStock;

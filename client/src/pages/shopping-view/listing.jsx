@@ -57,6 +57,7 @@ function ShoppingListing() {
   }
 
   function handleFilter(getSectionId, getCurrentOption) {
+    console.log(getSectionId, getCurrentOption);
     let cpyFilters = { ...filters };
     const indexOfCurrentSection = Object.keys(cpyFilters).indexOf(getSectionId);
 
@@ -73,7 +74,7 @@ function ShoppingListing() {
         cpyFilters[getSectionId].push(getCurrentOption);
       else cpyFilters[getSectionId].splice(indexOfCurrentOption, 1);
     }
-
+    console.log(cpyFilters);
     setFilters(cpyFilters);
     sessionStorage.setItem("filters", JSON.stringify(cpyFilters));
   }
@@ -84,7 +85,10 @@ function ShoppingListing() {
   }
 
   function handleAddtoCart(getCurrentProductId, getTotalStock) {
-    console.log(cartItems);
+
+   //console.log(user, "user from store");
+    //console.log(getCurrentProductId)
+    //console.log(cartItems);
     let getCartItems = cartItems.items || [];
 
     if (getCartItems.length) {
@@ -103,16 +107,21 @@ function ShoppingListing() {
         }
       }
     }
+    console.log("add cart",{
+      userId: user?._id, // Log user ID
+      productId: getCurrentProductId, // Log product ID
+      quantity: 1, // Log quantity (it's hardcoded as 1 here)
+    });
 
     dispatch(
       addToCart({
-        userId: user?.id,
+        userId: user?._id,
         productId: getCurrentProductId,
         quantity: 1,
       })
     ).then((data) => {
       if (data?.payload?.success) {
-        dispatch(fetchCartItems(user?.id));
+        dispatch(fetchCartItems(user?._id));
         toast({
           title: "Product is added to cart",
         });
@@ -121,7 +130,7 @@ function ShoppingListing() {
   }
 
   useEffect(() => {
-    setSort("price-lowtohigh");
+    setSort("title-atoz");
     setFilters(JSON.parse(sessionStorage.getItem("filters")) || {});
   }, [categorySearchParam]);
 
@@ -133,10 +142,10 @@ function ShoppingListing() {
   }, [filters]);
 
   useEffect(() => {
-    if (filters !== null && sort !== null)
-      dispatch(
-        fetchAllFilteredProducts({ filterParams: filters, sortParams: sort })
-      );
+    if (filters !== null && sort !== null) {
+      dispatch(fetchAllFilteredProducts({ filterParams: filters, sortParams: sort }))
+        .then((response) => console.log(response.payload, "Fetched Products"));
+    }
   }, [dispatch, sort, filters]);
 
   useEffect(() => {
@@ -144,6 +153,7 @@ function ShoppingListing() {
   }, [productDetails]);
 
   console.log(productList, "productListproductListproductList");
+  console.log(searchParams)
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-5 p-4 md:p-6">
@@ -181,16 +191,21 @@ function ShoppingListing() {
             </DropdownMenu>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-          {productList && productList.length > 0
-            ? productList.map((productItem) => (
-                <ShoppingProductTile
-                  handleGetProductDetails={handleGetProductDetails}
-                  product={productItem}
-                  handleAddtoCart={handleAddtoCart}
-                />
-              ))
-            : null}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 p-4">
+          {productList && productList.length > 0 ? (
+            productList.map((productItem) => (
+              <ShoppingProductTile
+                handleGetProductDetails={handleGetProductDetails}
+                product={productItem}
+                handleAddtoCart={handleAddtoCart}
+              />
+            ))
+          ) : (
+            <div className="col-span-full text-center p-4 text-lg text-muted-foreground">
+              No products found matching your filters.
+            </div>
+          )}
+
         </div>
       </div>
       <ProductDetailsDialog

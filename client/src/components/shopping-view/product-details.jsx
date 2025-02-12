@@ -118,13 +118,34 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
         </div>
         <div className="">
           <div>
-            <h1 className="text-3xl font-extrabold">{productDetails?.title}</h1>
+            <h1 className="text-3xl font-extrabold">{productDetails?.designNumber}</h1>
+            <h2 className="text-3xl font-extrabold">{productDetails?.title}</h2>
             <p className="text-muted-foreground text-2xl mb-5 mt-4">
               {productDetails?.description}
             </p>
           </div>
+          {/* </div>
           <div className="flex items-center justify-between">
+             <p
+              className="text-primary">{
+                productDetails?.category} 
+            </p>
             <p
+              className="text-primary">{
+                productDetails?.ocassion} 
+            </p>
+            <p
+              className="text-primary">{
+                productDetails?.color} 
+            </p>
+            <p
+              className="text-primary">{
+                productDetails?.fabric} 
+            </p> */}
+           
+
+
+            {/* <p
               className={`text-3xl font-bold text-primary ${
                 productDetails?.salePrice > 0 ? "line-through" : ""
               }`}
@@ -135,8 +156,8 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
               <p className="text-2xl font-bold text-muted-foreground">
                 ${productDetails?.salePrice}
               </p>
-            ) : null}
-          </div>
+            ) : null} // </div> */}
+         
           <div className="flex items-center gap-2 mt-2">
             <div className="flex items-center gap-0.5">
               <StarRatingComponent rating={averageReview} />

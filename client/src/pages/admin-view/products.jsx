@@ -21,10 +21,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 const initialFormData = {
   image: null,
+  designNumber: "",
   title: "",
   description: "",
-  sareeType: "",
-  occassion: "",
+  category: "",
+  occasion: "",
   fabric: "",
   color: "",
   totalStock: "",
