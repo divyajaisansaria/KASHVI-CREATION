@@ -41,22 +41,42 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
       return;
     }
 
-    dispatch(addToCart({ userId: user._id, productId: getCurrentProductId, quantity: 1 })).then((data) => {
-      if (data?.payload?.success) {
-        dispatch(fetchCartItems(user._id));
+    console.log("Attempting to add to cart...");
+    console.log("User ID:", user._id);
+    console.log("Product ID:", getCurrentProductId);
+
+    dispatch(addToCart({ userId: user._id, productId: getCurrentProductId, quantity: 1 }))
+      .then((data) => {
+        console.log("Add to Cart Response:", data?.payload);
+
+        if (data?.payload?.success) {
+          console.log("Fetching updated cart items for UserID:", user._id);
+          dispatch(fetchCartItems(user._id))
+            .then(() => console.log("Cart updated successfully!"))
+            .catch((err) => console.error("Error fetching cart items:", err));
+
+          toast({
+            title: "Added to Cart",
+            description: "The product has been added to your cart.",
+            variant: "success",
+          });
+        } else {
+          console.error("Failed to add product to cart:", data?.payload?.message);
+          toast({
+            title: "Error",
+            description: "Failed to add product to cart.",
+            variant: "destructive",
+          });
+        }
+      })
+      .catch((err) => {
+        console.error("Error adding product to cart:", err);
         toast({
-          title: "Added to Cart",
-          description: "The product has been added to your cart.",
-          variant: "success",
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: "Failed to add product to cart.",
+          title: "Something went wrong!",
+          description: "Please try again later.",
           variant: "destructive",
         });
-      }
-    });
+      });
   }
 
   async function handleAddReview() {
@@ -81,6 +101,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
     setIsSubmitting(true);
 
     try {
+      console.log("Submitting review...");
       const response = await dispatch(
         addReview({
           productId: productDetails?._id,
@@ -90,6 +111,8 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
           reviewValue: rating,
         })
       );
+
+      console.log("Review Response:", response.payload);
 
       if (response.payload?.success) {
         setRating(0);
@@ -145,7 +168,10 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             <span className="text-gray-600 text-lg">({averageReview.toFixed(2)})</span>
           </div>
 
-          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg py-3" onClick={() => handleAddToCart(productDetails?._id)}>
+          <Button
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg py-3"
+            onClick={() => handleAddToCart(productDetails?._id)}
+          >
             Add to Cart
           </Button>
 

@@ -74,7 +74,7 @@ const addToCart = async (req, res) => {
 // Fetch cart items
 const fetchCartItems = async (req, res) => {
   try {
-    const { userId } = req.body; // Changed from req.params to req.body
+    const { userId } = req.params; // Fixed: Changed from req.body to req.params
 
     if (!userId) {
       return res.status(400).json({
