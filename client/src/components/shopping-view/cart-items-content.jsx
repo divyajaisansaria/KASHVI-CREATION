@@ -43,7 +43,7 @@ function UserCartItemsContent({ cartItem }) {
 
     dispatch(
       updateCartQuantity({
-        userId: user?.id,
+        userId: user?._id,
         productId: getCartItem?.productId,
         quantity:
           typeOfAction === "plus"
@@ -61,7 +61,7 @@ function UserCartItemsContent({ cartItem }) {
 
   function handleCartItemDelete(getCartItem) {
     dispatch(
-      deleteCartItem({ userId: user?.id, productId: getCartItem?.productId })
+      deleteCartItem({ userId: user?._id, productId: getCartItem?.productId })
     ).then((data) => {
       if (data?.payload?.success) {
         toast({
@@ -104,13 +104,13 @@ function UserCartItemsContent({ cartItem }) {
         </div>
       </div>
       <div className="flex flex-col items-end">
-        <p className="font-semibold">
+        {/* <p className="font-semibold">
           $
           {(
             (cartItem?.salePrice > 0 ? cartItem?.salePrice : cartItem?.price) *
             cartItem?.quantity
           ).toFixed(2)}
-        </p>
+        </p> */}
         <Trash
           onClick={() => handleCartItemDelete(cartItem)}
           className="cursor-pointer mt-1"
