@@ -20,6 +20,8 @@ import { fetchCartItems } from "@/store/shop/cart-slice";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import logo from "../../assets/logo.jpg";
+import axios from "axios";
+
 
 // Updated MenuItems with dropdowns and hover functionality with animation
 function MenuItems({ isColumn = false }) {
@@ -73,9 +75,29 @@ function HeaderRightContent() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  function handleLogout() {
-    dispatch(logoutUser());
-  }
+  // import axios from "axios";
+
+  const handleLogout = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/logout",
+        {}, // Empty body
+        { withCredentials: true } // ✅ Ensure cookies are sent
+      );
+  
+      console.log(response.data.message); // Debugging
+  
+      // ✅ Clear token from localStorage (if stored there)
+      localStorage.removeItem("token");
+  
+      // ✅ Redirect user after logout
+      window.location.href = "/shop/home";
+    } catch (error) {
+      console.error("Logout failed:", error.response?.data?.message || error.message);
+    }
+  };
+  
+  
 
   useEffect(() => {
     if (user) {

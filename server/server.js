@@ -32,10 +32,21 @@ mongoose
     console.error("❌ MongoDB Connection Error:", error.message);
     process.exit(1); // Stop the server if MongoDB fails
   });
-  app.use(cookieParser());
+  app.use(cookieParser()); // ✅ Required for parsing cookies
+
+  app.use(
+    cors({
+      origin: ["http://localhost:5173", "http://localhost:5174"], // ✅ Adjust for your frontend
+      credentials: true, // ✅ Required to allow cookies
+    })
+  );
+  
+// app.use(cookieParser());
+
+// ✅ **Ensure CORS allows credentials**
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"], // ✅ Allow both ports
+    origin: ["http://localhost:5173", "http://localhost:5174"], // ✅ Allow frontend ports
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",
@@ -44,10 +55,9 @@ app.use(
       "Expires",
       "Pragma",
     ],
-    credentials: true,
+    credentials: true, // ✅ Required for cookies in frontend requests
   })
 );
-
 
 app.use(express.json());
 app.use("/api/auth", authRouter);
@@ -63,5 +73,31 @@ app.use("/api/shop/review", shopReviewRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
 
-app.listen(PORT, () => console.log(`🚀 Server is running on port ${PORT}`));
+app.post("/api/auth/logout", (req, res) => {
+  console.log("🔹 Logout request received...");
 
+  console.log("🔹 Cookies received:", req.cookies); // Log all cookies
+
+  const token = req.cookies?.token; // ✅ Get token from cookies safely
+  console.log("🔹 Token from cookies:", token);
+
+  if (!token) {
+    console.log("❌ No token found in cookies!");
+    return res.status(400).json({ success: false, message: "No token provided!" });
+  }
+
+  // ✅ Clear the cookie
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // False in development
+    sameSite: "None",
+  });
+
+  console.log("✅ Token cleared from cookies.");
+  res.json({ success: true, message: "Logged out successfully." });
+});
+
+
+
+// ✅ **Start the Server**
+app.listen(PORT, () => console.log(`🚀 Server is running on port ${PORT}`));
