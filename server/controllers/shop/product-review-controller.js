@@ -1,64 +1,60 @@
-const Order = require("../../models/Order");
 const Product = require("../../models/Product");
 const ProductReview = require("../../models/Review");
 
 const addProductReview = async (req, res) => {
   try {
-    const { productId, userId, userName, reviewMessage, reviewValue } =
-      req.body;
+    const { productId, userId, userName, reviewMessage, reviewValue } = req.body;
 
-    const order = await Order.findOne({
-      userId,
-      "cartItems.productId": productId,
-      // orderStatus: "confirmed" || "delivered",
-    });
-
-    if (!order) {
-      return res.status(403).json({
-        success: false,
-        message: "You need to purchase product to review it.",
-      });
-    }
-
-    const checkExistinfReview = await ProductReview.findOne({
-      productId,
-      userId,
-    });
-
-    if (checkExistinfReview) {
+    if (!productId || !userId || reviewValue === undefined) {
       return res.status(400).json({
         success: false,
-        message: "You already reviewed this product!",
+        message: "Product ID, User ID, and review value are required!",
       });
     }
 
-    const newReview = new ProductReview({
-      productId,
-      userId,
-      userName,
-      reviewMessage,
-      reviewValue,
-    });
+    // Check if the user already reviewed the product
+    let existingReview = await ProductReview.findOne({ productId, userId });
 
-    await newReview.save();
+    if (existingReview) {
+      // Update existing review
+      existingReview.reviewValue = reviewValue;
+      existingReview.reviewMessage = reviewMessage;
+      await existingReview.save();
+    } else {
+      // Create a new review
+      existingReview = new ProductReview({
+        productId,
+        userId,
+        userName,
+        reviewMessage,
+        reviewValue,
+      });
+      await existingReview.save();
+    }
 
-    const reviews = await ProductReview.find({ productId });
-    const totalReviewsLength = reviews.length;
+    // Fetch updated reviews list and sort by most recent
+    const reviews = await ProductReview.find({ productId }).sort({ createdAt: -1 });
+
+    // Calculate average rating
+    const totalReviews = reviews.length;
     const averageReview =
-      reviews.reduce((sum, reviewItem) => sum + reviewItem.reviewValue, 0) /
-      totalReviewsLength;
+      totalReviews > 0 ? reviews.reduce((sum, review) => sum + review.reviewValue, 0) / totalReviews : 0;
 
+    // Update product's average review
     await Product.findByIdAndUpdate(productId, { averageReview });
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
-      data: newReview,
+      message: existingReview.isNew ? "Review added successfully!" : "Review updated successfully!",
+      review: existingReview,
+      reviews, // Send updated reviews list
+      averageReview,
     });
   } catch (e) {
-    console.log(e);
+    console.error("Error adding/updating review:", e);
     res.status(500).json({
       success: false,
-      message: "Error",
+      message: "Internal server error.",
     });
   }
 };
@@ -66,17 +62,19 @@ const addProductReview = async (req, res) => {
 const getProductReviews = async (req, res) => {
   try {
     const { productId } = req.params;
+    
+    // Fetch reviews sorted by most recent
+    const reviews = await ProductReview.find({ productId }).sort({ createdAt: -1 });
 
-    const reviews = await ProductReview.find({ productId });
     res.status(200).json({
       success: true,
       data: reviews,
     });
   } catch (e) {
-    console.log(e);
+    console.error("Error fetching reviews:", e);
     res.status(500).json({
       success: false,
-      message: "Error",
+      message: "Internal server error.",
     });
   }
 };

@@ -10,8 +10,8 @@ const ProductSchema = new mongoose.Schema(
     occasion: String,
     fabric: String,
     color: String,
-    totalStock: Number,
-    averageReview: Number,
+    totalStock: { type: Number, min: 0 }, // Prevent negative stock
+    averageReview: { type: Number, default: 0 }, // Default value to prevent undefined issues
   },
   { timestamps: true }
 );

@@ -63,7 +63,7 @@ const addToCart = async (req, res) => {
       data: cart,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in addToCart:", error);
     res.status(500).json({
       success: false,
       message: "Error while adding item to cart",
@@ -74,12 +74,12 @@ const addToCart = async (req, res) => {
 // Fetch cart items
 const fetchCartItems = async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.body; // Changed from req.params to req.body
 
     if (!userId) {
       return res.status(400).json({
         success: false,
-        message: "User id is mandatory!",
+        message: "User ID is required!",
       });
     }
 
@@ -95,9 +95,7 @@ const fetchCartItems = async (req, res) => {
       });
     }
 
-    const validItems = cart.items.filter(
-      (productItem) => productItem.productId
-    );
+    const validItems = cart.items.filter((productItem) => productItem.productId);
 
     if (validItems.length < cart.items.length) {
       cart.items = validItems;
@@ -114,7 +112,7 @@ const fetchCartItems = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in fetchCartItems:", error);
     res.status(500).json({
       success: false,
       message: "Error while fetching cart items",
@@ -171,7 +169,7 @@ const updateCartItemQty = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in updateCartItemQty:", error);
     res.status(500).json({
       success: false,
       message: "Error while updating cart item",
@@ -224,7 +222,7 @@ const deleteCartItem = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in deleteCartItem:", error);
     res.status(500).json({
       success: false,
       message: "Error while deleting cart item",
