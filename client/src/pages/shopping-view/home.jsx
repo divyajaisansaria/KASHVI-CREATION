@@ -28,6 +28,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { fetchAllFilteredProducts, fetchProductDetails } from "@/store/shop/products-slice"
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice"
 import { getFeatureImages } from "@/store/common-slice"
+import WhatsAppButton from "@/components/common/WhatsAppButton"
 
 const categoriesWithIcon = [
   { id: "men", label: "Men", icon: ShirtIcon },
@@ -281,6 +282,7 @@ function ShoppingHome() {
       </motion.section>
 
       <ProductDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} productDetails={productDetails} />
+      <WhatsAppButton/>
       <Footer />
     </div>
   )

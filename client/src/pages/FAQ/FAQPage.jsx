@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { ChevronDown, ChevronUp, Search, Layers, CreditCard, FileText, Mail, Lightbulb, UserPlus } from "lucide-react"; // Added Lightbulb and UserPlus icons
 import { motion, AnimatePresence } from "framer-motion";
 import Chatbot from "./chatbot";
-
+import Head from "../../components/shopping-view/header";
+import Footer from "@/components/common/Footer";
+import WhatsAppButton from "../../components/common/WhatsAppButton";
 const faqCategories = ["General", "Pricing", "Dashboard", "API"];
 const faqData = [
   { id: 1, category: "General", question: "Is there a free trial available?", answer: "Yes, you can try us for free for 30 days. If you want, we’ll provide you with a free 30-minute onboarding call to get you up and running." },
@@ -25,6 +27,8 @@ const FAQPage = () => {
   );
 
   return (
+    <div>
+      <Head/>
     <div className="min-h-screen flex flex-col items-center px-6 py-16 bg-gray-100 relative overflow-hidden">
       {/* Animated Background */}
       <motion.div
@@ -146,6 +150,9 @@ const FAQPage = () => {
           </a>
         </div>
       </div>
+    </div>
+    <WhatsAppButton />
+    <Footer/>
     </div>
   );
 };

@@ -2,7 +2,8 @@
 import { motion } from "framer-motion"
 import { Calendar, MapPin, Clock, ArrowRight } from "lucide-react"
 import Footer from '../../components/common/Footer';
-
+import Head from "../../components/shopping-view/header";
+import WhatsAppButton from "../../components/common/WhatsAppButton";
 export default function Events() {
   const events = [
     {
@@ -36,6 +37,8 @@ export default function Events() {
   ]
 
   return (
+    <div>
+      <Head/>
     <div className="min-h-screen bg-[#f8f4f0] py-16">
       <div className="container mx-auto px-4">
         {/* Hero Section */}
@@ -89,8 +92,10 @@ export default function Events() {
             </motion.div>
           ))}
         </div>
+        <WhatsAppButton/>
         <Footer />
       </div>
+    </div>
     </div>
   )
 }

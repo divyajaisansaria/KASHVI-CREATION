@@ -4,6 +4,8 @@ import { motion } from "framer-motion"
 import { Calendar, User, Tag, ChevronRight } from "lucide-react"
 import featuredImage from "../../components/images/19491-2.png"; // Importing the image directly
 import Footer from '../../components/common/Footer';
+import Head from "../../components/shopping-view/header";
+import WhatsAppButton from "../../components/common/WhatsAppButton";
 export default function Blog() {
   const featuredPost = {
     title: "The Art of Draping: Modern Styles for Traditional Sarees",
@@ -48,6 +50,7 @@ export default function Blog() {
   const categories = ["All Posts", "Styling Tips", "Traditional", "Modern", "Culture", "Fashion", "Care Guide"]
 
   return (
+    <div> <Head/>
     <div className="min-h-screen bg-[#f8f4f0] py-16">
       <div className="container mx-auto px-4">
         {/* Header */}
@@ -183,7 +186,9 @@ export default function Blog() {
           </form>
         </motion.div>
       </div>
+      <WhatsAppButton/>
       <Footer />
+    </div>
     </div>
   )
 }

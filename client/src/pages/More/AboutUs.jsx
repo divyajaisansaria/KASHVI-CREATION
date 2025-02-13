@@ -3,6 +3,8 @@ import { Menu, X, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import img1 from '../../components/images/19491-2.png';
 import Footer from '../../components/common/Footer';
+import Head from "../../components/shopping-view/header";
+import WhatsAppButton from "../../components/common/WhatsAppButton";
 const AboutUs = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -21,69 +23,69 @@ const AboutUs = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-b from-[#f8f4f0] to-white min-h-screen flex flex-col font-serif">
-      {/* Enhanced Navbar */}
-      <motion.nav
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className={`transition-all duration-300 ${
-          scrolled ? 'bg-white/95 backdrop-blur-sm shadow-lg' : 'bg-transparent'
-        } py-6 px-8 fixed w-full top-0 z-50`}
-      >
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <motion.h1
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="text-3xl font-bold text-[#c19a6b] font-serif"
-          >
-            Kashvi Creation
-          </motion.h1>
+    // <div className="bg-gradient-to-b from-[#f8f4f0] to-white min-h-screen flex flex-col font-serif">
+    //   {/* Enhanced Navbar */}
+    //   <motion.nav
+    //     initial={{ opacity: 0 }}
+    //     animate={{ opacity: 1 }}
+    //     className={`transition-all duration-300 ${
+    //       scrolled ? 'bg-white/95 backdrop-blur-sm shadow-lg' : 'bg-transparent'
+    //     } py-6 px-8 fixed w-full top-0 z-50`}
+    //   >
+    //     <div className="max-w-7xl mx-auto flex justify-between items-center">
+    //       <motion.h1
+    //         initial={{ y: -50, opacity: 0 }}
+    //         animate={{ y: 0, opacity: 1 }}
+    //         transition={{ duration: 0.5 }}
+    //         className="text-3xl font-bold text-[#c19a6b] font-serif"
+    //       >
+    //         Kashvi Creation
+    //       </motion.h1>
 
-          {/* Desktop Menu */}
-          <ul className="hidden md:flex space-x-8 text-gray-800">
-            {['Home', 'About', 'Collections', 'Contact'].map((item) => (
-              <motion.li
-                key={item}
-                initial={{ y: -50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.1 * (['Home', 'About', 'Collections', 'Contact'].indexOf(item) + 1) }}
-              >
-                <a href="#" className="hover:text-[#c19a6b] transition-colors duration-300 relative group">
-                  {item}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#c19a6b] transition-all duration-300 group-hover:w-full"></span>
-                </a>
-              </motion.li>
-            ))}
-          </ul>
+    //       {/* Desktop Menu */}
+    //       <ul className="hidden md:flex space-x-8 text-gray-800">
+    //         {['Home', 'About', 'Collections', 'Contact'].map((item) => (
+    //           <motion.li
+    //             key={item}
+    //             initial={{ y: -50, opacity: 0 }}
+    //             animate={{ y: 0, opacity: 1 }}
+    //             transition={{ duration: 0.5, delay: 0.1 * (['Home', 'About', 'Collections', 'Contact'].indexOf(item) + 1) }}
+    //           >
+    //             <a href="#" className="hover:text-[#c19a6b] transition-colors duration-300 relative group">
+    //               {item}
+    //               <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#c19a6b] transition-all duration-300 group-hover:w-full"></span>
+    //             </a>
+    //           </motion.li>
+    //         ))}
+          // </ul>
 
-          {/* Mobile Menu Button */}
-          <button className="md:hidden text-gray-800" onClick={() => setIsOpen(!isOpen)}>
-            {isOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
+      //     {/* Mobile Menu Button */}
+      //     <button className="md:hidden text-gray-800" onClick={() => setIsOpen(!isOpen)}>
+      //       {isOpen ? <X size={24} /> : <Menu size={24} />}
+      //     </button>
+      //   </div>
 
-        {/* Mobile Menu */}
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-            className="md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-sm transition-all duration-300"
-          >
-            <ul className="py-4 px-8 space-y-4">
-              {['Home', 'About', 'Collections', 'Contact'].map((item) => (
-                <li key={item}>
-                  <a href="#" className="block text-gray-800 hover:text-[#c19a6b] transition-colors duration-300">
-                    {item}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        )}
-      </motion.nav>
-
+      //   {/* Mobile Menu */}
+      //   {isOpen && (
+      //     <motion.div
+      //       initial={{ opacity: 0 }}
+      //       animate={{ opacity: 1 }}
+      //       transition={{ duration: 0.3 }}
+      //       className="md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-sm transition-all duration-300"
+      //     >
+      //       <ul className="py-4 px-8 space-y-4">
+      //         {['Home', 'About', 'Collections', 'Contact'].map((item) => (
+      //           <li key={item}>
+      //             <a href="#" className="block text-gray-800 hover:text-[#c19a6b] transition-colors duration-300">
+      //               {item}
+      //             </a>
+      //           </li>
+      //         ))}
+      //       </ul>
+      //     </motion.div>
+      //   )}
+      // </motion.nav>
+<div> <Head/>
       {/* Enhanced Hero Section */}
       <div className="relative h-screen flex items-center justify-center text-center text-white mt-16">
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://plus.unsplash.com/premium_photo-1700869228119-1bab9ba6fc9b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')" }} />
@@ -277,8 +279,10 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
-
       {/* Enhanced Footer */}
+      <div className="fixed bottom-4 right-4 z-50">
+    <WhatsAppButton />
+  </div>
       <Footer />
     </div>
   );

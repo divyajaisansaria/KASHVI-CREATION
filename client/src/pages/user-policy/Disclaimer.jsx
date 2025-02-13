@@ -2,11 +2,14 @@ import React from "react";
 import Footer from "../../components/common/Footer";
 import { ShieldAlert } from "lucide-react";
 import { motion } from "framer-motion";
-
+import Head from "../../components/shopping-view/header";
+import WhatsAppButton from "../../components/common/WhatsAppButton";
 const Disclaimer = () => {
   return (
+    <div>
+      <Head/>
     <div className="min-h-screen flex flex-col bg-[#f8f4f0] text-[#6b3d2f]">
-      <div className="container mx-auto px-6 py-12 flex-grow">
+      <div className="container mx-auto px-6 py-12 flex-grow relative"> {/* Make container relative */}
         {/* Header */}
         <div className="flex items-center justify-center mb-8">
           <motion.div
@@ -83,8 +86,11 @@ const Disclaimer = () => {
             </p>
           </motion.div>
         </motion.div>
+
       </div>
+      <WhatsAppButton/>
       <Footer />
+    </div>
     </div>
   );
 };

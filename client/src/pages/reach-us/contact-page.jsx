@@ -8,7 +8,8 @@ import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
 import { Textarea } from "../../components/ui/textarea";
 import Footer from '../../components/common/Footer';
-
+import Head from "../../components/shopping-view/header";
+import WhatsAppButton from "../../components/common/WhatsAppButton";
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -24,6 +25,8 @@ export default function ContactPage() {
   }
 
   return (
+    <div>
+      <Head/>
 <div className="min-h-screen bg-[#f8f4f0]">
 
       <motion.section
@@ -215,7 +218,9 @@ export default function ContactPage() {
           ))}
         </motion.div>
       </motion.section>
+      <WhatsAppButton/>
       <Footer />
+    </div>
     </div>
   )
 }

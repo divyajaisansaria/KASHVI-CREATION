@@ -2,9 +2,12 @@ import React from "react";
 import Footer from "../../components/common/Footer";
 import { Lock } from "lucide-react";
 import { motion } from "framer-motion";
-
+import Head from "../../components/shopping-view/header";
+import WhatsAppButton from "../../components/common/WhatsAppButton";
 const PrivacyPolicy = () => {
   return (
+    <div>
+      <Head/>
     <div className="min-h-screen flex flex-col bg-[#f8f4f0] text-[#6b3d2f]">
       <div className="container mx-auto px-6 py-12 flex-grow">
         {/* Header */}
@@ -86,7 +89,9 @@ const PrivacyPolicy = () => {
           </motion.div>
         </motion.div>
       </div>
+      <WhatsAppButton/>
       <Footer />
+    </div>
     </div>
   );
 };

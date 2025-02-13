@@ -64,7 +64,6 @@ const Footer = () => {
           <ul className="mt-4 space-y-2">
             <li><a href="#" className="hover:text-[#0a373b]">Store Locations</a></li>
             <li><a href="/AboutUs" className="hover:text-[#0a373b]">About Us</a></li>
-            <li><a href="/trackorder" className="hover:text-[#0a373b]">Track Order</a></li>
             <li><a href="/event" className="hover:text-[#0a373b]">Events</a></li>
             <li><a href="/blog" className="hover:text-[#0a373b]">Blog</a></li>
           </ul>
@@ -73,7 +72,7 @@ const Footer = () => {
 
       {/* Company Branding & Address */}
       <div className="text-center py-8 border-t border-gray-300">
-        <h2 className="text-2xl font-semibold uppercase">Kashvi</h2>
+        <h2 className="text-2xl font-semibold uppercase">Kashvi Creations</h2>
         <p className="mt-2">Since 1943</p>
         <p className="mt-4 text-sm">Kashvi Corporate, V Square, Dwarakanagar, Visakhapatnam - 530016</p>
         <p className="text-sm">CIN: U17119AP2005PTC046645</p>
