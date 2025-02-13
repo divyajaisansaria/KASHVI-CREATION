@@ -238,11 +238,11 @@ export const shoppingViewHeaderMenuItems = [
       { id: "crepe", label: "Crepe", path: "/shop/listing" }
     ]
   },
-  // {
-  //   id: "search",
-  //   label: "Search",
-  //   path: "/shop/search"
-  // }
+  {
+    id: "search",
+    label: "Search",
+    path: "/shop/search"
+  }
 ];
 
 
