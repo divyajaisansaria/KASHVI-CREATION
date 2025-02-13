@@ -25,7 +25,15 @@ import PaypalReturnPage from "./pages/shopping-view/paypal-return";
 import PaymentSuccessPage from "./pages/shopping-view/payment-success";
 import SearchProducts from "./pages/shopping-view/search";
 import LocateUsPage from "./pages/shopping-view/locate_us";
-
+import PrivacyPolicy from "./pages/user-policy/PrivacyPolicy";
+import TermsConditions from "./pages/user-policy/TermsConditions";
+import Disclaimer from "./pages/user-policy/Disclaimer";
+import AboutUs from "./pages/More/AboutUs";
+import FAQ from "./pages/FAQ/FAQPage";
+import ContactUs from "./pages/reach-us/contact-page";
+import TrackOrder from "./pages/More/trackorder";
+import Event from "./pages/More/event";
+import Blog from "./pages/More/blog";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -103,6 +111,15 @@ function App() {
 
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/disclaimer" element={<Disclaimer />} />
+        <Route path="/AboutUs" element={<AboutUs />} />
+        <Route path="/FAQ/FAQPage" element={<FAQ />} />
+        <Route path="/reach-us/contact-page" element={<ContactUs />} />
+        <Route path="/trackorder" element={<TrackOrder />} />
+        <Route path="/event" element={<Event />} />
+        <Route path="/blog" element={<Blog />} />
       </Routes>
     </div>
   );
