@@ -1,4 +1,4 @@
-import { LogOut, Menu, ShoppingCart, Search, UserCog } from "lucide-react";
+import { LogOut, Menu, ShoppingCart, Search, UserCog, Heart } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Button } from "../ui/button";
@@ -18,12 +18,9 @@ import UserCartWrapper from "./cart-wrapper";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import logo from "../../assets/logo.jpg";
 import axios from "axios";
 
-
-// Updated MenuItems with dropdowns and hover functionality with animation
 function MenuItems({ isColumn = false }) {
   const navigate = useNavigate();
 
@@ -35,15 +32,12 @@ function MenuItems({ isColumn = false }) {
     <nav className={`flex ${isColumn ? "flex-col gap-4" : "justify-center gap-6"} py-4 bg-[#F8F4F0] border-t shadow-sm`}>
       {shoppingViewHeaderMenuItems.map((menuItem) => (
         <div key={menuItem.id} className="group relative">
-          {/* Main Menu Item */}
           <div
             onClick={() => handleItemClick(menuItem.path)}
             className="text-sm font-semibold text-gray-700 cursor-pointer transition-all duration-200 hover:text-[#b2996c] hover:scale-105"
           >
             {menuItem.label}
           </div>
-
-          {/* Dropdown Menu for Submenu Items */}
           {menuItem.subMenu && (
             <div
               className="absolute left-0 w-56 bg-[#F8F4F0] opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 ease-in-out transform origin-top"
@@ -67,47 +61,32 @@ function MenuItems({ isColumn = false }) {
   );
 }
 
-// HeaderRightContent for user and cart
 function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.shopCart);
+  const { items: wishlist } = useSelector((state) => state.wishlist);
   const [openCartSheet, setOpenCartSheet] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // import axios from "axios";
-
   const handleLogout = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/auth/logout",
-        {}, // Empty body
-        { withCredentials: true } // ✅ Ensure cookies are sent
-      );
-  
-      console.log(response.data.message); // Debugging
-  
-      // ✅ Clear token from localStorage (if stored there)
+      await axios.post("http://localhost:5000/api/auth/logout", {}, { withCredentials: true });
       localStorage.removeItem("token");
-  
-      // ✅ Redirect user after logout
       window.location.href = "/shop/home";
     } catch (error) {
       console.error("Logout failed:", error.response?.data?.message || error.message);
     }
   };
-  
-  
 
   useEffect(() => {
     if (user) {
-      dispatch(fetchCartItems(user?.id));
+      dispatch(fetchCartItems(user?._id));
     }
-  }, [dispatch, user?.id]);
+  }, [dispatch, user?._id]);
 
   return (
     <div className="flex items-center gap-4">
-      {/* Shopping Cart */}
       <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
         <Button
           onClick={() => setOpenCartSheet(true)}
@@ -128,7 +107,15 @@ function HeaderRightContent() {
         />
       </Sheet>
 
-      {/* User Account Dropdown */}
+      <Link to="/wishlist" className="relative">
+        <Heart className="w-6 h-6 text-red-500" />
+        {wishlist?.length > 0 && (
+          <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">
+            {wishlist.length}
+          </span>
+        )}
+      </Link>
+
       {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -166,24 +153,20 @@ function HeaderRightContent() {
   );
 }
 
-// Main ShoppingHeader component
 function ShoppingHeader() {
-  const [searchQuery, setSearchQuery] = useState(""); // Manage search query
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
   const handleSearchClick = () => {
     if (searchQuery) {
-      navigate(`/shop/search?q=${searchQuery}`); // Navigate to search page with query
+      navigate(`/shop/search?q=${searchQuery}`);
     }
   };
 
   return (
     <>
-      {/* Main Header */}
       <header className="sticky top-0 z-50 w-full bg-white shadow-md">
         <div className="flex h-16 items-center justify-between px-4 md:px-8">
-          
-          {/* Logo */}
           <Link to="/shop/home" className="flex items-center ml-4">
             <img
               src={logo}
@@ -192,33 +175,26 @@ function ShoppingHeader() {
             />
           </Link>
 
-          {/* Search Bar (Visible on Medium+ Screens) */}
           <div className="hidden sm:flex flex-1 align-center px-4">
             <div className="relative w-full mx-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
               <Search className="absolute left-3 top-3 h-5 w-5 text-gray-500 pointer-events-none" />
               <Input
                 type="text"
                 placeholder="Search for products..."
-                value={searchQuery} // Controlled input
-                onChange={(e) => setSearchQuery(e.target.value)} // Update query on change
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg 
                          transition-all duration-200
                          focus:ring-2 focus:ring-[#b2996c] focus:border-[#b2996c]
                          hover:border-[#b2996c] hover:shadow-md"
-                style={{
-                  '--tw-ring-color': '#b2996c',
-                  '--tw-ring-opacity': '0.5'
-                }}
               />
             </div>
           </div>
 
-          {/* Right Content (Icons) - Hidden on Mobile */}
           <div className="hidden lg:flex">
             <HeaderRightContent />
           </div>
 
-          {/* Search Button - Trigger Search */}
           <button
             onClick={handleSearchClick}
             className="lg:hidden p-2 bg-[#b2996c] text-white rounded-full"
@@ -226,12 +202,11 @@ function ShoppingHeader() {
             <Search className="h-5 w-5" />
           </button>
 
-          {/* Mobile Menu Button (Hamburger) */}
           <Sheet>
             <SheetTrigger asChild>
-              <Button 
-                variant="outline" 
-                size="icon" 
+              <Button
+                variant="outline"
+                size="icon"
                 className="lg:hidden hover:border-[#b2996c] transition-all duration-200"
               >
                 <Menu className="h-6 w-6 text-gray-600 hover:text-[#b2996c]" />
@@ -239,9 +214,7 @@ function ShoppingHeader() {
             </SheetTrigger>
             <SheetContent side="left" className="w-full max-w-xs bg-[#F8F4F0]">
               <div className="flex flex-col gap-6 p-4">
-                {/* Menu Items in Column */}
                 <MenuItems isColumn />
-                {/* Icons in Sidebar */}
                 <HeaderRightContent />
               </div>
             </SheetContent>
@@ -249,7 +222,6 @@ function ShoppingHeader() {
         </div>
       </header>
 
-      {/* Menu Bar Below Header - Hidden on Small Screens */}
       <div className="hidden lg:block">
         <MenuItems />
       </div>

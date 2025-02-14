@@ -2,8 +2,8 @@ import { Route, Routes } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthLogin from "./pages/auth/login";
 import AuthRegister from "./pages/auth/register";
-import ForgotPassword from "./pages/auth/ForgotPassword"; // Fixed import
-import ResetPassword from "./pages/auth/ResetPassword"; // Fixed import
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
 import AdminLayout from "./components/admin-view/layout";
 import AdminDashboard from "./pages/admin-view/dashboard";
 import AdminProducts from "./pages/admin-view/products";
@@ -35,6 +35,8 @@ import Event from "./pages/More/event";
 import Blog from "./pages/More/blogpage/index";
 import WhatsAppButton from "./components/common/WhatsAppButton";
 import Invoice from "./pages/Invoice/Invoice";
+import Wishlist from "./components/shopping-view/wishlist"; // ✅ Import Wishlist
+
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -54,12 +56,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={
-            <CheckAuth
-              isAuthenticated={isAuthenticated}
-              user={user}
-            ></CheckAuth>
-          }
+          element={<CheckAuth isAuthenticated={isAuthenticated} user={user} />}
         />
         <Route
           path="/auth"
@@ -71,10 +68,10 @@ function App() {
         >
           <Route path="login" element={<AuthLogin />} />
           <Route path="register" element={<AuthRegister />} />
-          <Route path="forgot-password" element={<ForgotPassword />} /> {/* Added Forgot Password Route */}
-          <Route path="/auth/reset-password/:token" element={<ResetPassword />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password/:token" element={<ResetPassword />} />
         </Route>
-        
+
         {/* Admin routes */}
         <Route
           path="/admin"
@@ -89,12 +86,11 @@ function App() {
           <Route path="orders" element={<AdminOrders />} />
           <Route path="features" element={<AdminFeatures />} />
         </Route>
-        
-        {/* Shopping routes (No authentication required) */}
+
+        {/* Shopping routes */}
         <Route path="/shop" element={<ShoppingLayout />}>
           <Route path="home" element={<ShoppingHome />} />
           <Route path="listing" element={<ShoppingListing />} />
-          {/* Checkout now requires authentication */}
           <Route
             path="checkout"
             element={
@@ -107,8 +103,13 @@ function App() {
           <Route path="paypal-return" element={<PaypalReturnPage />} />
           <Route path="payment-success" element={<PaymentSuccessPage />} />
           <Route path="search" element={<SearchProducts />} />
-          <Route path="locate-us" element={<LocateUsPage/>}/>
+          <Route path="locate-us" element={<LocateUsPage />} />
+          <Route path="wishlist" element={<Wishlist />} /> {/* ✅ Fixed Wishlist Route */}
         </Route>
+
+        {/* Direct wishlist route (in case users navigate manually) */}
+        <Route path="/wishlist" element={<Wishlist />} />
+
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
@@ -121,6 +122,7 @@ function App() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/whatsappbutton" element={<WhatsAppButton/>} />
         <Route path="shop/checkout/invoice" element={<Invoice/>} />
+        <Route path="/whatsappbutton" element={<WhatsAppButton />} />
       </Routes>
     </div>
   );
