@@ -36,10 +36,10 @@ function AuthLogin() {
   return (
     <div className="mx-auto w-full max-w-md space-y-6">
       <div className="text-center">
-      <h4 className="text-3xl font-bold tracking-tight text-foreground text-black">
+      <h4 className="text-3xl font-bold tracking-tight text-[#0a373b]">
           Welcome to Kashvi Creation!
         </h4>
-        <p className="">Login to your account</p>
+        <p className="text-[#0a373b] text-sm">Login to your account</p>
       </div>
       <CommonForm
         formControls={loginFormControls}

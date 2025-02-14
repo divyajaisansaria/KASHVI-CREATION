@@ -4,7 +4,7 @@ function AuthLayout() {
   return (
     <div className="flex min-h-screen w-full">
       <div
-        className="hidden lg:flex items-center justify-center w-1/2 px-12"
+        className="hidden md:flex items-center justify-center w-1/2 px-12"
         style={{ background: `url(${signimage}) center/cover no-repeat` }}
       >
         {/* <div className="max-w-md space-y-1 text-center text-primary-foreground">

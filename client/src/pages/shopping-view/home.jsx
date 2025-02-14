@@ -30,13 +30,30 @@ import { addToCart, fetchCartItems } from "@/store/shop/cart-slice"
 import { getFeatureImages } from "@/store/common-slice"
 import WhatsAppButton from "@/components/common/WhatsAppButton"
 
-const categoriesWithIcon = [
-  { id: "men", label: "Men", icon: ShirtIcon },
-  { id: "women", label: "Women", icon: CloudLightning },
-  { id: "kids", label: "Kids", icon: BabyIcon },
-  { id: "accessories", label: "Accessories", icon: WatchIcon },
-  { id: "footwear", label: "Footwear", icon: UmbrellaIcon },
-]
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation } from "swiper/modules";
+import { ChevronLeft, ChevronRight } from 'lucide-react'; 
+//import { Button } from '@shadcn/ui';  
+
+
+const randomCategories = [
+  { id: "kanjivaram_sarees", label: "Kanjivaram Sarees", imageUrl: "https://res.cloudinary.com/doytxxdrl/image/upload/v1739454629/kanchipuram_gnvr1k.webp" },
+  { id: "banarasi_sarees", label: "Banarasi Sarees", imageUrl: "https://res.cloudinary.com/doytxxdrl/image/upload/v1739455101/banarasi_jbhooc.webp" },
+  { id: "silk_sarees", label: "Silk Sarees", imageUrl: "https://res.cloudinary.com/doytxxdrl/image/upload/v1739455379/silk_qekfpe.jpg" },
+  { id: "net_sarees", label: "Net Sarees", imageUrl: "https://res.cloudinary.com/doytxxdrl/image/upload/v1739462478/Screenshot_2025-02-13_at_9.27.51_PM_qjra4y.png" },
+  { id: "chiffon_sarees", label: "Chiffon Sarees", imageUrl: "https://res.cloudinary.com/doytxxdrl/image/upload/c_crop,h_2000/v1739455379/chiffon_x7tcb3.webp" },
+];
+
+const categoriesWithImage = [
+  { id: "green_sarees", videoUrl: "https://res.cloudinary.com/doytxxdrl/video/upload/v1739481049/1739479481909999_aglgea.mp4" },
+  { id: "brown_sarees", videoUrl: "https://res.cloudinary.com/doytxxdrl/video/upload/v1739481033/1739480209975956_yto06l.mp4" },
+  { id: "pink_sarees",videoUrl: "https://res.cloudinary.com/doytxxdrl/video/upload/v1739480994/1739480373063079_dkoqvj.mp4" },
+  { id: "teal_sarees",videoUrl: "https://res.cloudinary.com/doytxxdrl/video/upload/v1739481025/1739480103851834_y5ozt1.mp4" },
+  { id: "chiffon_sarees",videoUrl: "https://res.cloudinary.com/doytxxdrl/video/upload/v1739481029/1739479962341330_r2pltz.mp4" },
+];
 
 const brandsWithIcon = [
   { id: "nike", label: "Nike", icon: Shirt },
@@ -46,6 +63,69 @@ const brandsWithIcon = [
   { id: "zara", label: "Zara", icon: Images },
   { id: "h&m", label: "H&M", icon: Heater },
 ]
+
+
+
+function AboutUsSection() {
+  const navigate = useNavigate();
+
+  const handleNavigation = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    navigate("/AboutUs");
+  };
+
+  return (
+    <div
+      className="bg-gradient-to-b from-[#FAF1E4] to-[#F8EDE3] py-16 px-9 text-center cursor-pointer "
+      onClick={handleNavigation}
+    >
+      <h2 className="text-4xl font-extrabold text-[#0a373b] mb-3 tracking-wide">
+        ABOUT KASHVI CREATION
+      </h2>
+      <h3 className="text-2xl font-semibold text-[#0a373b] mb-3">
+        Exclusive Designer Sarees
+      </h3>
+      <p className="text-lg text-gray-800 font-medium leading-relaxed max-w-3xl mx-auto">
+        With each stitch, Kashvi Creation combines love and trust to craft sarees that not only celebrate India’s heritage but also inspire modern elegance.
+      </p>
+    </div>
+  );
+}
+
+function TrustSection() {
+  return (
+    <section className="bg-[#F8F4F0] py-10">
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {/* Made in India */}
+          <div className="flex flex-col items-center space-y-2">
+            <img src="https://cdn-icons-png.flaticon.com/128/7410/7410134.png" alt="Made in India" className="h-12" />
+            <p className="font-semibold text-lg text-[#5b2e1e]">Made in India</p>
+          </div>
+
+          {/* Assured Quality */}
+          <div className="flex flex-col items-center space-y-2">
+            <img src="https://cdn-icons-png.flaticon.com/128/190/190411.png" alt="Assured Quality" className="h-12" />
+            <p className="font-semibold text-lg text-[#5b2e1e]">Assured Quality</p>
+          </div>
+
+          {/* Secure Payments */}
+          <div className="flex flex-col items-center space-y-2">
+            <img src="https://cdn-icons-png.flaticon.com/128/833/833593.png" alt="Secure Payments" className="h-12" />
+            <p className="font-semibold text-lg text-[#5b2e1e]">Secure Payments</p>
+          </div>
+
+          {/* Empowering Weavers */}
+          <div className="flex flex-col items-center space-y-2">
+            <img src="https://cdn-icons-png.flaticon.com/128/3063/3063081.png" alt="Empowering Weavers" className="h-12" />
+            <p className="font-semibold text-lg text-[#5b2e1e]">Empowering Weavers</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 function ShoppingHome() {
   const [currentSlide, setCurrentSlide] = useState(0)
@@ -116,33 +196,40 @@ function ShoppingHome() {
     dispatch(getFeatureImages())
   }, [dispatch])
 
+
+  // const ImageSlider = ({ featureImageList }) => {
+  //   const [currentSlide, setCurrentSlide] = useState(0);
+  
+  //   useEffect(() => {
+  //     const interval = setInterval(() => {
+  //       setCurrentSlide((prevSlide) => (prevSlide + 1) % featureImageList.length);
+  //     }, 3000);
+  //     return () => clearInterval(interval);
+  //   }, [featureImageList.length]);
+
+  
   return (
     <div className="flex flex-col min-h-screen">
-      <motion.div
-        ref={scrollRef}
-        style={{ opacity, scale }}
-        className="relative w-full h-[600px] overflow-hidden bg-[#f8f4f0]"
-      >
-        {/* Image Slider with Fade Transition */}
+     <div className="relative w-full h-[500px] bg-[#f8f4f0] overflow-hidden">
+        {/* Image Slider  */}
         {featureImageList && featureImageList.length > 0 ? (
-          featureImageList.map((slide, index) => (
-            <motion.img
-              key={index}
-              src={slide?.image}
-              initial={{ opacity: 0 }}
-              animate={{
-                opacity: index === currentSlide ? 1 : 0,
-                transition: { duration: 2, ease: "easeInOut" },
-              }}
-              className="absolute top-0 left-0 w-full h-full object-cover transform scale-105"
-              alt={`Saree ${index + 1}`}
-            />
-          ))
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center text-gray-500">No Images Available</div>
-        )}
+  featureImageList.map((slide, index) => (
+    <img
+      key={index}
+      src={slide?.image}
+      className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+              h-auto max-w-full object-cover scale-105
+                  ${index === currentSlide ? "block" : "hidden"}`}
+      alt={`Saree ${index + 1}`}
+    />
+  ))
+) : (
+  <div className="absolute inset-0 flex items-center justify-center text-gray-500">
+    No Images Available
+  </div>
+)}
 
-        {/* Arrow Buttons - positioned and styled */}
+
         <Button
           variant="outline"
           size="icon"
@@ -161,69 +248,271 @@ function ShoppingHome() {
         >
           <ChevronRightIcon className="w-5 h-5" />
         </Button>
-
-        {/* Text Overlay with Gradient */}
-        <div className="absolute bottom-0 left-0 p-6 md:p-12 text-[#6b3d2f] w-full bg-gradient-to-t from-[rgba(248,244,240,0.8)] to-transparent">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-            className="text-3xl md:text-5xl font-bold leading-tight mb-2"
-          >
-            Exquisite Sarees, Timeless Beauty
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
-            className="text-lg md:text-xl mb-4"
-          >
-            Discover our curated collection of handcrafted sarees.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.7, ease: "easeOut" }}
-          >
-            <Button size="lg" className="bg-[#0a373b] text-white hover:bg-[#6b3d2f] font-semibold">
-              Explore Collection
-            </Button>
-          </motion.div>
         </div>
-      </motion.div>
+        {/* Text Overlay with Gradient */}
 
+      {/* </motion.div> */}
+
+      <AboutUsSection />
+
+      {/* random categories */}
       <motion.section
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="py-12 bg-gray-50"
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className="py-16 bg-white"
       >
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">Shop by category</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {categoriesWithIcon.map((categoryItem, index) => (
+        <div className="max-w-screen-xl mx-auto px-8 md:px-14">
+          <h2 className="text-4xl text-[#0a373b] mb-9 tracking-wide font-semibold text-center">
+            SAREES OF INDIA
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-4 md:gap-4">
+            {/* Featured Category (Large grid on the left) */}
+            <div className="col-span-1 md:col-span-1 lg:col-span-1 row-span-2 relative">
               <motion.div
-                key={categoryItem.id}
+                className="group h-full"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  handleNavigateToListingPage(randomCategories[0], "Category");
+                }}
               >
-                <Card
-                  onClick={() => handleNavigateToListingPage(categoryItem, "category")}
-                  className="cursor-pointer hover:shadow-lg transition-shadow"
-                >
-                  <CardContent className="flex flex-col items-center justify-center p-6">
-                    <categoryItem.icon className="w-12 h-12 mb-4 text-primary" />
-                    <span className="font-bold">{categoryItem.label}</span>
-                  </CardContent>
-                </Card>
+                <div className="relative h-full w-full overflow-hidden">
+                  <img
+                    src={randomCategories[0].imageUrl}
+                    alt={randomCategories[0].label}
+                    className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-110"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
+                    <span className="text-white text-2xl font-medium">
+                      {randomCategories[0].label}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Remaining Categories */}
+            {randomCategories.slice(1).map((category, index) => (
+              <motion.div
+                key={category.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2, delay: (index + 1) * 0.05 }}
+                className="relative"
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  handleNavigateToListingPage(category, "Category");
+                }}
+              >
+                <div className="relative w-full h-80 overflow-hidden">
+                  <img
+                    src={category.imageUrl}
+                    alt={category.label}
+                    className="w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-110"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
+                    <span className="text-white text-xl font-medium">
+                      {category.label}
+                    </span>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </motion.section>
 
+ {/* featured products */}
+ <motion.section
+  initial={{ opacity: 0, y: 50 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5, delay: 0.4 }}
+  className="py-12 bg-white"
+>
+  <div className="max-w-screen-xl mx-auto pl-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+    {/* Left Side - Text & Button */}
+    <motion.div
+      initial={{ opacity: 0, x: -50 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col justify-center lg:col-span-1 max-w-md "
+    >
+      {/* Large Screen Heading */}
+      <h2 className="hidden sm:block text-4xl lg:text-3xl text-gray-900 text-center leading-tight font-serif max-w-2xl mx-auto">
+        Your <br /> Favorites, Our <br /> Best-Sellers.
+      </h2>
+
+      {/* Small Screen Heading */}
+      <h2 className="block sm:hidden text-3xl text-gray-900 text-center leading-tight font-serif max-w-xl mx-auto">
+        Your Favorites, Our Best-Sellers
+      </h2>
+
+      <p className="text-sm lg:text-base text-center text-gray-600 mt-3 leading-tight max-w-xl mx-auto">
+        Shop the styles everyone’s loving now!
+      </p>
+
+      <button className="hidden mt-6 bg-red-400 text-white rounded-md text-lg font-semibold hover:bg-red-500 transition w-auto lg:block lg:px-6 lg:py-3 max-w-xs mx-auto">
+        SHOP NOW
+      </button>
+    </motion.div>
+
+    {/* Right Side - Product Slider */}
+    <motion.div
+      initial={{ opacity: 0, x: 50 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5 }}
+      className="lg:col-span-3 relative px-4 md:px-6"
+    >
+      <Swiper
+        slidesPerView={1.2}
+        spaceBetween={16}
+        navigation={{
+          prevEl: '.swiper-button-prev',
+          nextEl: '.swiper-button-next',
+        }}
+        modules={[Navigation]}
+        breakpoints={{
+          480: { slidesPerView: 2, spaceBetween: 20 },
+          768: { slidesPerView: 2, spaceBetween: 20 },
+          900: { slidesPerView: 2.5, spaceBetween: 22 },
+          1024: { slidesPerView: 3.5, spaceBetween: 24 },
+        }}
+        className="!py-4 !px-2"
+      >
+        {productList && productList.length > 0
+          ? productList.map((productItem, index) => (
+              <SwiperSlide key={productItem.id}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="h-full"
+                >
+                  <ShoppingProductTile
+                    handleGetProductDetails={handleGetProductDetails}
+                    product={productItem}
+                    handleAddtoCart={handleAddtoCart}
+                  />
+                </motion.div>
+              </SwiperSlide>
+            ))
+          : null}
+      </Swiper>
+
+      {/* Improved Navigation Buttons */}
+      <div className="absolute top-1/2 left-0 transform -translate-y-1/2 z-10 w-full pointer-events-none">
+        <div className="container mx-auto px-4 flex justify-between">
+          <Button 
+            variant="outline" 
+            size="icon"
+            className="swiper-button-prev !pointer-events-auto h-10 w-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white"
+          >
+            <ChevronLeft className="h-6 w-6 text-gray-700" />
+          </Button>
+          <Button 
+            variant="outline" 
+            size="icon"
+            className="swiper-button-next !pointer-events-auto h-10 w-10 rounded-full bg-white/90 backdrop-blur-sm shadow-lg hover:bg-white"
+          >
+            <ChevronRight className="h-6 w-6 text-gray-700" />
+          </Button>
+        </div>
+      </div> 
+    </motion.div>
+
+  </div>
+</motion.section>
+
+      <ProductDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} productDetails={productDetails} />
+
+      {/* <img 
+  src="https://res.cloudinary.com/doytxxdrl/image/upload/v1739485623/Screenshot_2025-02-14_at_3.50.52_AM_g71zai.png" 
+  alt="Example Image" 
+  className="w-full h-full object-cover"
+/> */}
+
+      {/* CategorywithVideo Color */}
       <motion.section
+  initial={{ opacity: 0, y: 50 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.5 }}
+  className="py-12 bg-gray-50"
+>
+  <div className="container mx-auto px-4">
+    <h2 className="text-3xl font-bold text-center mb-6">SHOP BY COLOURS</h2>
+
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+      {categoriesWithImage.map((categoryItem, index) => (
+        <motion.div
+          key={categoryItem.id}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 }}
+          className="relative cursor-pointer  hover:shadow-lg"
+        >
+          <Card
+            className="overflow-hidden"
+            onClick={() => {
+              // Scroll to the top of the page
+              
+                window.scrollTo({ top: 0, behavior: "smooth" });
+
+              // Navigate to the listing page
+              handleNavigateToListingPage(categoryItem, "Color");
+            }}
+          >
+            <video 
+              src={categoryItem.videoUrl} 
+              className="w-full h-full object-cover"
+              muted 
+              loop 
+              autoPlay 
+              playsInline 
+            />
+          </Card>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</motion.section>
+
+
+  {/* Image */}
+    <div className="relative w-full h-full">
+    
+      <img 
+        src="https://res.cloudinary.com/doytxxdrl/image/upload/v1739486005/final_x0qmho.webp" 
+        alt="Festive Edit" 
+        className="w-full h-full object-cover"
+      />
+
+      {/* Shop Now Button */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <button 
+        onClick={() => {
+          // Scroll to the top of the page
+            window.scrollTo({ top: 0, behavior: "smooth" });
+
+           navigate("/shop/listing?Occasion=festive_sarees")} }
+          className="bg-gradient-to-r from-[#b2966c] to-[#a2835d] text-white px-6 py-3 rounded-full shadow-lg text-lg font-semibold 
+                     hover:from-[#a2835d] hover:to-[#8f724a] transition-all duration-300 transform hover:scale-105"
+        >
+          Shop Now
+        </button>
+      </div>
+    </div>
+
+
+
+
+  <motion.section
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -252,37 +541,11 @@ function ShoppingHome() {
             ))}
           </div>
         </div>
-      </motion.section>... <motion.section
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.4 }}
-        className="py-12"
-      >
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-8">Feature Products</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {productList && productList.length > 0
-              ? productList.map((productItem, index) => (
-                  <motion.div
-                    key={productItem.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <ShoppingProductTile
-                      handleGetProductDetails={handleGetProductDetails}
-                      product={productItem}
-                      handleAddtoCart={handleAddtoCart}
-                    />
-                  </motion.div>
-                ))
-              : null}
-          </div>
-        </div>
       </motion.section>
 
-      <ProductDetailsDialog open={openDetailsDialog} setOpen={setOpenDetailsDialog} productDetails={productDetails} />
-      <WhatsAppButton/>
+   
+      <TrustSection />
+      <WhatsAppButton />
       <Footer />
     </div>
   )

@@ -40,22 +40,21 @@ function ShoppingProductTile({
   const currentDate = new Date().toLocaleString();
 
   return (
-    <Card className="w-full max-w-sm mx-auto group hover:shadow-xl transition-all duration-300 border border-[#b2996c]/10 bg-white rounded-lg overflow-hidden shadow-lg hover:scale-105">
+    <Card className="w-full max-w-[250px] mx-auto group transition-all duration-300 border-none bg-white overflow-hidden shadow-lg hover:shadow-xl ">
       <div 
         onClick={() => handleGetProductDetails(product?._id)}
         className="cursor-pointer relative overflow-hidden"
       >
         {/* Image Container */}
-        <div className="relative group-hover:scale-105 transition-transform duration-500">
+        <div className="relative overflow-hidden">
           <img
             src={product?.image}
             alt={product?.title}
-            className="w-full h-[320px] object-cover rounded-t-lg"
+            className="w-full h-[360px] object-cover  transition-transform duration-300 transform group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a373b]/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           
           {/* Status Badges */}
-          <div className="absolute top-3 left-3 flex flex-col gap-2">
+          <div className="absolute top-3 left-3 flex flex-col gap-1">
             {product?.totalStock === 0 ? (
               <Badge className="bg-red-600 text-white px-3 py-1 rounded-md shadow-md">
                 Out Of Stock
@@ -75,41 +74,27 @@ function ShoppingProductTile({
           </div>
         </div>
 
-        <CardContent className="p-4 space-y-4">
-          {/* Title */}
-          <h2 className="text-xl font-semibold text-[#0a373b] line-clamp-2 leading-tight">
-          {product?.designNumber}
-          </h2>
-          <h3 className="text-xl font-semibold text-[#0a373b] line-clamp-2  leading-tight">
-          {product?.title}
-          </h3>
-          
-          {/* Categories */}
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="outline" className="bg-[#F8F4F0] text-sm text-[#0a373b] border-[#b2996c]/30 hover:bg-[#b2996c]/10 rounded-lg shadow-sm">
-              {findLabel("Category", product?.category)}
-            </Badge>
-            <Badge variant="outline" className="bg-[#F8F4F0] text-sm text-[#0a373b] border-[#b2996c]/30 hover:bg-[#b2996c]/10 rounded-lg shadow-sm">
-              {findLabel("Occasion", product?.occasion)}
-            </Badge>
-          </div>
-
-          {/* Details */}
-          <div className="flex items-center justify-between pt-2">
-            <div className="flex items-center gap-2 bg-[#F8F4F0] px-3 py-1 rounded-full">
-              <div className={`w-3 h-3 rounded-full ${colorToClass[colorLabel] || "bg-gray-200"} shadow-sm`} />
-              <span className="text-sm text-[#0a373b]/80 font-medium">{colorLabel}</span>
+        <CardContent className="p-4 space-y-3">
+          {/* Title and Design Number */}
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-medium text-gray-900 leading-snug line-clamp-2">
+              DNo: {product?.designNumber}
+            </h3>
+            <div className="flex items-center gap-1 px-2 py-0.5 rounded-full">
+              <div className={`w-2 h-2 rounded-full ${colorToClass[colorLabel] || "bg-gray-200"} shadow-sm`} />
+              <span className="font-medium text-[12px] text-gray-700">{colorLabel}</span>
             </div>
-            <Badge variant="outline" className="bg-[#F8F4F0] text-sm text-[#0a373b] border-[#b2996c]/30 rounded-lg shadow-sm">
-              {findLabel("Fabric", product?.fabric)}
-            </Badge>
           </div>
+          
+          {/* Product Title */}
+          <h3 className="text-sm font-medium text-gray-900 leading-snug line-clamp-2">
+            {product?.title}
+          </h3>
 
-          {/* Timestamp
-          <div className="flex items-center gap-1.5 text-xs text-[#0a373b]/60">
-            <Clock size={12} />
-            <span>Last updated: {currentDate}</span>
-          </div> */}
+          {/* Details - Removed Category */}
+          <div className="flex flex-wrap gap-2">
+            {/* Additional details can be placed here */}
+          </div>
         </CardContent>
       </div>
 
