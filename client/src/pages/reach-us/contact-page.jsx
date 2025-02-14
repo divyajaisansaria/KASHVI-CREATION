@@ -138,7 +138,7 @@ export default function ContactPage() {
                 <h2 className="text-2xl font-semibold mb-4">Our Location</h2>
                 <div className="aspect-square rounded-xl overflow-hidden h-64 w-full">
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14880.519542997521!2d72.83269289919242!3d21.186998638032367!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04f30c2a28475%3A0xad5f81ba586f9f2c!2sKashvi%20Creation!5e0!3m2!1sen!2sin!4v1739274606822!5m2!1sen!2sin"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.3767175032663!2d72.84547657508517!3d21.177188780509614!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04e359c73988d%3A0x6d903fe43a38fde3!2sMillennium%20Textile%20Market%204!5e0!3m2!1sen!2sin!4v1739467722085!5m2!1sen!2sin"
                     width="100%"
                     height="100%"
                     style={{ border: 0 }}

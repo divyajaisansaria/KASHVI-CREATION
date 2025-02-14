@@ -1,119 +1,145 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Footer from "../../components/common/Footer";
-import { Lock } from "lucide-react";
-import { motion } from "framer-motion";
+import { Lock, Shield, Database, Share2, Cookie, Key, UserCheck } from "lucide-react";
 import Head from "../../components/shopping-view/header";
 import WhatsAppButton from "../../components/common/WhatsAppButton";
+
 const PrivacyPolicy = () => {
+  const sectionsRef = useRef([]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      sectionsRef.current.forEach(section => {
+        if (!section) return;
+        
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const startExpand = windowHeight * 0.8;
+        const fullExpand = windowHeight * 0.3;
+        
+        let scale;
+        if (rect.top > startExpand) {
+          scale = 0.8;
+        } else if (rect.top < fullExpand) {
+          scale = 1;
+        } else {
+          scale = 0.8 + (0.2 * ((startExpand - rect.top) / (startExpand - fullExpand)));
+        }
+        
+        section.style.transform = `scale(${scale})`;
+        section.style.opacity = scale;
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const addToRefs = (el) => {
+    if (el && !sectionsRef.current.includes(el)) {
+      sectionsRef.current.push(el);
+    }
+  };
+
   return (
-    <div>
-      <Head/>
-    <div className="min-h-screen flex flex-col bg-[#f8f4f0] text-[#6b3d2f]">
-      <div className="container mx-auto px-6 py-12 flex-grow">
-        {/* Header */}
-        <div className="flex items-center justify-center mb-8">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <Lock className="text-[#0a373b] mr-4" size={48} />
-          </motion.div>
-          <motion.h1
-            className="text-3xl font-semibold"
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            Privacy Policy
-          </motion.h1>
+    <div className="min-h-screen bg-gradient-to-b from-[#f8f4f0] to-[#f0e9e4]">
+      <Head />
+      <main className="container mx-auto px-4 py-12">
+        {/* Fixed Header */}
+        <div className="sticky top-0 z-10 bg-gradient-to-b from-[#f8f4f0] to-transparent py-6 text-center">
+          <div className="inline-block p-4 bg-white/50 rounded-full shadow-lg">
+            <Lock className="text-[#6b3d2f] h-12 w-12" />
+          </div>
+          <h1 className="text-4xl font-bold text-[#6b3d2f] mt-4">
+            Protecting Your Privacy
+          </h1>
+          <p className="mt-4 text-lg text-[#8b5e52] max-w-2xl mx-auto">
+            At Kashvi Creations, we're committed to safeguarding your personal information and ensuring transparency in our data practices.
+          </p>
         </div>
 
-        {/* Privacy Policy Content */}
-        <motion.div
-          className="space-y-6 text-lg"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, staggerChildren: 0.1 }}
+        {/* Scrolling Sections */}
+        <div className="max-w-3xl mx-auto mt-12 space-y-4">
+          {[
+            {
+              icon: <Shield />,
+              title: "Our Privacy Commitment",
+              content: "Your trust is our top priority. We maintain strict privacy standards and implement comprehensive measures to protect your personal information. Our commitment extends beyond legal requirements to ensure you feel secure while exploring our collection of fine textiles."
+            },
+            {
+              icon: <Database />,
+              title: "Information We Collect",
+              content: "To provide you with a personalized shopping experience, we collect essential information such as your name, contact details, and shopping preferences. We also gather browsing data to understand how you interact with our website, helping us improve our services and curate collections that match your interests."
+            },
+            {
+              icon: <Share2 />,
+              title: "How We Use Your Information",
+              content: "Your information helps us create a tailored shopping experience. We use it to process orders, provide customer support, and send personalized style recommendations. We analyze shopping patterns to improve our collection and ensure we meet your expectations for quality and design."
+            },
+            {
+              icon: <Cookie />,
+              title: "Cookie Policy & Tracking",
+              content: "Our website uses cookies to enhance your browsing experience. These small files help us remember your preferences, maintain your shopping cart, and provide relevant content. You can manage cookie settings through your browser, though this may affect certain website features."
+            },
+            {
+              icon: <Key />,
+              title: "Data Security Measures",
+              content: "We employ industry-standard encryption and security protocols to protect your data. Our systems are regularly updated and monitored to prevent unauthorized access. Your payment information is processed through secure, certified payment gateways."
+            },
+            {
+              icon: <UserCheck />,
+              title: "Your Privacy Rights",
+              content: "You have complete control over your personal data. You can request access to your information, update your preferences, or ask for data deletion at any time. We respect your privacy choices and promptly respond to all data-related requests."
+            }
+          ].map((section, index) => (
+            <div
+              key={index}
+              ref={addToRefs}
+              className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg transform-gpu transition-all duration-300 ease-out"
+              style={{
+                transformOrigin: 'center bottom',
+                willChange: 'transform, opacity'
+              }}
+            >
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-[#6b3d2f]/10 rounded-lg shrink-0">
+                  {section.icon}
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-[#6b3d2f] mb-2">
+                    {section.title}
+                  </h2>
+                  <p className="text-[#8b5e52] leading-relaxed">
+                    {section.content}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Contact Section */}
+        <div 
+          ref={addToRefs}
+          className="mt-12 text-center bg-white/60 backdrop-blur-sm p-8 rounded-xl shadow-lg transform-gpu transition-all duration-300 ease-out"
         >
-          <motion.p variants={paragraphVariants}>
-            <img
-              src="[Image URL - A lock icon or a subtle image related to security/privacy]"
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover opacity-10"
-            />
-            Your privacy is important to us. This policy explains how we handle your data and protect your personal information.
-          </motion.p>
-
-          <MotionSection title="Data Collection">
-            We collect personal details such as your name, email address, and browsing behavior to enhance your experience on our website
-            and personalize our services.
-            {/* Image Suggestion: Icon of a form or data collection */}
-          </MotionSection>
-
-          <MotionSection title="Data Usage">
-            We use your data to improve our services, personalize content, and send you relevant updates and promotional offers. You can
-            opt out of receiving marketing communications at any time.
-          </MotionSection>
-
-          <MotionSection title="Data Sharing">
-            We do not sell or rent your data to third parties. However, we may share information with trusted partners who assist us in
-            operating our website and providing our services. We ensure that these partners adhere to strict data protection standards.
-          </MotionSection>
-
-          <MotionSection title="Cookies">
-            Our website uses cookies to improve user experience and analyze website traffic. You can manage your cookie preferences in your
-            browser settings.
-          </MotionSection>
-
-          <MotionSection title="Data Security">
-            We implement strong security measures to protect your personal information from unauthorized access, disclosure, or
-            alteration.
-             {/* Image Suggestion: Lock Icon */}
-          </MotionSection>
-
-          <MotionSection title="Your Rights">
-            You have the right to access, correct, or delete your personal data. To exercise these rights or for any privacy-related
-            concerns, please contact us.
-          </MotionSection>
-
-          {/* Contact Us Section */}
-          <motion.div className="mt-8 border-t pt-4" variants={paragraphVariants}>
-            <p className="text-center">
-              For privacy-related concerns, reach out at{" "}
-              <a href="mailto:hello@kashvi.com" className="text-[#0a373b] underline hover:text-[#6b3d2f] transition-colors">
-                hello@kashvi.com
-              </a>
-              .
-            </p>
-          </motion.div>
-        </motion.div>
-      </div>
-      <WhatsAppButton/>
+          <h2 className="text-2xl font-semibold text-[#6b3d2f] mb-4">
+            Need More Information?
+          </h2>
+          <p className="text-[#8b5e52]">
+            For any privacy-related questions or concerns, please contact our dedicated privacy team at{" "}
+            <a href="mailto:privacy@kashvi.com" className="text-[#0a373b] font-medium hover:underline">
+              privacy@kashvi.com
+            </a>
+          </p>
+        </div>
+      </main>
+      <WhatsAppButton />
       <Footer />
     </div>
-    </div>
   );
-};
-
-// Motion Section Component
-const MotionSection = ({ title, children }) => (
-  <motion.section
-    className="mb-6 relative"
-    variants={paragraphVariants}
-    whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.03)" }}
-    transition={{ duration: 0.2 }}
-  >
-      {/* Image Suggestion: Scale image of a saree*/}
-    <h2 className="text-xl font-semibold mb-3">{title}</h2>
-    <p>{children}</p>
-  </motion.section>
-);
-
-// Animation Variants
-const paragraphVariants = {
-  initial: { opacity: 0, y: 10 },
-  animate: { opacity: 1, y: 0 },
 };
 
 export default PrivacyPolicy;

@@ -29,10 +29,10 @@ import PrivacyPolicy from "./pages/user-policy/PrivacyPolicy";
 import TermsConditions from "./pages/user-policy/TermsConditions";
 import Disclaimer from "./pages/user-policy/Disclaimer";
 import AboutUs from "./pages/More/AboutUs";
-import FAQ from "./pages/FAQ/FAQPage";
+import FAQ from "./pages/More/FAQ/FAQPage";
 import ContactUs from "./pages/reach-us/contact-page";
 import Event from "./pages/More/event";
-import Blog from "./pages/More/blog";
+import Blog from "./pages/More/blogpage/index";
 import WhatsAppButton from "./components/common/WhatsAppButton";
 import Invoice from "./pages/Invoice/Invoice";
 function App() {
@@ -109,14 +109,13 @@ function App() {
           <Route path="search" element={<SearchProducts />} />
           <Route path="locate-us" element={<LocateUsPage/>}/>
         </Route>
-
         <Route path="/unauth-page" element={<UnauthPage />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/terms-conditions" element={<TermsConditions />} />
         <Route path="/disclaimer" element={<Disclaimer />} />
         <Route path="/AboutUs" element={<AboutUs />} />
-        <Route path="/FAQ/FAQPage" element={<FAQ />} />
+        <Route path="/faq" element={<FAQ />} />
         <Route path="/reach-us/contact-page" element={<ContactUs />} />
         <Route path="/event" element={<Event />} />
         <Route path="/blog" element={<Blog />} />

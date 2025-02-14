@@ -1,118 +1,132 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import Footer from "../../components/common/Footer";
-import { ShieldAlert } from "lucide-react";
-import { motion } from "framer-motion";
+import { ShieldAlert, ScrollText, ExternalLink, Scale, Tag, Clock } from "lucide-react";
 import Head from "../../components/shopping-view/header";
 import WhatsAppButton from "../../components/common/WhatsAppButton";
+
 const Disclaimer = () => {
+  const sectionsRef = useRef([]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      sectionsRef.current.forEach((section, index) => {
+        if (!section) return;
+        
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        const startExpand = windowHeight * 0.8; // Start expansion when element is 80% up the screen
+        const fullExpand = windowHeight * 0.3;  // Full size when element is 30% up the screen
+        
+        let scale;
+        if (rect.top > startExpand) {
+          scale = 0.8; // Initial small size
+        } else if (rect.top < fullExpand) {
+          scale = 1; // Full size
+        } else {
+          // Smooth scaling between small and full size
+          scale = 0.8 + (0.2 * ((startExpand - rect.top) / (startExpand - fullExpand)));
+        }
+        
+        section.style.transform = `scale(${scale})`;
+        section.style.opacity = scale;
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initial check
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const addToRefs = (el) => {
+    if (el && !sectionsRef.current.includes(el)) {
+      sectionsRef.current.push(el);
+    }
+  };
+
   return (
-    <div>
-      <Head/>
-    <div className="min-h-screen flex flex-col bg-[#f8f4f0] text-[#6b3d2f]">
-      <div className="container mx-auto px-6 py-12 flex-grow relative"> {/* Make container relative */}
-        {/* Header */}
-        <div className="flex items-center justify-center mb-8">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <ShieldAlert className="text-[#0a373b] mr-4" size={48} />
-          </motion.div>
-          <motion.h1
-            className="text-3xl font-semibold"
-            initial={{ x: -50, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            Disclaimer
-          </motion.h1>
+    <div className="min-h-screen bg-gradient-to-b from-[#f8f4f0] to-[#f0e9e4]">
+      <Head />
+      <main className="container mx-auto px-4 py-12">
+        {/* Fixed Header */}
+        <div className="sticky top-0 z-10 bg-gradient-to-b from-[#f8f4f0] to-transparent py-6 text-center">
+          <div className="inline-block p-4 bg-white/50 rounded-full shadow-lg">
+            <ShieldAlert className="text-[#6b3d2f] h-12 w-12" />
+          </div>
+          <h1 className="text-4xl font-bold text-[#6b3d2f] mt-4">
+            Our Commitment to Transparency
+          </h1>
         </div>
 
-        {/* Disclaimer Content */}
-        <motion.div
-          className="space-y-6 text-lg"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, staggerChildren: 0.1 }}
-        >
-          <motion.p variants={paragraphVariants}>
-            <img
-              src="[Image URL - e.g., a subtle watermark or background texture related to fabric]"
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover opacity-10" // Adjust opacity as needed
-            />
-            The information provided on this website (Kashvi Creations) is for general informational purposes only. While we strive
-            for accuracy, we make no guarantees about the completeness or reliability of any content.
-          </motion.p>
+        {/* Scrolling Sections */}
+        <div className="max-w-3xl mx-auto mt-6 space-y-1">
+          {[
+            {
+              icon: <ScrollText />,
+              title: "About Our Information",
+              content: "Welcome to Kashvi Creations, where we take pride in bringing you authentic Indian craftsmanship. While we strive to maintain the highest standards of accuracy in presenting our collection, please note that the information provided here serves as a general guide."
+            },
+            {
+              icon: <ExternalLink />,
+              title: "Connected Resources",
+              content: "Our website features carefully chosen links to complementary resources and partners in the textile industry. While these connections enrich your shopping experience, we maintain our independence from these external platforms."
+            },
+            {
+              icon: <Scale />,
+              title: "Our Responsibility",
+              content: "As a curator of fine textiles, Kashvi Creations is dedicated to providing an exceptional shopping experience. We carefully manage our platform to ensure accuracy and quality."
+            },
+            {
+              icon: <Tag />,
+              title: "Product Imagery & Descriptions",
+              content: "Each saree in our collection is photographed to showcase its true beauty. Due to variations in screen settings and the handcrafted nature of our products, slight variations in color and texture may occur."
+            },
+            {
+              icon: <Clock />,
+              title: "Dynamic Pricing & Offers",
+              content: "To provide you with the best value, our pricing and promotional offers are regularly reviewed and updated. These adjustments reflect market conditions, seasonal collections, and special occasions."
+            }
+          ].map((section, index) => (
+            <div
+              key={index}
+              ref={addToRefs}
+              className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg transform-gpu transition-all duration-300 ease-out origin-bottom"
+              style={{
+                transformOrigin: 'center bottom',
+                willChange: 'transform, opacity'
+              }}
+            >
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-[#6b3d2f]/10 rounded-lg shrink-0">
+                  {section.icon}
+                </div>
+                <div>
+                  <h2 className="text-xl font-semibold text-[#6b3d2f] mb-2">
+                    {section.title}
+                  </h2>
+                  <p className="text-[#8b5e52] leading-relaxed">
+                    {section.content}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
 
-          <MotionSection title="Accuracy of Information">
-            We aim to provide accurate and up-to-date information regarding our sarees, policies, and services. However, we make no
-            warranties regarding its reliability or applicability. Reliance on any information provided on this website is solely at
-            your own risk.
-          </MotionSection>
-
-          <MotionSection title="External Links">
-            Our website may contain links to third-party sites that we do not control or endorse. We are not responsible for the content,
-            privacy practices, or security of these external websites.
-            {/* Image Suggestion: Small icon linking out */}
-          </MotionSection>
-
-          <MotionSection title="Limitation of Liability">
-            Kashvi Creations shall not be liable for any losses, damages, or inconveniences caused by the use of our website or reliance
-            on its content. This includes, but is not limited to, direct, indirect, incidental, or consequential damages.
-            {/* Image Suggestion: Scale image of a saree*/}
-          </MotionSection>
-
-          <MotionSection title="Product Representation">
-            Product descriptions, images, and pricing on our website are for reference purposes only and may not always be entirely
-            accurate or up to date. We reserve the right to correct any errors or omissions.
-             {/* Image Suggestion: Small icon linking out */}
-          </MotionSection>
-
-          <MotionSection title="Price and Offer Changes">
-            Prices and offers displayed on our website are subject to change without prior notice. We reserve the right to modify or
-            discontinue any product or offer at any time.
-          </MotionSection>
-
-          {/* Contact Us Section */}
-          <motion.div className="mt-8 border-t pt-4" variants={paragraphVariants}>
-            <p className="text-center">
-              If you have any questions or concerns regarding this disclaimer, please contact us at{" "}
-              <a href="mailto:hello@kashvi.com" className="text-[#0a373b] underline hover:text-[#6b3d2f] transition-colors">
-                hello@kashvi.com
-              </a>
-              .
-            </p>
-          </motion.div>
-        </motion.div>
-
-      </div>
-      <WhatsAppButton/>
+        {/* Contact Section */}
+        <div className="mt-12 text-center">
+          <p className="text-[#8b5e52]">
+            Questions? Contact us at{" "}
+            <a href="mailto:hello@kashvi.com" className="text-[#0a373b] font-medium hover:underline">
+              hello@kashvi.com
+            </a>
+          </p>
+        </div>
+      </main>
+      <WhatsAppButton />
       <Footer />
     </div>
-    </div>
   );
-};
-
-// Motion Section Component
-const MotionSection = ({ title, children }) => (
-  <motion.section
-    className="mb-6 relative" // Make it relative to contain absolute image
-    variants={paragraphVariants}
-    whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.03)" }}
-    transition={{ duration: 0.2 }}
-  >
-     {/* Image Suggestion: Scale image of a saree*/}
-    <h2 className="text-xl font-semibold mb-3">{title}</h2>
-    <p>{children}</p>
-  </motion.section>
-);
-
-// Animation Variants
-const paragraphVariants = {
-  initial: { opacity: 0, y: 10 },
-  animate: { opacity: 1, y: 0 },
 };
 
 export default Disclaimer;
