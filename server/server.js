@@ -17,12 +17,9 @@ const shopSearchRouter = require("./routes/shop/search-routes");
 const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
-<<<<<<< Updated upstream
 const { sendInvoiceEmail } = require("./controllers/common/emailService");
 
-=======
 const blogRouter = require("./routes/common/blogRoutes"); // ✅ Added Blog Router
->>>>>>> Stashed changes
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -69,11 +66,8 @@ app.use("/api/shop/search", shopSearchRouter);
 app.use("/api/shop/review", shopReviewRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
-<<<<<<< Updated upstream
 app.post("/api/send-invoice", sendInvoiceEmail);
-=======
 app.use("/api/blogs", blogRouter); // ✅ Connected Blog Routes
->>>>>>> Stashed changes
 
 app.post("/api/auth/logout", (req, res) => {
   console.log("🔹 Logout request received...");
