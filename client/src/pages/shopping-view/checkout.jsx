@@ -1,12 +1,12 @@
-import Address from "@/components/shopping-view/address";
-import img from "../../assets/account.jpg";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Address from "@/components/shopping-view/address";
 import UserCartItemsContent from "@/components/shopping-view/cart-items-content";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { createNewOrder } from "@/store/shop/order-slice";
-import { Navigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
+import { createNewOrder } from "@/store/shop/order-slice";
+import img from "../../assets/account.jpg";
 
 function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
@@ -16,6 +16,7 @@ function ShoppingCheckout() {
   const [isPaymentStart, setIsPaymemntStart] = useState(false);
   const dispatch = useDispatch();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   console.log(currentSelectedAddress, "cartItems");
 
@@ -38,7 +39,6 @@ function ShoppingCheckout() {
         title: "Your cart is empty. Please add items to proceed",
         variant: "destructive",
       });
-
       return;
     }
     if (currentSelectedAddress === null) {
@@ -46,7 +46,6 @@ function ShoppingCheckout() {
         title: "Please select one address to proceed.",
         variant: "destructive",
       });
-
       return;
     }
 
@@ -65,6 +64,7 @@ function ShoppingCheckout() {
       })),
       addressInfo: {
         addressId: currentSelectedAddress?._id,
+        addressId: currentSelectedAddress?.name,
         address: currentSelectedAddress?.address,
         city: currentSelectedAddress?.city,
         pincode: currentSelectedAddress?.pincode,
@@ -108,7 +108,7 @@ function ShoppingCheckout() {
         <div className="flex flex-col gap-4">
           {cartItems && cartItems.items && cartItems.items.length > 0
             ? cartItems.items.map((item) => (
-                <UserCartItemsContent cartItem={item} />
+                <UserCartItemsContent cartItem={item} key={item.productId} />
               ))
             : null}
           <div className="mt-8 space-y-4">
@@ -117,11 +117,21 @@ function ShoppingCheckout() {
               <span className="font-bold">${totalCartAmount}</span>
             </div>
           </div>
-          <div className="mt-4 w-full">
+          <div className="mt-4 w-full flex flex-col gap-3">
             <Button onClick={handleInitiatePaypalPayment} className="w-full">
               {isPaymentStart
                 ? "Processing Paypal Payment..."
                 : "Checkout with Paypal"}
+            </Button>
+            <Button
+              onClick={() =>
+                navigate("/shop/checkout/invoice", {
+                  state: { user, currentSelectedAddress, cartItems },
+                })
+              }
+              className="w-full bg-green-500 hover:bg-green-600"
+            >
+              Generate Invoice
             </Button>
           </div>
         </div>

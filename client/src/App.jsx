@@ -34,6 +34,7 @@ import ContactUs from "./pages/reach-us/contact-page";
 import Event from "./pages/More/event";
 import Blog from "./pages/More/blog";
 import WhatsAppButton from "./components/common/WhatsAppButton";
+import Invoice from "./pages/Invoice/Invoice";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -120,9 +121,11 @@ function App() {
         <Route path="/event" element={<Event />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/whatsappbutton" element={<WhatsAppButton/>} />
+        <Route path="shop/checkout/invoice" element={<Invoice/>} />
       </Routes>
     </div>
   );
 }
+
 
 export default App;

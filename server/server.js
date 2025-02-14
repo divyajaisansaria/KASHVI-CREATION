@@ -17,6 +17,8 @@ const shopSearchRouter = require("./routes/shop/search-routes");
 const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
+const { sendInvoiceEmail } = require("./controllers/common/emailService");
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -72,6 +74,7 @@ app.use("/api/shop/search", shopSearchRouter);
 app.use("/api/shop/review", shopReviewRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
+app.post("/api/send-invoice", sendInvoiceEmail);
 
 app.post("/api/auth/logout", (req, res) => {
   console.log("🔹 Logout request received...");
