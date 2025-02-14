@@ -25,15 +25,14 @@ const addToCart = async (req, res) => {
       });
     }
 
-    if (!mongoose.Types.ObjectId.isValid(productId)) {
+    if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(productId)) {
       return res.status(400).json({
         success: false,
-        message: "Invalid product ID",
+        message: "Invalid user or product ID",
       });
     }
 
     const product = await Product.findById(productId);
-
     if (!product) {
       return res.status(404).json({
         success: false,
@@ -42,24 +41,21 @@ const addToCart = async (req, res) => {
     }
 
     let cart = await Cart.findOne({ userId });
-
     if (!cart) {
       cart = new Cart({ userId, items: [] });
     }
 
-    const findCurrentProductIndex = cart.items.findIndex(
-      (item) => item.productId.toString() === productId
-    );
-
-    if (findCurrentProductIndex === -1) {
+    const productIndex = cart.items.findIndex((item) => item.productId.toString() === productId);
+    if (productIndex === -1) {
       cart.items.push({ productId, quantity });
     } else {
-      cart.items[findCurrentProductIndex].quantity += quantity;
+      cart.items[productIndex].quantity += quantity;
     }
 
     await cart.save();
     res.status(200).json({
       success: true,
+      message: "Item added to cart successfully",
       data: cart,
     });
   } catch (error) {
@@ -74,12 +70,12 @@ const addToCart = async (req, res) => {
 // Fetch cart items
 const fetchCartItems = async (req, res) => {
   try {
-    const { userId } = req.params; // Fixed: Changed from req.body to req.params
+    const { userId } = req.params; 
 
-    if (!userId) {
+    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({
         success: false,
-        message: "User ID is required!",
+        message: "Invalid or missing User ID",
       });
     }
 
@@ -140,18 +136,15 @@ const updateCartItemQty = async (req, res) => {
       });
     }
 
-    const findCurrentProductIndex = cart.items.findIndex(
-      (item) => item.productId.toString() === productId
-    );
-
-    if (findCurrentProductIndex === -1) {
+    const productIndex = cart.items.findIndex((item) => item.productId.toString() === productId);
+    if (productIndex === -1) {
       return res.status(404).json({
         success: false,
         message: "Cart item not found!",
       });
     }
 
-    cart.items[findCurrentProductIndex].quantity = quantity;
+    cart.items[productIndex].quantity = quantity;
     await cart.save();
 
     await cart.populate({
@@ -163,6 +156,7 @@ const updateCartItemQty = async (req, res) => {
 
     res.status(200).json({
       success: true,
+      message: "Cart item updated successfully",
       data: {
         ...cart._doc,
         items: populateCartItems,
@@ -182,7 +176,7 @@ const deleteCartItem = async (req, res) => {
   try {
     const { userId, productId } = req.params;
 
-    if (!userId || !productId) {
+    if (!userId || !productId || !mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(productId)) {
       return res.status(400).json({
         success: false,
         message: "Invalid data provided!",
@@ -201,10 +195,7 @@ const deleteCartItem = async (req, res) => {
       });
     }
 
-    cart.items = cart.items.filter(
-      (item) => item.productId._id.toString() !== productId
-    );
-
+    cart.items = cart.items.filter((item) => item.productId._id.toString() !== productId);
     await cart.save();
 
     await cart.populate({
@@ -216,6 +207,7 @@ const deleteCartItem = async (req, res) => {
 
     res.status(200).json({
       success: true,
+      message: "Cart item deleted successfully",
       data: {
         ...cart._doc,
         items: populateCartItems,
