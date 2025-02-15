@@ -18,7 +18,8 @@ import {
   resetOrderDetails,
 } from "@/store/shop/order-slice";
 import { Badge } from "../ui/badge";
-
+import WhatsAppButton from "../common/WhatsAppButton";
+import Footer from "../common/Footer";
 function ShoppingOrders() {
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ function ShoppingOrders() {
   console.log(orderDetails, "orderDetails");
 
   return (
+
     <Card>
       <CardHeader>
         <CardTitle>Order History</CardTitle>
