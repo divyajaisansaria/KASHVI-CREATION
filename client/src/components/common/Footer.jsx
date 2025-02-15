@@ -45,6 +45,16 @@ const Footer = () => {
                   395002
                 </span>
               </div>
+              <div className="flex items-start gap-3">
+              <ul>
+                <a
+                  href="/contactus"
+                  className="hover:text-[#0a373b] transition-colors"
+                >
+                Contact us
+                </a>
+              </ul>
+              </div>
             </div>
           </div>
 
@@ -195,8 +205,8 @@ const Footer = () => {
           <h2 className="text-3xl font-bold mb-2">Kashvi Creations</h2>
           <p className="text-sm opacity-75">Crafting Elegance Since 1943</p>
           <p className="mt-8 text-sm opacity-75">
-            Shop No. 6115 To 6124, Millennium Textile Market - 4, Bhathena,
-            Surat - 395 002
+            Shop No. 6115 To 6124,Millennium Textile Market - 4,Bhathena,
+            Surat-395002
           </p>
         </div>
       </div>

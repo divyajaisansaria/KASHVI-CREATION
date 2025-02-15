@@ -30,15 +30,14 @@ import TermsConditions from "./pages/user-policy/TermsConditions";
 import Disclaimer from "./pages/user-policy/Disclaimer";
 import AboutUs from "./pages/More/AboutUs";
 import FAQ from "./pages/More/FAQ/FAQPage";
-import ContactUs from "./pages/reach-us/contact-page";
 import Event from "./pages/More/event";
 import Blog from "./pages/More/blogpage/index";
 import WhatsAppButton from "./components/common/WhatsAppButton";
 import Invoice from "./pages/Invoice/Invoice";
 import Wishlist from "./components/shopping-view/wishlist"; // ✅ Import Wishlist
 import { Navigate } from 'react-router-dom';
-
-
+import ContactUs from "./pages/More/contactus/ContactForm";
+import InquiryPage from "./pages/admin-view/InquiryPage";
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -127,6 +126,8 @@ function App() {
         <Route path="/whatsappbutton" element={<WhatsAppButton/>} />
         <Route path="shop/checkout/invoice" element={<Invoice/>} />
         <Route path="/whatsappbutton" element={<WhatsAppButton />} />
+        <Route path="/contactus" element={<ContactUs/>}/>
+        <Route path="/admin/inquiries" element={<InquiryPage/>}/>
       </Routes>
     </div>
   );

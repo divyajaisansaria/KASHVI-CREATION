@@ -3,6 +3,7 @@ import {
   ChartNoAxesCombined,
   LayoutDashboard,
   ShoppingBasket,
+  Mail,
 } from "lucide-react";
 import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
@@ -27,6 +28,19 @@ const adminSidebarMenuItems = [
     path: "/admin/orders",
     icon: <BadgeCheck />,
   },
+  {
+    id: "blog-management",
+    label: "Blog Management",
+    path: "/admin/blog",
+    icon: <ChartNoAxesCombined />,
+  },
+  {
+    id: "inquiries", // Added Inquiry Page
+    label: "Inquiries",
+    path: "/admin/inquiries",
+    icon: <Mail />,
+  },
+  
 ];
 
 function MenuItems({ setOpen }) {
