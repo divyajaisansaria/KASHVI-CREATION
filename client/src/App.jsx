@@ -36,6 +36,8 @@ import Blog from "./pages/More/blogpage/index";
 import WhatsAppButton from "./components/common/WhatsAppButton";
 import Invoice from "./pages/Invoice/Invoice";
 import Wishlist from "./components/shopping-view/wishlist"; // ✅ Import Wishlist
+import { Navigate } from 'react-router-dom';
+
 
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
@@ -52,12 +54,14 @@ function App() {
   console.log(isLoading, user);
 
   return (
+    
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
-        <Route
+        {/* <Route
           path="/"
           element={<CheckAuth isAuthenticated={isAuthenticated} user={user} />}
-        />
+        /> */}
+        <Route path="/" element={<Navigate to="/shop/home" replace />} />
         <Route
           path="/auth"
           element={

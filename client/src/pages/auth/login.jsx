@@ -23,7 +23,7 @@ function AuthLogin() {
     dispatch(loginUser(formData)).then((data) => {
       if (data?.payload?.success) {
         toast({
-          title: data?.payload?.message,
+        title: "Logged in Successfully!",
         });
 
         // ✅ Store user info in Redux after successful login
@@ -41,7 +41,7 @@ function AuthLogin() {
         }
       } else {
         toast({
-          title: data?.payload?.message,
+          title: "Invalid credentials. Please try again.",
           variant: "destructive",
         });
       }

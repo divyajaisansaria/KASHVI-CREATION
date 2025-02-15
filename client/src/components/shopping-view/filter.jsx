@@ -111,7 +111,7 @@ function ProductFilter({ filters, handleFilter }) {
         </Sheet>
       </div>
       {/* Desktop Filter */}
-      <div className="hidden md:block bg-white border border-gray-200 w-64 p-4">
+      <div className="hidden md:block bg-white border border-gray-200 w-64  p-4 h-auto">
         <h2 className="text-sm font-semibold text-gray-700 pb-2 border-b">Filters</h2>
         <FilterContent />
       </div>

@@ -21,32 +21,63 @@ import { Input } from "../ui/input";
 import logo from "../../assets/logo.jpg";
 import axios from "axios";
 
-function MenuItems({ isColumn = false }) {
-  const navigate = useNavigate();
 
-  const handleItemClick = (path) => {
-    navigate(path);
+function MenuItems({ isColumn = false }) {
+  const navigate = useNavigate(); // ✅ Fix: Define navigate inside the component
+
+  const handleNavigateToListingPage = (getSectionId, getCurrentOption) => {
+    sessionStorage.removeItem("filters"); // Clear previous filters
+  
+    const currentFilter = { [getSectionId]: [getCurrentOption] };
+    sessionStorage.setItem("filters", JSON.stringify(currentFilter));
+  
+    // Navigate with a query param to ensure reloading
+    navigate(`/shop/listing?filter=${getSectionId}-${getCurrentOption}`, { replace: true })
+    window.location.reload();
+  };
+  
+  function handleGetProductDetails(getCurrentProductId) {
+    console.log(getCurrentProductId);
+    dispatch(fetchProductDetails(getCurrentProductId));
+  }
+  const handleItemClick = (menuItem) => {
+    if (menuItem.subMenu) return; // ✅ Ignore submenu items for direct navigation
+    sessionStorage.removeItem("filters");
+    navigate(menuItem.path);
+    window.location.reload(); // ✅ Navigate if there’s no submenu
   };
 
+  
   return (
-    <nav className={`flex ${isColumn ? "flex-col gap-4" : "justify-center gap-6"} py-4 bg-[#F8F4F0] border-t shadow-sm`}>
+    <nav
+      className={`flex ${
+        isColumn ? "flex-col gap-4" : "justify-center gap-6"
+      } py-4 bg-[#F8F4F0] border-t shadow-sm`}
+    >
       {shoppingViewHeaderMenuItems.map((menuItem) => (
-        <div key={menuItem.id} className="group relative">
+        <div key={menuItem.id} className="relative group">
+          {/* ✅ Main menu item navigation */}
           <div
-            onClick={() => handleItemClick(menuItem.path)}
+            onClick={() => handleItemClick(menuItem)}
             className="text-sm font-semibold text-gray-700 cursor-pointer transition-all duration-200 hover:text-[#b2996c] hover:scale-105"
           >
             {menuItem.label}
           </div>
+
+          {/* ✅ Submenu items with filter-based navigation */}
           {menuItem.subMenu && (
             <div
-              className="absolute left-0 w-56 bg-[#F8F4F0] opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 ease-in-out transform origin-top"
+              className="absolute left-0 w-56 bg-[#F8F4F0] z-50 opacity-0 invisible transform scale-95 
+                         group-hover:visible group-hover:opacity-100 group-hover:scale-100 
+                         transition-all duration-300 ease-in-out shadow-lg rounded-md border border-gray-200"
             >
               <div className="py-2">
                 {menuItem.subMenu.map((subItem) => (
                   <div
                     key={subItem.id}
-                    onClick={() => handleItemClick(subItem.path)}
+                    onClick={() => handleNavigateToListingPage(menuItem.label,subItem.id)}
+                   // console.log(menuItem.label, subItem.id);
+
                     className="hover:bg-[#b2996c] hover:text-white px-4 py-2 cursor-pointer transition-all duration-200"
                   >
                     {subItem.label}
@@ -60,6 +91,8 @@ function MenuItems({ isColumn = false }) {
     </nav>
   );
 }
+
+
 
 function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
@@ -142,7 +175,7 @@ function HeaderRightContent() {
       ) : (
         <Button
           variant="outline"
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/auth/login")}
           className="flex items-center gap-2 px-4 py-2 border border-[#0a373b] text-[#0a373b] hover:bg-[#085b60] hover:text-white transition-colors duration-200"
         >
           <UserCog className="h-4 w-4" />
@@ -222,7 +255,7 @@ function ShoppingHeader() {
         </div>
       </header>
 
-      <div className="hidden lg:block">
+      <div className="hidden md:block">
         <MenuItems />
       </div>
     </>

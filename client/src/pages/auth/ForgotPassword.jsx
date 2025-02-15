@@ -33,7 +33,7 @@ function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="">
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
         <h2 className="text-2xl font-semibold text-center text-gray-800 mb-4">
           Forgot Your Password?
@@ -52,14 +52,14 @@ function ForgotPassword() {
           />
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-md transition duration-300"
+            className="w-full bg-[#0a373b] hover:bg-[#085b60] text-white font-semibold py-2 rounded-md transition duration-300"
             disabled={loading}
           >
             {loading ? "Sending..." : "Send Reset Link"}
           </button>
         </form>
         <div className="mt-4 text-center">
-          <Link to="/auth/login" className="text-blue-500 hover:underline">
+          <Link to="/auth/login" className="text-[#0a373b] hover:underline">
             Back to Login
           </Link>
         </div>

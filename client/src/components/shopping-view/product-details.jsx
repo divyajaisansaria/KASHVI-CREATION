@@ -146,14 +146,14 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
   return (
     <Dialog open={open} onOpenChange={() => setOpen(false)}>
       <DialogContent
-        className="grid sm:grid-cols-[50%_1fr] gap-10 p-6 sm:p-12 max-w-[90vw] sm:max-w-[85vw] lg:max-w-[75vw] overflow-y-auto max-h-[90vh]"
+        className="grid sm:grid-cols-[50%_1fr] max-w-[90vw] sm:max-w-[85vw] lg:max-w-[75vw] overflow-y-auto max-h-[100vh]"
       >
         {/* Product Image (Left) */}
         <div className="flex items-center justify-center">
           <img
             src={productDetails?.image || "/placeholder.svg"}
             alt={productDetails?.title || "Product Image"}
-            className="w-full max-h-[500px] object-cover rounded-lg shadow-lg"
+            className="w-full max-h-[100vh] object-cover shadow-lg"
           />
         </div>
 

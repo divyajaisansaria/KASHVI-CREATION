@@ -44,7 +44,7 @@ function AuthRegister() {
     dispatch(registerUser(formData)).then((data) => {
       if (data?.payload?.success) {
         toast({
-          title: data?.payload?.message,
+          title:"Registration Successful!",
         });
         navigate("/auth/login");
       } else {
@@ -72,7 +72,7 @@ function AuthRegister() {
             <label className="block text-gray-700 mb-1 font-medium">Username</label>
             <input
               type="text"
-              className="w-full  px-2  py-1 border border-[#b2966c] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0a373b] transition"
+              className="w-[400px]  px-2  py-1 border border-[#b2966c] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0a373b] transition"
               value={formData.userName}
               onChange={(e) => setFormData({ ...formData, userName: e.target.value })}
               required
@@ -83,7 +83,7 @@ function AuthRegister() {
             <label className="block text-gray-700 mb-1 font-medium">Email</label>
             <input
               type="email"
-              className="w-full  px-2  py-1 border border-[#b2966c]  rounded-md focus:outline-none focus:ring-2 focus:ring-[#0a373b] transition"
+              className="w-[400px]  px-2  py-1 border border-[#b2966c]  rounded-md focus:outline-none focus:ring-2 focus:ring-[#0a373b] transition"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
@@ -94,14 +94,14 @@ function AuthRegister() {
             <label className="block text-gray-700 mb-1 font-medium">Password</label>
             <input
               type="password"
-              className="w-full  px-2  py-1 border border-[#b2966c] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0a373b] transition"
+              className="w-[400px]  px-2  py-1 border border-[#b2966c] rounded-md focus:outline-none focus:ring-2 focus:ring-[#0a373b] transition"
               value={formData.password}
               onChange={handlePasswordChange} // Check password strength
               required
             />
             {/* Show Password Strength */}
             {passwordStrength && (
-              <div className="mt-2 text-sm">
+              <div className="mt-2 text-xs text-gray-500">
                 <p className="font-medium">Strength: {["Weak", "Fair", "Good", "Strong", "Very Strong"][passwordStrength.score]}</p>
                 <div className="h-2 w-full bg-gray-300 rounded-md">
                   <div

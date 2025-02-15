@@ -36,6 +36,8 @@ function SearchProducts() {
     }
   }, [keyword]);
 
+  console.log(searchResults);
+
   function handleAddtoCart(getCurrentProductId, getTotalStock) {
     console.log(cartItems);
     let getCartItems = cartItems.items || [];

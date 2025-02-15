@@ -3,7 +3,7 @@ const Product = require("../../models/Product");
 const searchProducts = async (req, res) => {
   try {
     const { keyword } = req.params;
-    
+
     // Validate the keyword input
     if (!keyword || typeof keyword !== "string") {
       return res.status(400).json({
@@ -12,8 +12,8 @@ const searchProducts = async (req, res) => {
       });
     }
 
-    // Create a regex for case-insensitive search
-    const regEx = new RegExp(keyword, "i");
+    // Escape special characters for regex
+    const regEx = new RegExp(keyword.replace(/[.*+?^=!:${}()|\[\]\/\\]/g, "\\$&"), "i");
 
     // Build search query
     const createSearchQuery = {
@@ -23,13 +23,25 @@ const searchProducts = async (req, res) => {
         { description: regEx },
         { category: regEx },
         { occasion: regEx },
-        { fabric: regEx }, // Using fabric instead of brand, as it exists in the schema
-        { color: regEx }, 
+        { fabric: regEx },
+        { color: regEx },
       ],
     };
 
+    console.log('Searching for keyword:', keyword);
+    console.log('Search query:', createSearchQuery);
+
     // Search the products in the database
-    const searchResults = await Product.find(createSearchQuery);
+    let searchResults;
+    try {
+      searchResults = await Product.find(createSearchQuery);
+    } catch (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({
+        success: false,
+        message: "An error occurred while searching products",
+      });
+    }
 
     // If no results are found
     if (searchResults.length === 0) {

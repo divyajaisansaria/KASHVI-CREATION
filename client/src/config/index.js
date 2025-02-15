@@ -197,45 +197,45 @@ export const shoppingViewHeaderMenuItems = [
   {
     
     id: "category",
-    label: "Categories",
+    label: "Category",
     path: "/shop/listing",
     subMenu: [
-      { id: "plain_sarees", label: "Plain Sarees", path: "/shop/listing" },
-      { id: "designer_sarees", label: "Designer Sarees", path: "/shop/listing" },
-      { id: "kanjivaram_sarees", label: "Kanjivaram Sarees", path: "/shop/listing" },
-      { id: "banarasi_sarees", label: "Banarasi Sarees", path: "/shop/listing" },
-      { id: "silk_sarees", label: "Silk Sarees", path: "/shop/listing" },
-      { id: "cotton_sarees", label: "Cotton Sarees", path: "/shop/listing" },
-      { id: "georgette_sarees", label: "Georgette Sarees", path: "/shop/listing" },
-      { id: "net_sarees", label: "Net Sarees", path: "/shop/listing" },
-      { id: "chiffon_sarees", label: "Chiffon Sarees", path: "/shop/listing" },
-      { id: "linen_sarees", label: "Linen Sarees", path: "/shop/listing" }
+      { id: "plain_sarees", label: "Plain Sarees"},
+      { id: "designer_sarees", label: "Designer Sarees" },
+      { id: "kanjivaram_sarees", label: "Kanjivaram Sarees" },
+      { id: "banarasi_sarees", label: "Banarasi Sarees" },
+      { id: "silk_sarees", label: "Silk Sarees"},
+      { id: "cotton_sarees", label: "Cotton Sarees"},
+      { id: "georgette_sarees", label: "Georgette Sarees" },
+      { id: "net_sarees", label: "Net Sarees" },
+      { id: "chiffon_sarees", label: "Chiffon Sarees" },
+      { id: "linen_sarees", label: "Linen Sarees"}
     ]
   },
   {
     id: "occasion",
-    label: "Occasions",
+    label: "Occasion",
     path: "/shop/listing",
     subMenu: [
-      { id: "wedding_sarees", label: "Wedding Sarees", path: "/shop/listing" },
-      { id: "party_wear_sarees", label: "Party Wear Sarees", path: "/shop/listing" },
-      { id: "casual_sarees", label: "Casual Sarees", path: "/shop/listing" },
-      { id: "festive_sarees", label: "Festive Sarees", path: "/shop/listing" },
-      { id: "bridal_sarees", label: "Bridal Sarees", path: "/shop/listing" }
+      { id: "wedding_sarees", label: "Wedding Sarees" },
+      { id: "party_wear_sarees", label: "Party Wear Sarees"},
+      { id: "casual_sarees", label: "Casual Sarees"},
+      { id: "festive_sarees", label: "Festive Sarees"},
+      { id: "bridal_sarees", label: "Bridal Sarees" }
     ]
   },
   {
     id: "fabric",
-    label: "Fabrics",
+    label: "Fabric",
     path: "/shop/listing",
     subMenu: [
-      { id: "silk", label: "Silk", path: "/shop/listing" },
-      { id: "cotton", label: "Cotton", path: "/shop/listing" },
-      { id: "chiffon", label: "Chiffon", path: "/shop/listing" },
-      { id: "georgette", label: "Georgette", path: "/shop/listing" },
-      { id: "linen", label: "Linen", path: "/shop/listing" },
-      { id: "velvet", label: "Velvet", path: "/shop/listing" },
-      { id: "crepe", label: "Crepe", path: "/shop/listing" }
+      { id: "silk", label: "Silk"},
+      { id: "cotton", label: "Cotton"},
+      { id: "chiffon", label: "Chiffon" },
+      { id: "georgette", label: "Georgette"},
+      { id: "linen", label: "Linen"},
+      { id: "velvet", label: "Velvet" },
+      { id: "crepe", label: "Crepe"}
     ]
   },
   {

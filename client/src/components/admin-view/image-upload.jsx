@@ -128,11 +128,25 @@ function ProductImageUpload({
         ) : (
           <div className="flex items-center justify-between p-3 bg-white rounded-md shadow-sm">
             <div className="flex items-center flex-1 min-w-0">
-              <FileIcon className="w-8 h-8 text-[#b2966c] flex-shrink-0" />
-              <p className="ml-3 text-sm font-medium text-gray-700 truncate">
-                {imageFile.name}
-              </p>
-            </div>
+  {imageFile && (
+    <>
+      {/* ✅ Define `fileUrl` outside JSX */}
+      {(() => {
+        const fileUrl = URL.createObjectURL(imageFile);
+        return imageFile.type.startsWith("image/") ? (
+          <img src={fileUrl} alt={imageFile.name} className="w-12 h-12 object-cover rounded-md" />
+        ) : (
+          <FileIcon className="w-12 h-12 text-[#b2966c] flex-shrink-0" />
+        );
+      })()}
+      {/* ✅ Display file name correctly */}
+      <p className="ml-3 text-sm font-medium text-gray-700 truncate">
+        {imageFile.name}
+      </p>
+    </>
+  )}
+</div>
+
             <Button
               variant="ghost"
               size="sm"

@@ -16,15 +16,15 @@ function ResetPassword() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (newPassword !== confirmPassword) {
-      toast({ title: "Passwords do not match", variant: "destructive" });
+      toast({ title: "Passwords do not match. Please try again", variant: "destructive" });
       return;
     }
 
     // ✅ Enforce strong password
     if (passwordStrength.score < 3) {
       toast({
-        title: "Weak password! Please use a stronger password.",
-        description: "Include uppercase, numbers, and special characters.",
+        title: "Weak password! Please choose a stronger one",
+        description: "Please use at least one uppercase letter, one number, and one special character",
         variant: "destructive",
       });
       return;
@@ -37,7 +37,7 @@ function ResetPassword() {
         newPassword,
       });
 
-      toast({ title: response.data.message });
+      toast({ title: "Password reset successful!"});
       navigate("/auth/login");
     } catch (error) {
       toast({ title: "Error resetting password", variant: "destructive" });
@@ -47,7 +47,7 @@ function ResetPassword() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
+    <div className="">
       <div className="w-full max-w-md bg-white p-8 shadow-lg rounded-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Reset Password</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -55,7 +55,7 @@ function ResetPassword() {
             <label className="block text-gray-700 font-medium">New Password</label>
             <input
               type="password"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full px-2 py-2 border border-gray-300 rounded-md"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               required
@@ -68,7 +68,7 @@ function ResetPassword() {
             <label className="block text-gray-700 font-medium">Confirm Password</label>
             <input
               type="password"
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-[400px] px-2 py-2  border border-gray-300 rounded-md"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
@@ -76,7 +76,7 @@ function ResetPassword() {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            className="w-full bg-[#0a373b] hover:bg-[#085b60] text-white py-2 rounded-md transition"
             disabled={loading}
           >
             {loading ? "Resetting..." : "Reset Password"}
