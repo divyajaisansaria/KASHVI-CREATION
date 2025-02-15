@@ -11,7 +11,8 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-
+import Footer from "@/components/common/Footer";
+import WhatsAppButton from "@/components/common/WhatsAppButton";
 function SearchProducts() {
   const [keyword, setKeyword] = useState("");
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
@@ -87,6 +88,7 @@ function SearchProducts() {
   console.log(searchResults, "searchResults");
 
   return (
+    <div>
     <div className="container mx-auto md:px-6 px-4 py-8">
       <div className="flex justify-center mb-8">
         <div className="w-full flex items-center">
@@ -116,7 +118,12 @@ function SearchProducts() {
         setOpen={setOpenDetailsDialog}
         productDetails={productDetails}
       />
+      
     </div>
+    <WhatsAppButton/>
+    <Footer/>
+    </div>
+    
   );
 }
 
