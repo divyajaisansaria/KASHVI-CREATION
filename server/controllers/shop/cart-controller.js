@@ -222,9 +222,45 @@ const deleteCartItem = async (req, res) => {
   }
 };
 
+const emptyCart = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or missing User ID",
+      });
+    }
+
+    const cart = await Cart.findOne({ userId });
+    if (!cart) {
+      return res.status(404).json({
+        success: false,
+        message: "Cart not found!",
+      });
+    }
+
+    cart.items = []; // Empty the cart
+    await cart.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Cart emptied successfully",
+      data: cart,
+    });
+  } catch (error) {
+    console.error("Error in emptyCart:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error while emptying cart",
+    });
+  }
+};
 module.exports = {
   addToCart,
   updateCartItemQty,
   deleteCartItem,
   fetchCartItems,
+  emptyCart
 };

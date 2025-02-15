@@ -55,18 +55,6 @@ function AdminOrderDetailsView({ orderDetails }) {
             <Label>{orderDetails?.orderDate.split("T")[0]}</Label>
           </div>
           <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Order Price</p>
-            <Label>${orderDetails?.totalAmount}</Label>
-          </div>
-          <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Payment method</p>
-            <Label>{orderDetails?.paymentMethod}</Label>
-          </div>
-          <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Payment Status</p>
-            <Label>{orderDetails?.paymentStatus}</Label>
-          </div>
-          <div className="flex mt-2 items-center justify-between">
             <p className="font-medium">Order Status</p>
             <Label>
               <Badge
@@ -91,9 +79,10 @@ function AdminOrderDetailsView({ orderDetails }) {
               {orderDetails?.cartItems && orderDetails?.cartItems.length > 0
                 ? orderDetails?.cartItems.map((item) => (
                     <li className="flex items-center justify-between">
+                      <span>Product ID: {item.productId}</span>
                       <span>Title: {item.title}</span>
                       <span>Quantity: {item.quantity}</span>
-                      <span>Price: ${item.price}</span>
+
                     </li>
                   ))
                 : null}

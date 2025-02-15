@@ -6,6 +6,7 @@ import { Separator } from "../ui/separator";
 
 function ShoppingOrderDetailsView({ orderDetails }) {
   const { user } = useSelector((state) => state.auth);
+  console.log(orderDetails?.cartItems, "Cart Items from Redux");
 
   return (
     <DialogContent className="sm:max-w-[600px]">
@@ -17,19 +18,7 @@ function ShoppingOrderDetailsView({ orderDetails }) {
           </div>
           <div className="flex mt-2 items-center justify-between">
             <p className="font-medium">Order Date</p>
-            <Label>{orderDetails?.orderDate.split("T")[0]}</Label>
-          </div>
-          <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Order Price</p>
-            <Label>${orderDetails?.totalAmount}</Label>
-          </div>
-          <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Payment method</p>
-            <Label>{orderDetails?.paymentMethod}</Label>
-          </div>
-          <div className="flex mt-2 items-center justify-between">
-            <p className="font-medium">Payment Status</p>
-            <Label>{orderDetails?.paymentStatus}</Label>
+            <Label>{orderDetails?.orderDate?.split("T")[0]}</Label>
           </div>
           <div className="flex mt-2 items-center justify-between">
             <p className="font-medium">Order Status</p>
@@ -54,14 +43,13 @@ function ShoppingOrderDetailsView({ orderDetails }) {
             <div className="font-medium">Order Details</div>
             <ul className="grid gap-3">
               {orderDetails?.cartItems && orderDetails?.cartItems.length > 0
-                ? orderDetails?.cartItems.map((item) => (
-                    <li className="flex items-center justify-between">
-                      <span>Title: {item.title}</span>
-                      <span>Quantity: {item.quantity}</span>
-                      <span>Price: ${item.price}</span>
+                ? orderDetails.cartItems.map((item, index) => (
+                    <li key={index} className="flex items-center justify-between">
+                      <span>Title: {item?.title || "N/A"}</span>
+                      <span>Quantity: {item?.quantity || "N/A"}</span>
                     </li>
                   ))
-                : null}
+                : <p>No items in the order.</p>}
             </ul>
           </div>
         </div>
@@ -69,13 +57,13 @@ function ShoppingOrderDetailsView({ orderDetails }) {
           <div className="grid gap-2">
             <div className="font-medium">Shipping Info</div>
             <div className="grid gap-0.5 text-muted-foreground">
-              <span>{orderDetails?.addressinfo?.name}</span>
-              <span>{user.userName}</span>
-              <span>{orderDetails?.addressInfo?.address}</span>
-              <span>{orderDetails?.addressInfo?.city}</span>
-              <span>{orderDetails?.addressInfo?.pincode}</span>
-              <span>{orderDetails?.addressInfo?.phone}</span>
-              <span>{orderDetails?.addressInfo?.notes}</span>
+              <span>{orderDetails?.addressInfo?.name || "N/A"}</span>
+              <span>{user?.userName || "N/A"}</span>
+              <span>{orderDetails?.addressInfo?.address || "N/A"}</span>
+              <span>{orderDetails?.addressInfo?.city || "N/A"}</span>
+              <span>{orderDetails?.addressInfo?.pincode || "N/A"}</span>
+              <span>{orderDetails?.addressInfo?.phone || "N/A"}</span>
+              <span>{orderDetails?.addressInfo?.notes || "N/A"}</span>
             </div>
           </div>
         </div>

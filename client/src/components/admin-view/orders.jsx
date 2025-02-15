@@ -50,7 +50,7 @@ function AdminOrdersView() {
               <TableHead>Order ID</TableHead>
               <TableHead>Order Date</TableHead>
               <TableHead>Order Status</TableHead>
-              <TableHead>Order Price</TableHead>
+              {/* <TableHead>Order Price</TableHead> */}
               <TableHead>
                 <span className="sr-only">Details</span>
               </TableHead>
@@ -75,7 +75,7 @@ function AdminOrdersView() {
                         {orderItem?.orderStatus}
                       </Badge>
                     </TableCell>
-                    <TableCell>${orderItem?.totalAmount}</TableCell>
+                    {/* <TableCell>${orderItem?.totalAmount}</TableCell> */}
                     <TableCell>
                       <Dialog
                         open={openDetailsDialog}

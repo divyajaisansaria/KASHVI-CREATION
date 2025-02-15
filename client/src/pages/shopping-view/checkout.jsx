@@ -6,14 +6,13 @@ import UserCartItemsContent from "@/components/shopping-view/cart-items-content"
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { createNewOrder } from "@/store/shop/order-slice";
+// import { emptyCart } from "@/store/shop/cart-slice"; // Ensure this action exists in cart slice
 import img from "../../assets/account.jpg";
 
 function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
   const { user } = useSelector((state) => state.auth);
-  const { approvalURL } = useSelector((state) => state.shopOrder);
   const [currentSelectedAddress, setCurrentSelectedAddress] = useState(null);
-  const [isPaymentStart, setIsPaymemntStart] = useState(false);
   const dispatch = useDispatch();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -33,14 +32,63 @@ function ShoppingCheckout() {
         )
       : 0;
 
-  function handleInitiatePaypalPayment() {
-    if (cartItems.length === 0) {
-      toast({
-        title: "Your cart is empty. Please add items to proceed",
-        variant: "destructive",
-      });
-      return;
+      function handleGenerateInvoice() {
+        if (!cartItems || !cartItems.items || cartItems.items.length === 0) {
+            toast({
+                title: "Your cart is empty. Please add items to proceed",
+                variant: "destructive",
+            });
+            return;
+        }
+        if (!currentSelectedAddress) {
+            toast({
+                title: "Please select one address to proceed.",
+                variant: "destructive",
+            });
+            return;
+        }
+    
+        const orderData = {
+            userId: user?._id,
+            cartId: cartItems?._id,
+            cartItems: cartItems.items.map((singleCartItem) => ({
+                productId: singleCartItem?.productId,
+                title: singleCartItem?.title,
+                image: singleCartItem?.image,
+                quantity: singleCartItem?.quantity,
+            })),
+            addressInfo: {
+                name: currentSelectedAddress?.name,
+                addressId: currentSelectedAddress?._id,
+                address: currentSelectedAddress?.address,
+                city: currentSelectedAddress?.city,
+                pincode: currentSelectedAddress?.pincode,
+                phone: currentSelectedAddress?.phone,
+                notes: currentSelectedAddress?.notes,
+            },
+            orderStatus: "pending",
+            orderDate: new Date(),
+            orderUpdateDate: new Date(),
+        };
+    
+        dispatch(createNewOrder(orderData)).then((data) => {
+            if (data?.payload?.success) {
+                toast({ title: "Order placed successfully." });
+                // dispatch(emptyCart());
+
+                // Navigate to the invoice page with correct data
+                navigate("/shop/checkout/invoice", {
+                    state: { user, currentSelectedAddress, cartItems, orderId: data.payload.orderId },
+                });
+            } else {
+                toast({ title: "Failed to place order. Try again.", variant: "destructive" });
+            }
+        }).catch((error) => {
+            console.error("Order creation error:", error);
+            toast({ title: "An error occurred while placing the order.", variant: "destructive" });
+        });
     }
+<<<<<<< Updated upstream
     if (currentSelectedAddress === null) {
       toast({
         title: "Please select one address to proceed.",
@@ -94,6 +142,9 @@ function ShoppingCheckout() {
   if (approvalURL) {
     window.location.href = approvalURL;
   }
+=======
+    
+>>>>>>> Stashed changes
 
   return (
     <div className="flex flex-col">
@@ -118,17 +169,14 @@ function ShoppingCheckout() {
             </div>
           </div>
           <div className="mt-4 w-full flex flex-col gap-3">
-            <Button onClick={handleInitiatePaypalPayment} className="w-full">
+            {/* Payment Button Commented Out */}
+            {/* <Button onClick={handleInitiatePaypalPayment} className="w-full">
               {isPaymentStart
                 ? "Processing Paypal Payment..."
                 : "Checkout with Paypal"}
-            </Button>
+            </Button> */}
             <Button
-              onClick={() =>
-                navigate("/shop/checkout/invoice", {
-                  state: { user, currentSelectedAddress, cartItems },
-                })
-              }
+              onClick={handleGenerateInvoice}
               className="w-full bg-green-500 hover:bg-green-600"
             >
               Generate Invoice

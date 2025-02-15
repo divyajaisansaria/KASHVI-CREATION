@@ -30,13 +30,24 @@ function ShoppingOrders() {
   }
 
   useEffect(() => {
+<<<<<<< Updated upstream
     dispatch(getAllOrdersByUserId(user?._id));
   }, [dispatch]);
+=======
+    if (user?._id) {
+      dispatch(getAllOrdersByUserId(user?._id)).then((data) => {
+        console.log("Fetched Orders: ", data);
+      });
+    }
+  }, [dispatch, user?._id]);
+  console.log(orderList, "Redux orderList");
+
+>>>>>>> Stashed changes
 
   useEffect(() => {
     if (orderDetails !== null) setOpenDetailsDialog(true);
   }, [orderDetails]);
-
+  
   console.log(orderDetails, "orderDetails");
 
   return (
@@ -51,7 +62,6 @@ function ShoppingOrders() {
               <TableHead>Order ID</TableHead>
               <TableHead>Order Date</TableHead>
               <TableHead>Order Status</TableHead>
-              {/* <TableHead>Order Price</TableHead> */}
               <TableHead>
                 <span className="sr-only">Details</span>
               </TableHead>
@@ -76,7 +86,6 @@ function ShoppingOrders() {
                         {orderItem?.orderStatus}
                       </Badge>
                     </TableCell>
-                    <TableCell>${orderItem?.totalAmount}</TableCell>
                     <TableCell>
                       <Dialog
                         open={openDetailsDialog}
