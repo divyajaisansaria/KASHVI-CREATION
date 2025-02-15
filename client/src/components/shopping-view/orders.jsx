@@ -30,10 +30,8 @@ function ShoppingOrders() {
   }
 
   useEffect(() => {
-<<<<<<< Updated upstream
-    dispatch(getAllOrdersByUserId(user?._id));
-  }, [dispatch]);
-=======
+  //   dispatch(getAllOrdersByUserId(user?._id));
+  // }, [dispatch]);
     if (user?._id) {
       dispatch(getAllOrdersByUserId(user?._id)).then((data) => {
         console.log("Fetched Orders: ", data);
@@ -42,7 +40,6 @@ function ShoppingOrders() {
   }, [dispatch, user?._id]);
   console.log(orderList, "Redux orderList");
 
->>>>>>> Stashed changes
 
   useEffect(() => {
     if (orderDetails !== null) setOpenDetailsDialog(true);

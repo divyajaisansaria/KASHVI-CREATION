@@ -6,7 +6,7 @@ import UserCartItemsContent from "@/components/shopping-view/cart-items-content"
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { createNewOrder } from "@/store/shop/order-slice";
-// import { emptyCart } from "@/store/shop/cart-slice"; // Ensure this action exists in cart slice
+// import { emptyCart } from "@/store/shop/cart-slice"; // Uncomment if needed
 import img from "../../assets/account.jpg";
 
 function ShoppingCheckout() {
@@ -17,102 +17,36 @@ function ShoppingCheckout() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  console.log(currentSelectedAddress, "cartItems");
+  const totalCartAmount = cartItems?.items?.reduce(
+    (sum, currentItem) =>
+      sum +
+      (currentItem?.salePrice > 0 ? currentItem?.salePrice : currentItem?.price) *
+        currentItem?.quantity,
+    0
+  ) || 0;
 
-  const totalCartAmount =
-    cartItems && cartItems.items && cartItems.items.length > 0
-      ? cartItems.items.reduce(
-          (sum, currentItem) =>
-            sum +
-            (currentItem?.salePrice > 0
-              ? currentItem?.salePrice
-              : currentItem?.price) *
-              currentItem?.quantity,
-          0
-        )
-      : 0;
-
-      function handleGenerateInvoice() {
-        if (!cartItems || !cartItems.items || cartItems.items.length === 0) {
-            toast({
-                title: "Your cart is empty. Please add items to proceed",
-                variant: "destructive",
-            });
-            return;
-        }
-        if (!currentSelectedAddress) {
-            toast({
-                title: "Please select one address to proceed.",
-                variant: "destructive",
-            });
-            return;
-        }
-    
-        const orderData = {
-            userId: user?._id,
-            cartId: cartItems?._id,
-            cartItems: cartItems.items.map((singleCartItem) => ({
-                productId: singleCartItem?.productId,
-                title: singleCartItem?.title,
-                image: singleCartItem?.image,
-                quantity: singleCartItem?.quantity,
-            })),
-            addressInfo: {
-                name: currentSelectedAddress?.name,
-                addressId: currentSelectedAddress?._id,
-                address: currentSelectedAddress?.address,
-                city: currentSelectedAddress?.city,
-                pincode: currentSelectedAddress?.pincode,
-                phone: currentSelectedAddress?.phone,
-                notes: currentSelectedAddress?.notes,
-            },
-            orderStatus: "pending",
-            orderDate: new Date(),
-            orderUpdateDate: new Date(),
-        };
-    
-        dispatch(createNewOrder(orderData)).then((data) => {
-            if (data?.payload?.success) {
-                toast({ title: "Order placed successfully." });
-                // dispatch(emptyCart());
-
-                // Navigate to the invoice page with correct data
-                navigate("/shop/checkout/invoice", {
-                    state: { user, currentSelectedAddress, cartItems, orderId: data.payload.orderId },
-                });
-            } else {
-                toast({ title: "Failed to place order. Try again.", variant: "destructive" });
-            }
-        }).catch((error) => {
-            console.error("Order creation error:", error);
-            toast({ title: "An error occurred while placing the order.", variant: "destructive" });
-        });
+  function handleGenerateInvoice() {
+    if (!cartItems?.items?.length) {
+      toast({ title: "Your cart is empty. Please add items to proceed", variant: "destructive" });
+      return;
     }
-<<<<<<< Updated upstream
-    if (currentSelectedAddress === null) {
-      toast({
-        title: "Please select one address to proceed.",
-        variant: "destructive",
-      });
+    if (!currentSelectedAddress) {
+      toast({ title: "Please select one address to proceed.", variant: "destructive" });
       return;
     }
 
     const orderData = {
       userId: user?._id,
       cartId: cartItems?._id,
-      cartItems: cartItems.items.map((singleCartItem) => ({
-        productId: singleCartItem?.productId,
-        title: singleCartItem?.title,
-        image: singleCartItem?.image,
-        price:
-          singleCartItem?.salePrice > 0
-            ? singleCartItem?.salePrice
-            : singleCartItem?.price,
-        quantity: singleCartItem?.quantity,
+      cartItems: cartItems.items.map(({ productId, title, image, quantity }) => ({
+        productId,
+        title,
+        image,
+        quantity,
       })),
       addressInfo: {
+        name: currentSelectedAddress?.name,
         addressId: currentSelectedAddress?._id,
-        addressId: currentSelectedAddress?.name,
         address: currentSelectedAddress?.address,
         city: currentSelectedAddress?.city,
         pincode: currentSelectedAddress?.pincode,
@@ -120,48 +54,39 @@ function ShoppingCheckout() {
         notes: currentSelectedAddress?.notes,
       },
       orderStatus: "pending",
-      paymentMethod: "paypal",
-      paymentStatus: "pending",
-      totalAmount: totalCartAmount,
       orderDate: new Date(),
       orderUpdateDate: new Date(),
-      paymentId: "",
-      payerId: "",
     };
 
-    dispatch(createNewOrder(orderData)).then((data) => {
-      console.log(data, "sangam");
-      if (data?.payload?.success) {
-        setIsPaymemntStart(true);
-      } else {
-        setIsPaymemntStart(false);
-      }
-    });
+    dispatch(createNewOrder(orderData))
+      .then((data) => {
+        if (data?.payload?.success) {
+          toast({ title: "Order placed successfully." });
+          // dispatch(emptyCart()); // Uncomment if cart should be emptied
+          navigate("/shop/checkout/invoice", {
+            state: { user, currentSelectedAddress, cartItems, orderId: data.payload.orderId },
+          });
+        } else {
+          toast({ title: "Failed to place order. Try again.", variant: "destructive" });
+        }
+      })
+      .catch((error) => {
+        console.error("Order creation error:", error);
+        toast({ title: "An error occurred while placing the order.", variant: "destructive" });
+      });
   }
-
-  if (approvalURL) {
-    window.location.href = approvalURL;
-  }
-=======
-    
->>>>>>> Stashed changes
 
   return (
     <div className="flex flex-col">
       <div className="relative h-[300px] w-full overflow-hidden">
-        <img src={img} className="h-full w-full object-cover object-center" />
+        <img src={img} className="h-full w-full object-cover object-center" alt="Checkout" />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5 p-5">
-        <Address
-          selectedId={currentSelectedAddress}
-          setCurrentSelectedAddress={setCurrentSelectedAddress}
-        />
+        <Address selectedId={currentSelectedAddress} setCurrentSelectedAddress={setCurrentSelectedAddress} />
         <div className="flex flex-col gap-4">
-          {cartItems && cartItems.items && cartItems.items.length > 0
-            ? cartItems.items.map((item) => (
-                <UserCartItemsContent cartItem={item} key={item.productId} />
-              ))
-            : null}
+          {cartItems?.items?.map((item) => (
+            <UserCartItemsContent cartItem={item} key={item.productId} />
+          ))}
           <div className="mt-8 space-y-4">
             <div className="flex justify-between">
               <span className="font-bold">Total</span>
@@ -169,16 +94,7 @@ function ShoppingCheckout() {
             </div>
           </div>
           <div className="mt-4 w-full flex flex-col gap-3">
-            {/* Payment Button Commented Out */}
-            {/* <Button onClick={handleInitiatePaypalPayment} className="w-full">
-              {isPaymentStart
-                ? "Processing Paypal Payment..."
-                : "Checkout with Paypal"}
-            </Button> */}
-            <Button
-              onClick={handleGenerateInvoice}
-              className="w-full bg-green-500 hover:bg-green-600"
-            >
+            <Button onClick={handleGenerateInvoice} className="w-full bg-green-500 hover:bg-green-600">
               Generate Invoice
             </Button>
           </div>
