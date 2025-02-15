@@ -10,6 +10,11 @@ import { Dialog, DialogContent } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import ZoomImage from "./zoom-image";
+import InnerImageZoom from "react-inner-image-zoom";
+import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
+
+
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const [reviewMsg, setReviewMsg] = useState("");
@@ -150,12 +155,17 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
       >
         {/* Product Image (Left) */}
         <div className="flex items-center justify-center">
-          <img
-            src={productDetails?.image || "/placeholder.svg"}
-            alt={productDetails?.title || "Product Image"}
-            className="w-full max-h-[100vh] object-cover shadow-lg"
-          />
-        </div>
+  <InnerImageZoom
+    src={productDetails?.image || "/placeholder.svg"}
+    zoomSrc={productDetails?.image || "/placeholder.svg"}
+    zoomScale={2}  // Adjust zoom level
+    zoomType="click"  // Zoom only when left-clicked
+    className="w-full max-h-[100vh] object-cover shadow-lg"
+    width="100%" 
+    height="auto"
+  />
+</div>
+
 
         {/* Product Details (Right) */}
         <div className="overflow-y-auto max-h-[85vh]">
