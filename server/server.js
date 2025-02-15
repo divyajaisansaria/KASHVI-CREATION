@@ -20,6 +20,8 @@ const commonFeatureRouter = require("./routes/common/feature-routes");
 const { sendInvoiceEmail } = require("./controllers/common/emailService");
 
 const blogRouter = require("./routes/common/blogRoutes"); // ✅ Added Blog Router
+// const contactRouter = require("./routes/common/contact-routes");
+const contactRoutes = require("./routes/common/contactRoutes"); // ✅ Added Contact Router
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -68,7 +70,12 @@ app.use("/api/shop/review", shopReviewRouter);
 app.use("/api/common/feature", commonFeatureRouter);
 app.post("/api/send-invoice", sendInvoiceEmail);
 app.use("/api/blogs", blogRouter); // ✅ Connected Blog Routes
-
+app.use("/api", contactRoutes);
+// app.use('/api/admin', blogRoutes);
+// app.get("/api/blogs", async (req, res) => {
+//   const blogs = await blogRoutes.find();
+//   res.json(blogs);
+// });
 app.post("/api/auth/logout", (req, res) => {
   console.log("🔹 Logout request received...");
 
