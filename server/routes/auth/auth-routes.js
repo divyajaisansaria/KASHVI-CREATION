@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const zxcvbn = require("zxcvbn"); // ✅ Import zxcvbn for strong password validation
 const User = require("../../models/User");
+const OTP = require("../../models/OTP"); // Import OTP model to save OTP in the database
+const axios = require("axios"); // For sending OTP via external service
 
 const router = express.Router();
 
@@ -167,20 +169,45 @@ router.post("/reset-password", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
-router.post("/logout", (req, res) => {
-  try {
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-    });
 
-    res.json({ success: true, message: "Logged out successfully." });
+// 📌 OTP-based Reset Password Route
+router.post("/send-reset-otp", async (req, res) => {
+  const { phone } = req.body;
+  const otp = Math.floor(100000 + Math.random() * 900000); // Generate a random OTP
+  const expiry = new Date(Date.now() + 5 * 60000); // OTP expiry in 5 minutes
+
+  // Save OTP in database
+  await OTP.findOneAndUpdate({ phone }, { otp, expiry }, { upsert: true });
+
+  // Send OTP via Fast2SMS (or any other service)
+  try {
+    const response = await axios.post(
+      "https://www.fast2sms.com/dev/bulkV2",
+      new URLSearchParams({
+        authorization: process.env.FAST2SMS_API_KEY,
+        route: "otp",
+        variables_values: otp.toString(),
+        numbers: phone,
+      }),
+      { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+    );
+
+    res.json({ success: true, message: "OTP sent!" });
   } catch (error) {
-    console.error("Logout error:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    res.json({ success: false, message: "Error sending OTP", error });
   }
 });
 
+// 📌 OTP Verification for Reset Password
+router.post("/verify-reset-otp", async (req, res) => {
+  const { phone, enteredOtp } = req.body;
+  const userOtp = await OTP.findOne({ phone });
+
+  if (!userOtp) return res.json({ success: false, message: "OTP not found" });
+  if (userOtp.otp !== enteredOtp) return res.json({ success: false, message: "Invalid OTP" });
+  if (new Date() > userOtp.expiry) return res.json({ success: false, message: "OTP expired" });
+
+  res.json({ success: true, message: "OTP Verified!" });
+});
 
 module.exports = router;

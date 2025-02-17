@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [method, setMethod] = useState("email"); // default to Email method
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
 
@@ -12,21 +14,30 @@ function ForgotPassword() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/forgot-password", {
+      let endpoint;
+      const data = method === "otp" ? { phone } : { email };
+
+      if (method === "otp") {
+        endpoint = "/api/auth/send-reset-otp"; // Endpoint for OTP
+      } else {
+        endpoint = "/api/auth/forgot-password"; // Endpoint for email-based reset
+      }
+
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify(data),
       });
 
-      const data = await response.json();
+      const responseData = await response.json();
 
-      if (data.success) {
-        toast({ title: "Reset link sent! Check your email." });
+      if (responseData.success) {
+        toast({ title: "Reset link sent! Check your email or phone." });
       } else {
-        toast({ title: data.message, variant: "destructive" });
+        toast({ title: responseData.message, variant: "destructive" });
       }
     } catch (error) {
-      toast({ title: "Error sending email", variant: "destructive" });
+      toast({ title: "Error sending request", variant: "destructive" });
     }
 
     setLoading(false);
@@ -39,17 +50,53 @@ function ForgotPassword() {
           Forgot Your Password?
         </h2>
         <p className="text-gray-600 text-center mb-6">
-          Enter your email, and we'll send you a reset link.
+          Enter your email or phone, and we'll send you a reset link.
         </p>
+
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <div className="flex justify-center space-x-4">
+            <label>
+              <input
+                type="radio"
+                name="method"
+                value="email"
+                checked={method === "email"}
+                onChange={() => setMethod("email")}
+              />
+              <span>Email</span>
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="method"
+                value="otp"
+                checked={method === "otp"}
+                onChange={() => setMethod("otp")}
+              />
+              <span>Phone (OTP)</span>
+            </label>
+          </div>
+
+          {method === "email" ? (
+            <input
+              type="email"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          ) : (
+            <input
+              type="text"
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="Enter your phone number"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
+          )}
+
           <button
             type="submit"
             className="w-full bg-[#0a373b] hover:bg-[#085b60] text-white font-semibold py-2 rounded-md transition duration-300"
@@ -58,6 +105,7 @@ function ForgotPassword() {
             {loading ? "Sending..." : "Send Reset Link"}
           </button>
         </form>
+
         <div className="mt-4 text-center">
           <Link to="/auth/login" className="text-[#0a373b] hover:underline">
             Back to Login
