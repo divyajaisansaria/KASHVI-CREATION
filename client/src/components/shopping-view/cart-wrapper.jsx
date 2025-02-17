@@ -11,9 +11,7 @@ function UserCartWrapper({ cartItems, setOpenCartSheet }) {
       ? cartItems.reduce(
           (sum, currentItem) =>
             sum +
-            (currentItem?.salePrice > 0
-              ? currentItem?.salePrice
-              : currentItem?.price) *
+            
               currentItem?.quantity,
           0
         )
@@ -31,8 +29,8 @@ function UserCartWrapper({ cartItems, setOpenCartSheet }) {
       </div>
       <div className="mt-8 space-y-4">
         <div className="flex justify-between">
-          <span className="font-bold">Total</span>
-          <span className="font-bold">${totalCartAmount}</span>
+          <span className="font-bold">Total Quantity</span>
+          <span className="font-bold">{totalCartAmount}</span>
         </div>
       </div>
       <Button
@@ -40,7 +38,7 @@ function UserCartWrapper({ cartItems, setOpenCartSheet }) {
           navigate("/shop/checkout");
           setOpenCartSheet(false);
         }}
-        className="w-full mt-6"
+        className="w-full mt-6 bg-[#0a373b] hover:bg-[#085b60]"
       >
         Checkout
       </Button>

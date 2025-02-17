@@ -125,6 +125,7 @@ function ShoppingProductTile({ product, handleGetProductDetails, handleAddtoCart
             <h3 className="text-base font-semibold text-[#0a373b] leading-tight">
               {product?.title}
             </h3>
+           
           </div>
 
 

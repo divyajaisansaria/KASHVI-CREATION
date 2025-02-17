@@ -88,6 +88,8 @@ function AdminOrdersView() {
                           onClick={() =>
                             handleFetchOrderDetails(orderItem?._id)
                           }
+                          style={{ backgroundColor: '#0a373b', color: 'white' }}
+                        
                         >
                           View Details
                         </Button>

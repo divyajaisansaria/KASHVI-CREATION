@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addReview, getReviews } from "@/store/shop/review-slice";
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
@@ -9,38 +9,38 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";import { Swiper, SwiperSlide } from "swiper/react"
-import { Navigation, Pagination } from "swiper/modules"
-import "swiper/css"
-import "swiper/css/navigation"
-import "swiper/css/pagination"
-import { useRef } from "react";
+import { Label } from "../ui/label";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const [reviewMsg, setReviewMsg] = useState("");
   const [rating, setRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [currentImage, setCurrentImage] = useState(0)
-  
+  const [currentImage, setCurrentImage] = useState(0);
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { reviews } = useSelector((state) => state.shopReview);
   const { toast } = useToast();
   const [showMagnifier, setShowMagnifier] = useState(false);
-const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
-const imageRef = useRef(null);
+  const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
+  const imageRef = useRef(null);
 
-const MAGNIFIER_SIZE = 200; // Magnifier size
-const ZOOM = 2;
-const handleMouseMove = (e) => {
-  if (!imageRef.current) return;
+  const MAGNIFIER_SIZE = 200;
+  const ZOOM = 2;
 
-  const rect = imageRef.current.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+  const handleMouseMove = (e) => {
+    if (!imageRef.current) return;
 
-  setMagnifierPosition({ x, y });
-};
+    const rect = imageRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    setMagnifierPosition({ x, y });
+  };
 
   useEffect(() => {
     if (open && productDetails?._id) {
@@ -48,11 +48,11 @@ const handleMouseMove = (e) => {
     }
   }, [open, productDetails, dispatch]);
 
-  function handleRatingChange(getRating) {
+  const handleRatingChange = (getRating) => {
     setRating(getRating);
-  }
+  };
 
-  function handleAddToCart(getCurrentProductId) {
+  const handleAddToCart = (getCurrentProductId) => {
     if (!user?._id) {
       toast({
         title: "Login Required",
@@ -62,27 +62,16 @@ const handleMouseMove = (e) => {
       return;
     }
 
-    console.log("Attempting to add to cart...");
-    console.log("User ID:", user._id);
-    console.log("Product ID:", getCurrentProductId);
-
     dispatch(addToCart({ userId: user._id, productId: getCurrentProductId, quantity: 1 }))
       .then((data) => {
-        console.log("Add to Cart Response:", data?.payload);
-
         if (data?.payload?.success) {
-          console.log("Fetching updated cart items for UserID:", user._id);
-          dispatch(fetchCartItems(user._id))
-            .then(() => console.log("Cart updated successfully!"))
-            .catch((err) => console.error("Error fetching cart items:", err));
-
+          dispatch(fetchCartItems(user._id));
           toast({
             title: "Added to Cart",
             description: "The product has been added to your cart.",
             variant: "success",
           });
         } else {
-          console.error("Failed to add product to cart:", data?.payload?.message);
           toast({
             title: "Error",
             description: "Failed to add product to cart.",
@@ -90,17 +79,16 @@ const handleMouseMove = (e) => {
           });
         }
       })
-      .catch((err) => {
-        console.error("Error adding product to cart:", err);
+      .catch(() => {
         toast({
           title: "Something went wrong!",
           description: "Please try again later.",
           variant: "destructive",
         });
       });
-  }
+  };
 
-  async function handleAddReview() {
+  const handleAddReview = async () => {
     if (!user?._id) {
       toast({
         title: "Login Required",
@@ -122,7 +110,6 @@ const handleMouseMove = (e) => {
     setIsSubmitting(true);
 
     try {
-      console.log("Submitting review...");
       const response = await dispatch(
         addReview({
           productId: productDetails?._id,
@@ -133,22 +120,19 @@ const handleMouseMove = (e) => {
         })
       );
 
-      console.log("Review Response:", response.payload);
-
       if (response.payload?.success) {
         setRating(0);
         setReviewMsg("");
         await dispatch(getReviews(productDetails?._id));
         toast({
           title: "Review Added",
-          description: "Your review has been successfully submitted!",
+          description: "Thank You! Your review has been successfully submitted!",
           variant: "success",
         });
       } else {
         throw new Error(response.payload?.message || "Failed to add review");
       }
     } catch (error) {
-      console.error("Review submission failed:", error);
       toast({
         title: "Error",
         description: "Failed to add review. Please try again.",
@@ -157,7 +141,7 @@ const handleMouseMove = (e) => {
     } finally {
       setIsSubmitting(false);
     }
-  }
+  };
 
   const averageReview =
     reviews && reviews.length > 0
@@ -166,121 +150,176 @@ const handleMouseMove = (e) => {
 
   return (
     <Dialog open={open} onOpenChange={() => setOpen(false)}>
-      <DialogContent
-        className="grid sm:grid-cols-[50%_1fr] max-w-[90vw] sm:max-w-[85vw] lg:max-w-[75vw] overflow-y-auto max-h-[100vh]"
-      >
+      <DialogContent className="flex p-0 max-w-[1200px] h-[90vh] overflow-hidden">
         {/* Product Image (Left) */}
-        <div className="relative">
-  <Swiper
-    modules={[Navigation, Pagination]}
-    navigation
-    pagination={{ clickable: true }}
-    className="rounded-lg overflow-hidden"
-    onSlideChange={(swiper) => setCurrentImage(swiper.activeIndex)}
-  >
-    {productDetails?.images?.map((img, index) => (
-      <SwiperSlide key={index}>
-        <div
-          className="relative"
-          onMouseEnter={() => setShowMagnifier(true)}
-          onMouseLeave={() => setShowMagnifier(false)}
-          onMouseMove={handleMouseMove}
-          ref={index === currentImage ? imageRef : null}
-        >
-          <img
-            src={img || "/placeholder.svg"}
-            alt={productDetails?.title}
-            className="w-full object-cover aspect-square"
-          />
-          {showMagnifier && index === currentImage && (
-            <div
-              className="absolute pointer-events-none"
-              style={{
-                width: `${MAGNIFIER_SIZE}px`,
-                height: `${MAGNIFIER_SIZE}px`,
-                left: `${magnifierPosition.x - MAGNIFIER_SIZE / 2}px`,
-                top: `${magnifierPosition.y - MAGNIFIER_SIZE / 2}px`,
-                border: "2px solid #fff",
-                borderRadius: "50%",
-                overflow: "hidden",
-                boxShadow: "0 0 10px rgba(0,0,0,0.3)",
-                zIndex: 50,
-              }}
-            >
-              <img
-                src={img || "/placeholder.svg"}
-                alt={productDetails?.title}
-                style={{
-                  width: `${imageRef.current?.offsetWidth * ZOOM}px`,
-                  height: `${imageRef.current?.offsetHeight * ZOOM}px`,
-                  maxWidth: "none",
-                  maxHeight: "none",
-                  position: "absolute",
-                  left: `${-magnifierPosition.x * ZOOM + MAGNIFIER_SIZE / 2}px`,
-                  top: `${-magnifierPosition.y * ZOOM + MAGNIFIER_SIZE / 2}px`,
-                }}
-              />
-            </div>
-          )}
+        <div className="w-1/2 h-full bg-[#F8F4F0]">
+          <Swiper
+            modules={[Navigation, Pagination]}
+            navigation
+            pagination={{ clickable: true }}
+            className="h-full"
+            onSlideChange={(swiper) => setCurrentImage(swiper.activeIndex)}
+          >
+            {productDetails?.images?.map((img, index) => (
+              <SwiperSlide key={index}>
+                <div
+                  className="relative h-full flex items-center justify-center"
+                  onMouseEnter={() => setShowMagnifier(true)}
+                  onMouseLeave={() => setShowMagnifier(false)}
+                  onMouseMove={handleMouseMove}
+                  ref={index === currentImage ? imageRef : null}
+                >
+                  <img
+                    src={img || "/placeholder.svg"}
+                    alt={productDetails?.title}
+                    className="object-contain max-h-full"
+                  />
+                  {showMagnifier && index === currentImage && (
+                    <div
+                      className="absolute pointer-events-none"
+                      style={{
+                        width: `${MAGNIFIER_SIZE}px`,
+                        height: `${MAGNIFIER_SIZE}px`,
+                        left: `${magnifierPosition.x - MAGNIFIER_SIZE / 2}px`,
+                        top: `${magnifierPosition.y - MAGNIFIER_SIZE / 2}px`,
+                        border: "2px solid #fff",
+                        borderRadius: "50%",
+                        overflow: "hidden",
+                        boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+                        zIndex: 50,
+                      }}
+                    >
+                      <img
+                        src={img || "/placeholder.svg"}
+                        alt={productDetails?.title}
+                        style={{
+                          width: `${imageRef.current?.offsetWidth * ZOOM}px`,
+                          height: `${imageRef.current?.offsetHeight * ZOOM}px`,
+                          maxWidth: "none",
+                          maxHeight: "none",
+                          position: "absolute",
+                          left: `${-magnifierPosition.x * ZOOM + MAGNIFIER_SIZE / 2}px`,
+                          top: `${-magnifierPosition.y * ZOOM + MAGNIFIER_SIZE / 2}px`,
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+              </SwiperSlide>
+            ))}
+             <style jsx>{`
+    /* Customizing the navigation buttons */
+    .swiper-button-next,
+    .swiper-button-prev {
+      color:#0a373b ; 
+
+             }
+
+    .swiper-pagination-bullet-active {
+      background-color: #0a373b ; /* Orange for the active dot */
+    }
+  `}</style>
+          </Swiper>
         </div>
-      </SwiperSlide>
-    ))}
-  </Swiper>
-</div>
 
         {/* Product Details (Right) */}
-        <div className="overflow-y-auto max-h-[85vh]">
-          <h1 className="text-3xl font-bold">{productDetails?.title || "Product Title"}</h1>
-          <p className="text-lg text-gray-600 my-4">{productDetails?.description || "No description available."}</p>
-
-          {/* Star Rating & Average */}
-          <div className="flex items-center gap-3 mb-5">
-            <StarRatingComponent rating={averageReview} className="flex gap-1" />
-            <span className="text-gray-600 text-lg">({averageReview.toFixed(2)})</span>
-          </div>
-
-          <Button
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg py-3"
-            onClick={() => handleAddToCart(productDetails?._id)}
-          >
-            Add to Cart
-          </Button>
-
-          <Separator className="my-6" />
-
-          {/* Customer Reviews */}
-          <h2 className="text-2xl font-semibold mb-4">Customer Reviews</h2>
-          <div className="max-h-[300px] overflow-y-auto pr-2 space-y-3">
-            {reviews.length > 0 ? (
-              reviews.map((review) => (
-                <div key={review._id} className="border p-4 rounded-lg shadow-sm bg-gray-50">
-                  <div className="flex items-center gap-3">
-                    <Avatar>
-                      <AvatarFallback>{review.userName[0]}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="font-semibold">{review.userName}</p>
-                      <StarRatingComponent rating={review.reviewValue} className="flex gap-1" />
-                    </div>
-                  </div>
-                  <p className="mt-2 text-gray-600">{review.reviewMessage}</p>
-                </div>
-              ))
-            ) : (
-              <p className="text-gray-600">No reviews yet.</p>
-            )}
-          </div>
-
-          {/* Add Review Form */}
-          <div className="mt-10 flex flex-col gap-4 bg-gray-100 p-5 rounded-lg shadow-md">
-            <Label className="text-lg font-semibold">Your Review</Label>
-            <div className="flex gap-2">
-              <StarRatingComponent rating={rating} handleRatingChange={handleRatingChange} className="flex gap-1" />
+        <div className="w-1/2 h-full overflow-y-auto bg-white">
+          <div className="px-8 py-6">
+            <div className="text-sm text-gray-500 uppercase mb-2">
+              {productDetails?.designNumber || "DESIGN NUMBER"}
             </div>
-            <Input value={reviewMsg} onChange={(e) => setReviewMsg(e.target.value)} placeholder="Write a review..." className="text-lg p-3" />
-            <Button onClick={handleAddReview} disabled={isSubmitting || !reviewMsg.trim()} className="bg-green-600 hover:bg-green-700 text-lg py-3">
-              {isSubmitting ? "Submitting..." : "Submit Review"}
+
+            <h1 className="text-2xl font-medium mb-4">{productDetails?.title || "Product Title"}</h1>
+            <p className="text-base text-gray-600 my-2">{productDetails?.description || "No description available."}</p>
+
+            <div className="mt-6  rounded-lg mb-6">
+      <h2 className="text-xl font-semibold mb-4">Product Specifications</h2>
+      <table className="min-w-full table-auto bg-gray-100">
+        <thead>
+          <tr className="bg-[#F8F4F0] text-left">
+            <th className="px-4 py-2 text-sm font-medium text-gray-700">Specification</th>
+            <th className="px-4 py-2 text-sm font-medium text-gray-700">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="bg-[#F8F5F0]">
+            <td className="px-4 py-2 text-sm text-gray-600">Category</td>
+            <td className="px-4 py-2 text-sm text-gray-600">{productDetails?.category || "Not Available"}</td>
+          </tr>
+          <tr className="bg-[#F8F4F0]">
+            <td className="px-4 py-2 text-sm text-gray-600">Occasion</td>
+            <td className="px-4 py-2 text-sm text-gray-600">{productDetails?.occasion || "Not Available"}</td>
+          </tr>
+          <tr className="bg-[#F8F5F0]">
+            <td className="px-4 py-2 text-sm text-gray-600">Color</td>
+            <td className="px-4 py-2 text-sm text-gray-600">{productDetails?.color || "Not Available"}</td>
+          </tr>
+          <tr className="bg-[#F8F4F0]">
+            <td className="px-4 py-2 text-sm text-gray-600">Fabric</td>
+            <td className="px-4 py-2 text-sm text-gray-600">{productDetails?.fabric || "Not Available"}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+            {/* Star Rating & Average */}
+            <div className="mb-6">
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">Average Rating</h3>
+              <div className="flex items-center gap-3 rounded-sm">
+                <StarRatingComponent
+                  rating={averageReview}
+                  className="flex gap-1 text-yellow-500"
+                />
+                <span className="text-gray-800 text-sm">
+                  ({averageReview.toFixed(2)})
+                </span>
+              </div>
+            </div>
+
+
+
+            <Button
+              className="w-full bg-[#0a373b] hover:bg-[#085b60] text-white font-bold text-base py-2"
+              onClick={() => handleAddToCart(productDetails?._id)}
+            >
+              Add to Cart
             </Button>
+
+            <Separator className="my-4" />
+
+            {/* Customer Reviews */}
+            <h2 className="text-xl font-semibold mb-3">Customer Reviews</h2>
+            <div className="max-h-[300px] overflow-y-auto pr-2 space-y-2 border border-[#F8F4F0] p-3 rounded-lg shadow-sm bg-[#F8F4F0]">
+              {reviews.length > 0 ? (
+                reviews.map((review) => (
+                  <div key={review._id} className="border border-[#F8F4F0] p-3 rounded-lg shadow-sm bg-[#F8F4F0]">
+                    <div className="flex items-center gap-2">
+                      <Avatar>
+                        <AvatarFallback>{review.userName[0]}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-semibold">{review.userName}</p>
+                        <StarRatingComponent rating={review.reviewValue} className="flex gap-1" />
+                      </div>
+                    </div>
+                    <p className="mt-1 text-gray-600 text-sm">{review.reviewMessage}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-600">No reviews yet.</p>
+              )}
+            </div>
+
+            {/* Add Review Form */}
+            <div className="mt-6 flex flex-col gap-3 bg-[#F8F4F0] p-4 rounded-lg shadow-md">
+              <Label className="text-base font-semibold">Write Your Review</Label>
+              <div className="flex gap-2">
+                <StarRatingComponent rating={rating} handleRatingChange={handleRatingChange} className="flex gap-1" />
+              </div>
+              <Input value={reviewMsg} onChange={(e) => setReviewMsg(e.target.value)} placeholder="Write a review..." className="text-base p-2" />
+              <Button onClick={handleAddReview} disabled={isSubmitting || !reviewMsg.trim()} className="bg-[#0a373b] hover:bg-[#085b60] text-base py-2">
+                {isSubmitting ? "Submitting..." : "Submit Review"}
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>

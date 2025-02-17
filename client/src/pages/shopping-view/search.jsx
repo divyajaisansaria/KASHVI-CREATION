@@ -37,7 +37,7 @@ function SearchProducts() {
     }
   }, [keyword]);
 
-  console.log(searchResults);
+  console.log("search",searchResults);
 
   function handleAddtoCart(getCurrentProductId, getTotalStock) {
     console.log(cartItems);
@@ -88,8 +88,8 @@ function SearchProducts() {
   console.log(searchResults, "searchResults");
 
   return (
-    <div>
-    <div className="container mx-auto md:px-6 px-4 py-8">
+    <div className="">
+    <div className="container min-h-screen mx-auto md:px-6 px-4 py-8">
       <div className="flex justify-center mb-8">
         <div className="w-full flex items-center">
           <Input
@@ -102,8 +102,15 @@ function SearchProducts() {
         </div>
       </div>
       {!searchResults.length ? (
-        <h1 className="text-5xl font-extrabold">No result found!</h1>
+         <div className="flex flex-col items-center justify-center mt-10">
+         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-700">
+           No results found!
+         </h1>
+         <p className="text-gray-500 mt-2">Try searching for something else.</p>
+       </div>
+
       ) : null}
+      
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {searchResults.map((item) => (
           <ShoppingProductTile

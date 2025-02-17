@@ -186,18 +186,18 @@ export const addProductFormElements = [
 export const shoppingViewHeaderMenuItems = [
   {
         id: "home",
-        label: "Home",
+        label: "HOME",
         path: "/shop/home",
       },
       {
         id: "products",
-        label: "New Arrivals",
+        label: "NEW ARRIVALS",
         path: "/shop/listing",
       },
   {
     
     id: "category",
-    label: "Category",
+    label: "CATEGORY",
     path: "/shop/listing",
     subMenu: [
       { id: "plain_sarees", label: "Plain Sarees"},
@@ -214,7 +214,7 @@ export const shoppingViewHeaderMenuItems = [
   },
   {
     id: "occasion",
-    label: "Occasion",
+    label: "OCCASION",
     path: "/shop/listing",
     subMenu: [
       { id: "wedding_sarees", label: "Wedding Sarees" },
@@ -226,7 +226,7 @@ export const shoppingViewHeaderMenuItems = [
   },
   {
     id: "fabric",
-    label: "Fabric",
+    label: "FABRIC",
     path: "/shop/listing",
     subMenu: [
       { id: "silk", label: "Silk"},
@@ -238,11 +238,11 @@ export const shoppingViewHeaderMenuItems = [
       { id: "crepe", label: "Crepe"}
     ]
   },
-  {
-    id: "search",
-    label: "Search",
-    path: "/shop/search"
-  }
+  // {
+  //   id: "search",
+  //   label: "Search",
+  //   path: "/shop/search"
+  // }
 ];
 
 

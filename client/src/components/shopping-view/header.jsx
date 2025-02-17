@@ -52,7 +52,7 @@ function MenuItems({ isColumn = false }) {
     <nav
       className={`flex ${
         isColumn ? "flex-col gap-4" : "justify-center gap-6"
-      } py-4 bg-[#F8F4F0] border-t shadow-sm`}
+      } py-4`}
     >
       {shoppingViewHeaderMenuItems.map((menuItem) => (
         <div key={menuItem.id} className="relative group">
@@ -119,7 +119,20 @@ function HeaderRightContent() {
   }, [dispatch, user?._id]);
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-5">
+      <Link to="/shop/search" className="flex items-center ml-4">
+      <Search
+        className="h-6 w-6 text-black transition-transform duration-300 hover:scale-110 md:h-6"
+      />
+    </Link>
+      <Link to="/wishlist" className="relative">
+        <Heart className="w-6 h-6 text-red-500" />
+        {wishlist?.length > 0 && (
+          <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">
+            {wishlist.length}
+          </span>
+        )}
+      </Link>
       <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
         <Button
           onClick={() => setOpenCartSheet(true)}
@@ -127,6 +140,7 @@ function HeaderRightContent() {
           size="icon"
           className="relative"
         >
+        
           <ShoppingCart className="w-6 h-6" />
           {cartItems?.items?.length > 0 && (
             <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
@@ -140,14 +154,7 @@ function HeaderRightContent() {
         />
       </Sheet>
 
-      <Link to="/wishlist" className="relative">
-        <Heart className="w-6 h-6 text-red-500" />
-        {wishlist?.length > 0 && (
-          <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">
-            {wishlist.length}
-          </span>
-        )}
-      </Link>
+      
 
       {user ? (
         <DropdownMenu>
@@ -200,7 +207,8 @@ function ShoppingHeader() {
     <>
       <header className="sticky top-0 z-50 w-full bg-white shadow-md">
         <div className="flex h-16 items-center justify-between px-4 md:px-8">
-          <Link to="/shop/home" className="flex items-center ml-4">
+
+      <Link to="/shop/home" className="flex items-center ml-4">
             <img
               src={logo}
               alt="Logo"
@@ -208,39 +216,27 @@ function ShoppingHeader() {
             />
           </Link>
 
-          <div className="hidden sm:flex flex-1 align-center px-4">
-            <div className="relative w-full mx-auto max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
-              <Search className="absolute left-3 top-3 h-5 w-5 text-gray-500 pointer-events-none" />
-              <Input
-                type="text"
-                placeholder="Search for products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg 
-                         transition-all duration-200
-                         focus:ring-2 focus:ring-[#b2996c] focus:border-[#b2996c]
-                         hover:border-[#b2996c] hover:shadow-md"
-              />
-            </div>
-          </div>
 
-          <div className="hidden lg:flex">
+          <div className="hidden lg:block">
+        <MenuItems />
+      </div>
+
+      <div className="flex">
             <HeaderRightContent />
-          </div>
 
-          <button
+          {/* <button
             onClick={handleSearchClick}
             className="lg:hidden p-2 bg-[#b2996c] text-white rounded-full"
           >
             <Search className="h-5 w-5" />
-          </button>
+          </button> */}
 
           <Sheet>
             <SheetTrigger asChild>
               <Button
                 variant="outline"
                 size="icon"
-                className="lg:hidden hover:border-[#b2996c] transition-all duration-200"
+                className="lg:hidden hover:border-[#b2996c] ml-4 transition-all duration-200"
               >
                 <Menu className="h-6 w-6 text-gray-600 hover:text-[#b2996c]" />
               </Button>
@@ -248,16 +244,14 @@ function ShoppingHeader() {
             <SheetContent side="left" className="w-full max-w-xs bg-[#F8F4F0]">
               <div className="flex flex-col gap-6 p-4">
                 <MenuItems isColumn />
-                <HeaderRightContent />
               </div>
             </SheetContent>
           </Sheet>
         </div>
+        </div>
       </header>
 
-      <div className="hidden md:block">
-        <MenuItems />
-      </div>
+     
     </>
   );
 }
