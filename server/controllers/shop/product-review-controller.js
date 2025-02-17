@@ -79,4 +79,24 @@ const getProductReviews = async (req, res) => {
   }
 };
 
-module.exports = { addProductReview, getProductReviews };
+const getTopReviews = async (req, res) => {
+  try {
+    console.log("Fetching 5-star reviews...");
+
+    const topReviews = await ProductReview.find({ reviewValue: 5 }) // ✅ Filter 5-star reviews
+      .sort({ createdAt: -1 }) // ✅ Show newest reviews first
+      .limit(10); // ✅ Limit to 10 reviews
+
+    console.log("5-Star Reviews Found:", topReviews);
+
+    res.status(200).json({ success: true, data: topReviews });
+  } catch (error) {
+    console.error("Error fetching 5-star reviews:", error);
+    res.status(500).json({ success: false, message: "Internal server error", error: error.message });
+  }
+};
+
+
+module.exports = { addProductReview, getProductReviews, getTopReviews };
+
+// module.exports = { addProductReview, getProductReviews };

@@ -20,11 +20,13 @@ import { getFeatureImages } from "@/store/common-slice"
 import WhatsAppButton from "@/components/common/WhatsAppButton"
 
 
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import TopReviews from "@/components/shopping-view/TopReviews"
 //import { Button } from '@shadcn/ui';  
 
 
@@ -611,6 +613,7 @@ function ShoppingHome() {
 
 <VideoBackground/>
       <TrustSection />
+      <TopReviews/>
       <WhatsAppButton />
       <Footer />
     </div>

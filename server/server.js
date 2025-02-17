@@ -23,6 +23,7 @@ const blogRouter = require("./routes/common/blogRoutes"); // ✅ Added Blog Rout
 // const contactRouter = require("./routes/common/contact-routes");
 const contactRoutes = require("./routes/common/contactRoutes"); // ✅ Added Contact Router
 
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
