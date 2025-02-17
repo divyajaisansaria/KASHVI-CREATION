@@ -23,7 +23,7 @@ const TopReviews = () => {
 
   const scroll = (direction) => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: direction === "left" ? -300 : 300, behavior: "smooth" });
+      scrollRef.current.scrollBy({ left: direction === "left" ? -400 : 400, behavior: "smooth" });
     }
   };
 
@@ -38,14 +38,14 @@ const TopReviews = () => {
             <FaChevronLeft size={20} />
           </button>
 
-          <div ref={scrollRef} className="flex space-x-4 overflow-x-auto scrollbar-hide scroll-smooth px-8">
+          <div ref={scrollRef} className="flex space-x-6 overflow-x-auto scrollbar-hide scroll-smooth px-8">
             {reviews.length > 0 ? (
               reviews
                 .filter((review) => review.reviewValue === 5)
-                .map((review) => (
-                  <div key={review._id} className="p-4 bg-white shadow-md rounded-lg min-w-[300px] max-w-xs">
+                .map((review, index) => (
+                  <div key={review._id} className={`p-6 shadow-md rounded-lg min-w-[400px] max-w-md ${index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-200'}`}>
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 flex items-center justify-center rounded-full bg-gray-300 text-gray-800 font-bold uppercase">
+                      <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-300 text-gray-800 font-bold uppercase">
                         {review.userName.charAt(0)}
                       </div>
                       <div>
