@@ -4,7 +4,9 @@ import { Button } from "../ui/button";
 import { removeFromWishlist } from "../../store/shop/wishlist-slice";
 import { addToCart, fetchCartItems } from "../../store/shop/cart-slice";
 import { useToast } from "../ui/use-toast";
-
+import Footer from "../common/Footer";
+import WhatsAppButton from "../common/WhatsAppButton";
+import Header from "./header";
 const Wishlist = () => {
   const dispatch = useDispatch();
   const { items: wishlist } = useSelector((state) => state.wishlist);
@@ -58,8 +60,10 @@ const Wishlist = () => {
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="text-5xl font-extrabold text-center text-black mb-8">My Wishlist</h1>
+  
+    <div className="">
+      <Header/>
+      <h1 className="text-5xl font-extrabold text-center p-6 text-black mb-8">My Wishlist</h1>
 
       {wishlist.length === 0 ? (
         <p className="text-center text-gray-600 text-lg">Your wishlist is empty.</p>
@@ -92,12 +96,15 @@ const Wishlist = () => {
               </div>
             </div>
           ))}
+        
         </div>
       )}
 
       <div className="text-center mt-8">
         <Link to="/" className="text-xl font-semibold text-blue-600 hover:text-blue-800 transition underline">← Back to Shop</Link>
       </div>
+      <WhatsAppButton/>
+          <Footer/>
     </div>
   );
 };

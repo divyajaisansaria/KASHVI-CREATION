@@ -9,22 +9,38 @@ import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import ZoomImage from "./zoom-image";
-import InnerImageZoom from "react-inner-image-zoom";
-import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
-
-
+import { Label } from "../ui/label";import { Swiper, SwiperSlide } from "swiper/react"
+import { Navigation, Pagination } from "swiper/modules"
+import "swiper/css"
+import "swiper/css/navigation"
+import "swiper/css/pagination"
+import { useRef } from "react";
 
 function ProductDetailsDialog({ open, setOpen, productDetails }) {
   const [reviewMsg, setReviewMsg] = useState("");
   const [rating, setRating] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [currentImage, setCurrentImage] = useState(0)
+  
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { reviews } = useSelector((state) => state.shopReview);
   const { toast } = useToast();
+  const [showMagnifier, setShowMagnifier] = useState(false);
+const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
+const imageRef = useRef(null);
+
+const MAGNIFIER_SIZE = 200; // Magnifier size
+const ZOOM = 2;
+const handleMouseMove = (e) => {
+  if (!imageRef.current) return;
+
+  const rect = imageRef.current.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  setMagnifierPosition({ x, y });
+};
 
   useEffect(() => {
     if (open && productDetails?._id) {
@@ -154,18 +170,63 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
         className="grid sm:grid-cols-[50%_1fr] max-w-[90vw] sm:max-w-[85vw] lg:max-w-[75vw] overflow-y-auto max-h-[100vh]"
       >
         {/* Product Image (Left) */}
-        <div className="flex items-center justify-center">
-  <InnerImageZoom
-    src={productDetails?.image || "/placeholder.svg"}
-    zoomSrc={productDetails?.image || "/placeholder.svg"}
-    zoomScale={2}  // Adjust zoom level
-    zoomType="click"  // Zoom only when left-clicked
-    className="w-full max-h-[100vh] object-cover shadow-lg"
-    width="100%" 
-    height="auto"
-  />
+        <div className="relative">
+  <Swiper
+    modules={[Navigation, Pagination]}
+    navigation
+    pagination={{ clickable: true }}
+    className="rounded-lg overflow-hidden"
+    onSlideChange={(swiper) => setCurrentImage(swiper.activeIndex)}
+  >
+    {productDetails?.images?.map((img, index) => (
+      <SwiperSlide key={index}>
+        <div
+          className="relative"
+          onMouseEnter={() => setShowMagnifier(true)}
+          onMouseLeave={() => setShowMagnifier(false)}
+          onMouseMove={handleMouseMove}
+          ref={index === currentImage ? imageRef : null}
+        >
+          <img
+            src={img || "/placeholder.svg"}
+            alt={productDetails?.title}
+            className="w-full object-cover aspect-square"
+          />
+          {showMagnifier && index === currentImage && (
+            <div
+              className="absolute pointer-events-none"
+              style={{
+                width: `${MAGNIFIER_SIZE}px`,
+                height: `${MAGNIFIER_SIZE}px`,
+                left: `${magnifierPosition.x - MAGNIFIER_SIZE / 2}px`,
+                top: `${magnifierPosition.y - MAGNIFIER_SIZE / 2}px`,
+                border: "2px solid #fff",
+                borderRadius: "50%",
+                overflow: "hidden",
+                boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+                zIndex: 50,
+              }}
+            >
+              <img
+                src={img || "/placeholder.svg"}
+                alt={productDetails?.title}
+                style={{
+                  width: `${imageRef.current?.offsetWidth * ZOOM}px`,
+                  height: `${imageRef.current?.offsetHeight * ZOOM}px`,
+                  maxWidth: "none",
+                  maxHeight: "none",
+                  position: "absolute",
+                  left: `${-magnifierPosition.x * ZOOM + MAGNIFIER_SIZE / 2}px`,
+                  top: `${-magnifierPosition.y * ZOOM + MAGNIFIER_SIZE / 2}px`,
+                }}
+              />
+            </div>
+          )}
+        </div>
+      </SwiperSlide>
+    ))}
+  </Swiper>
 </div>
-
 
         {/* Product Details (Right) */}
         <div className="overflow-y-auto max-h-[85vh]">

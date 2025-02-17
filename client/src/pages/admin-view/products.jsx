@@ -20,7 +20,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const initialFormData = {
-  image: null,
+  images: null,
   designNumber: "",
   title: "",
   description: "",
@@ -67,7 +67,7 @@ function AdminProducts() {
       : dispatch(
           addNewProduct({
             ...formData,
-            image: uploadedImageUrl,
+            images: uploadedImageUrl,
           })
         ).then((data) => {
           if (data?.payload?.success) {

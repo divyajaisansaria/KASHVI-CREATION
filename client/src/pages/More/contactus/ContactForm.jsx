@@ -4,7 +4,7 @@ import { X } from "lucide-react"
 import { useToast } from "@/components/ui/use-toast"
 import Footer from '../../../components/common/Footer';
 import Head from "../../../components/shopping-view/header";
-
+import WhatsAppButton from "@/components/common/WhatsAppButton";
 const ContactForm = ({ onClose }) => {
   const { toast } = useToast(); // ✅ Moved inside the component
 
@@ -66,6 +66,7 @@ const ContactForm = ({ onClose }) => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Head/>
       <main className="flex-grow flex items-center justify-center bg-gray-50 py-12">
         <div className="w-full max-w-6xl bg-white rounded-lg overflow-hidden flex flex-col md:flex-row h-auto md:h-[600px] mx-4">
           {/* Left Section with Background Image */}
@@ -148,7 +149,7 @@ const ContactForm = ({ onClose }) => {
           </div>
         </div>
       </main>
-
+    <WhatsAppButton/>
       <Footer />
     </div>
   )
