@@ -10,14 +10,15 @@ function ProductImageUpload({
   imageFile,
   setImageFile,
   imageLoadingState,
-  uploadedImageUrl,
-  setUploadedImageUrl,
+  uploadedMediaUrl,
+  setUploadedMediaUrl,
   setImageLoadingState,
   isEditMode,
   isCustomStyling = false,
 }) {
   const inputRef = useRef(null);
   const [files, setFiles] = useState([]);
+
 
   // Handle file changes from input or drag-and-drop
   function handleFileChange(event) {
@@ -61,50 +62,63 @@ function ProductImageUpload({
   }
 
   // Upload files to cloud storage (e.g., Cloudinary)
-  const uploadImagesToCloudinary = useCallback(async () => {
+  const uploadMediaToCloudinary = useCallback(async () => {
     if (files.length === 0) return;
   
     setImageLoadingState(true);
   
     const formData = new FormData();
-    files.forEach((file) => formData.append("images", file));
+    files.forEach((file) => formData.append("media", file));
   
     try {
       console.log("Uploading to backend:", [...formData.entries()]);
   
-      const response = await axios.post("http://localhost:5000/api/admin/products/upload-images", formData, {
+      const response = await axios.post("http://localhost:5000/api/admin/products/upload-media", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
   
       console.log("Response:", response);
   
       if (response?.data?.success) {
-        setUploadedImageUrl(response.data.result.urls);
+        setUploadedMediaUrl(response.data.result.urls);
       } else {
         console.error("Upload failed:", response?.data);
       }
     } catch (error) {
-      console.error("Image upload failed:", error);
+      console.error("Media upload failed:", error);
     } finally {
       setImageLoadingState(false);
     }
-  }, [files, setImageLoadingState, setUploadedImageUrl]);
+  }, [files, setImageLoadingState, setUploadedMediaUrl]);
   
 
   useEffect(() => {
-    if (files.length > 0) uploadImagesToCloudinary();
-  }, [files, uploadImagesToCloudinary]);
+    if (files.length > 0) uploadMediaToCloudinary();
+  }, [files, uploadMediaToCloudinary]);
 
-  // Render previews based on file type (image/video)
+  //preview for image and video
   const renderFilePreview = (file) => {
-    const fileUrl = URL.createObjectURL(file);
-    if (file.type.startsWith("image/")) {
-      return <img src={fileUrl} alt={file.name} className="w-12 h-12 object-cover rounded-md" />;
-    } else {
-      return <FileIcon className="w-12 h-12 text-[#b2966c] flex-shrink-0" />;
-    }
-  };
-
+  const fileUrl = URL.createObjectURL(file);
+  if (file.type.startsWith("image/")) {
+    return (
+      <img
+        src={fileUrl}
+        alt={file.name}
+        className="w-12 h-12 object-cover rounded-md"
+        //onLoad={() => URL.revokeObjectURL(fileUrl)}
+      />
+    );
+  } else if (file.type.startsWith("video/")) {
+    return (
+      <video
+        src={fileUrl}
+        className="w-12 h-12 object-cover rounded-md"
+       // onLoadedMetadata={() => URL.revokeObjectURL(fileUrl)}
+      />
+    );
+  }
+  return <FileIcon className="w-12 h-12 text-[#b2966c] flex-shrink-0" />;
+};
   return (
     <div className={`w-full mt-6 ${isCustomStyling ? "" : "max-w-md mx-auto"}`}>
       <Label className="text-lg font-semibold mb-3 block text-gray-800">Upload Images and Videos</Label>
@@ -117,9 +131,9 @@ function ProductImageUpload({
         } border-2 border-dashed border-[#b2966c] rounded-lg p-6 transition-all duration-200 hover:border-[#8b6b45] hover:bg-[#fff9f0] shadow-sm`}
       >
         <Input
-          id="image-upload"
+          id="media-upload"
           type="file"
-          accept="image/*"
+          accept="image/*,video/*"
           multiple
           className="hidden"
           ref={inputRef}
@@ -128,7 +142,7 @@ function ProductImageUpload({
         />
         {files.length === 0 ? (
           <Label
-            htmlFor="image-upload"
+            htmlFor="media-upload"
             className={`${
               isEditMode ? "cursor-not-allowed" : "cursor-pointer"
             } flex flex-col items-center justify-center min-h-[160px] space-y-3 text-gray-600 hover:text-gray-800`}

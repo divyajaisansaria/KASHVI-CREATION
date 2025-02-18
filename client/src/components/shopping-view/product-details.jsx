@@ -160,7 +160,7 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             className="h-full"
             onSlideChange={(swiper) => setCurrentImage(swiper.activeIndex)}
           >
-            {productDetails?.images?.map((img, index) => (
+            {productDetails?.media?.map((media, index) => (
               <SwiperSlide key={index}>
                 <div
                   className="relative h-full flex items-center justify-center"
@@ -169,45 +169,70 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
                   onMouseMove={handleMouseMove}
                   ref={index === currentImage ? imageRef : null}
                 >
-                  <img
-                    src={img || "/placeholder.svg"}
-                    alt={productDetails?.title}
-                    className="object-contain max-h-full"
-                  />
-                  {showMagnifier && index === currentImage && (
-                    <div
-                      className="absolute pointer-events-none"
-                      style={{
-                        width: `${MAGNIFIER_SIZE}px`,
-                        height: `${MAGNIFIER_SIZE}px`,
-                        left: `${magnifierPosition.x - MAGNIFIER_SIZE / 2}px`,
-                        top: `${magnifierPosition.y - MAGNIFIER_SIZE / 2}px`,
-                        border: "2px solid #fff",
-                        borderRadius: "50%",
-                        overflow: "hidden",
-                        boxShadow: "0 0 10px rgba(0,0,0,0.3)",
-                        zIndex: 50,
-                      }}
-                    >
+                  {
+                    media ? (
+                      media.endsWith(".mp4") || media.endsWith(".mov") ? (
+                        <video
+                          src={media}
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          alt={productDetails?.title}
+                          className="object-contain max-h-full"
+                        />
+                      ) : (
+                        <img
+                          src={media || "/placeholder.svg"}
+                          alt={productDetails?.title}
+                          className="object-contain max-h-full"
+                        />
+                      )
+                    ) : (
                       <img
-                        src={img || "/placeholder.svg"}
+                        src="/placeholder.svg"
                         alt={productDetails?.title}
-                        style={{
-                          width: `${imageRef.current?.offsetWidth * ZOOM}px`,
-                          height: `${imageRef.current?.offsetHeight * ZOOM}px`,
-                          maxWidth: "none",
-                          maxHeight: "none",
-                          position: "absolute",
-                          left: `${-magnifierPosition.x * ZOOM + MAGNIFIER_SIZE / 2}px`,
-                          top: `${-magnifierPosition.y * ZOOM + MAGNIFIER_SIZE / 2}px`,
-                        }}
+                        className="object-contain max-h-full"
                       />
-                    </div>
-                  )}
+                    )
+                  }
+
+{showMagnifier && index === currentImage && media && 
+  (media.endsWith(".jpg") || media.endsWith(".jpeg") || media.endsWith(".png") || media.endsWith(".webp")) && (
+    <div
+      className="absolute pointer-events-none"
+      style={{
+        width: `${MAGNIFIER_SIZE}px`,
+        height: `${MAGNIFIER_SIZE}px`,
+        left: `${magnifierPosition.x - MAGNIFIER_SIZE / 2}px`,
+        top: `${magnifierPosition.y - MAGNIFIER_SIZE / 2}px`,
+        border: "2px solid #fff",
+        borderRadius: "50%",
+        overflow: "hidden",
+        boxShadow: "0 0 10px rgba(0,0,0,0.3)",
+        zIndex: 50,
+      }}
+    >
+      <img
+        src={media || "/placeholder.svg"}
+        alt={productDetails?.title}
+        style={{
+          width: `${imageRef.current?.offsetWidth * ZOOM}px`,
+          height: `${imageRef.current?.offsetHeight * ZOOM}px`,
+          maxWidth: "none",
+          maxHeight: "none",
+          position: "absolute",
+          left: `${-magnifierPosition.x * ZOOM + MAGNIFIER_SIZE / 2}px`,
+          top: `${-magnifierPosition.y * ZOOM + MAGNIFIER_SIZE / 2}px`,
+        }}
+      />
+    </div>
+  )}
+
                 </div>
               </SwiperSlide>
             ))}
-             <style jsx>{`
+            <style jsx>{`
     /* Customizing the navigation buttons */
     .swiper-button-next,
     .swiper-button-prev {
@@ -233,34 +258,34 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             <p className="text-base text-gray-600 my-2">{productDetails?.description || "No description available."}</p>
 
             <div className="mt-6  rounded-lg mb-6">
-      <h2 className="text-xl font-semibold mb-4">Product Specifications</h2>
-      <table className="min-w-full table-auto bg-gray-100">
-        <thead>
-          <tr className="bg-[#F8F4F0] text-left">
-            <th className="px-4 py-2 text-sm font-medium text-gray-700">Specification</th>
-            <th className="px-4 py-2 text-sm font-medium text-gray-700">Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="bg-[#F8F5F0]">
-            <td className="px-4 py-2 text-sm text-gray-600">Category</td>
-            <td className="px-4 py-2 text-sm text-gray-600">{productDetails?.category || "Not Available"}</td>
-          </tr>
-          <tr className="bg-[#F8F4F0]">
-            <td className="px-4 py-2 text-sm text-gray-600">Occasion</td>
-            <td className="px-4 py-2 text-sm text-gray-600">{productDetails?.occasion || "Not Available"}</td>
-          </tr>
-          <tr className="bg-[#F8F5F0]">
-            <td className="px-4 py-2 text-sm text-gray-600">Color</td>
-            <td className="px-4 py-2 text-sm text-gray-600">{productDetails?.color || "Not Available"}</td>
-          </tr>
-          <tr className="bg-[#F8F4F0]">
-            <td className="px-4 py-2 text-sm text-gray-600">Fabric</td>
-            <td className="px-4 py-2 text-sm text-gray-600">{productDetails?.fabric || "Not Available"}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+              <h2 className="text-xl font-semibold mb-4">Product Specifications</h2>
+              <table className="min-w-full table-auto bg-gray-100">
+                <thead>
+                  <tr className="bg-[#F8F4F0] text-left">
+                    <th className="px-4 py-2 text-sm font-medium text-gray-700">Specification</th>
+                    <th className="px-4 py-2 text-sm font-medium text-gray-700">Details</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="bg-[#F8F5F0]">
+                    <td className="px-4 py-2 text-sm text-gray-600">Category</td>
+                    <td className="px-4 py-2 text-sm text-gray-600">{productDetails?.category || "Not Available"}</td>
+                  </tr>
+                  <tr className="bg-[#F8F4F0]">
+                    <td className="px-4 py-2 text-sm text-gray-600">Occasion</td>
+                    <td className="px-4 py-2 text-sm text-gray-600">{productDetails?.occasion || "Not Available"}</td>
+                  </tr>
+                  <tr className="bg-[#F8F5F0]">
+                    <td className="px-4 py-2 text-sm text-gray-600">Color</td>
+                    <td className="px-4 py-2 text-sm text-gray-600">{productDetails?.color || "Not Available"}</td>
+                  </tr>
+                  <tr className="bg-[#F8F4F0]">
+                    <td className="px-4 py-2 text-sm text-gray-600">Fabric</td>
+                    <td className="px-4 py-2 text-sm text-gray-600">{productDetails?.fabric || "Not Available"}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             {/* Star Rating & Average */}
             <div className="mb-6">
               <h3 className="text-xl font-semibold text-gray-800 mb-2">Average Rating</h3>

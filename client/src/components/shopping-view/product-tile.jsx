@@ -78,7 +78,7 @@ function ShoppingProductTile({ product, handleGetProductDetails, handleAddtoCart
         {/* Image Container */}
         <div className="relative overflow-hidden">
           <img
-            src={product?.images[0]}
+            src={product?.media[0]}
             alt={product?.title}
             className="w-full h-[360px] object-cover  transition-transform duration-300 transform group-hover:scale-105"
           />

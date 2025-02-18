@@ -13,7 +13,7 @@ function AdminProductTile({
       <div>
         <div className="relative">
           <img
-            src={product?.images[0]}
+            src={product?.media[0] || 'https://res.cloudinary.com/dpzxcxyqv/image/upload/v1739898388/bujwu2zzbilwtc1l54tt.webp'}
             alt={product?.title}
             className="w-full h-[300px] object-cover rounded-t-lg"
           />

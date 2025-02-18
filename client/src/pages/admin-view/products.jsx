@@ -20,7 +20,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const initialFormData = {
-  images: null,
+  media: null,
   designNumber: "",
   title: "",
   description: "",
@@ -37,7 +37,7 @@ function AdminProducts() {
     useState(false);
   const [formData, setFormData] = useState(initialFormData);
   const [imageFile, setImageFile] = useState(null);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const [uploadedMediaUrl, setUploadedMediaUrl] = useState("");
   const [imageLoadingState, setImageLoadingState] = useState(false);
   const [currentEditedId, setCurrentEditedId] = useState(null);
 
@@ -47,7 +47,16 @@ function AdminProducts() {
 
   function onSubmit(event) {
     event.preventDefault();
-
+    console.log("formdata",formData);
+    if (!uploadedMediaUrl) {
+      // Ensure media URL is available before proceeding
+      toast({
+        title: "Please wait for the media upload to finish",
+        description: "Upload media files before submitting the form",
+        variant: "destructive",
+      });
+      return;
+    }
     currentEditedId !== null
       ? dispatch(
           editProduct({
@@ -67,8 +76,10 @@ function AdminProducts() {
       : dispatch(
           addNewProduct({
             ...formData,
-            images: uploadedImageUrl,
+            media: uploadedMediaUrl,
+           
           })
+          
         ).then((data) => {
           if (data?.payload?.success) {
             dispatch(fetchAllProducts());
@@ -141,8 +152,8 @@ function AdminProducts() {
           <ProductImageUpload
             imageFile={imageFile}
             setImageFile={setImageFile}
-            uploadedImageUrl={uploadedImageUrl}
-            setUploadedImageUrl={setUploadedImageUrl}
+            uploadedMediaUrl={uploadedMediaUrl}
+            setUploadedMediaUrl={setUploadedMediaUrl}
             setImageLoadingState={setImageLoadingState}
             imageLoadingState={imageLoadingState}
             isEditMode={currentEditedId !== null}

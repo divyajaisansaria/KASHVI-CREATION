@@ -1,25 +1,34 @@
-const { uploadMultipleImages } = require("../../helpers/cloudinary");
+const { uploadMultipleMedia } = require("../../helpers/cloudinary");
 const Product = require("../../models/Product");
 
 // ✅ Upload multiple images to Cloudinary
-const handleImageUpload = async (req, res) => {
+const handleMediaUpload = async (req, res) => {
   try {
+    // Check if files are uploaded
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ success: false, message: "No files uploaded" });
     }
 
-    // 🔥 Upload all images to Cloudinary and get URLs
-    const uploadedImageUrls = await uploadMultipleImages(req.files);
+    // Log to check incoming files
+    console.log("Files received for upload:", req.files);
 
+    // Upload all media to Cloudinary and get URLs
+    const uploadedMedia = await uploadMultipleMedia(req.files);
+
+    // Log the uploaded media URLs
+    console.log("Uploaded media URLs:", uploadedMedia);
+
+    // Return success response with URLs of uploaded media
     return res.status(200).json({
       success: true,
-      result: { urls: uploadedImageUrls },
+      result: { urls: uploadedMedia },
     });
   } catch (error) {
-    console.error("Error uploading images:", error);
-    return res.status(500).json({ success: false, message: "Image upload failed" });
+    console.error("Error uploading media:", error);
+    return res.status(500).json({ success: false, message: "Media upload failed" });
   }
 };
+
 
 // ✅ Add a new product with multiple images
 const addProduct = async (req, res) => {
@@ -27,7 +36,7 @@ const addProduct = async (req, res) => {
     console.log("Request Body:", req.body); // Debugging: Log request body
     
     const {
-      images, // Now expects an array of image URLs
+      media, // Now expects an array of image URLs
       designNumber,
       title,
       description,
@@ -39,12 +48,12 @@ const addProduct = async (req, res) => {
       averageReview,
     } = req.body;
 
-    if (!images || !Array.isArray(images) || images.length === 0) {
-      return res.status(400).json({ success: false, message: "At least one image is required" });
+    if (!media || !Array.isArray(media) || media.length === 0) {
+      return res.status(400).json({ success: false, message: "At least one media is required" });
     }
 
     const newProduct = new Product({
-      images, // 🔥 Saving multiple images
+      media, // 🔥 Saving multiple images
       designNumber,
       title,
       description,
@@ -83,7 +92,7 @@ const editProduct = async (req, res) => {
   try {
     const { id } = req.params;
     const {
-      images, // Multiple images
+      media, // Multiple images
       designNumber,
       title,
       description,
@@ -101,7 +110,7 @@ const editProduct = async (req, res) => {
     }
 
     // Update fields only if new values are provided
-    product.images = images || product.images;
+    product.media = media || product.media;
     product.designNumber = designNumber || product.designNumber;
     product.title = title || product.title;
     product.description = description || product.description;
@@ -137,4 +146,4 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-module.exports = { handleImageUpload, addProduct, fetchAllProducts, editProduct, deleteProduct };
+module.exports = { handleMediaUpload, addProduct, fetchAllProducts, editProduct, deleteProduct };
