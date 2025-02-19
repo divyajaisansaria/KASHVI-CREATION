@@ -6,12 +6,14 @@ const mongoose = require("mongoose");
 const mapCartItems = (items) => {
   return items.map((item) => ({
     productId: item.productId ? item.productId._id : null,
-    image: item.productId ? item.productId.image : null,
+    image: item.productId && item.productId.media && item.productId.media.length > 0 ? item.productId.media[0] : null,
     title: item.productId ? item.productId.title : "Product not found",
     designNumber: item.productId ? item.productId.designNumber : null,
     quantity: item.quantity,
   }));
 };
+
+//console.log(mapCartItems);
 
 // Add item to the cart
 const addToCart = async (req, res) => {
@@ -81,7 +83,7 @@ const fetchCartItems = async (req, res) => {
 
     const cart = await Cart.findOne({ userId }).populate({
       path: "items.productId",
-      select: "image title designNumber",
+      select: "image title designNumber media",
     });
 
     if (!cart) {
@@ -149,7 +151,7 @@ const updateCartItemQty = async (req, res) => {
 
     await cart.populate({
       path: "items.productId",
-      select: "image title designNumber",
+      select: "media title designNumber image",
     });
 
     const populateCartItems = mapCartItems(cart.items);
@@ -185,7 +187,7 @@ const deleteCartItem = async (req, res) => {
 
     const cart = await Cart.findOne({ userId }).populate({
       path: "items.productId",
-      select: "image title price salePrice",
+      select: "image title price salePrice media",
     });
 
     if (!cart) {
@@ -200,7 +202,7 @@ const deleteCartItem = async (req, res) => {
 
     await cart.populate({
       path: "items.productId",
-      select: "image title designNumber",
+      select: "image title designNumber media",
     });
 
     const populateCartItems = mapCartItems(cart.items);

@@ -426,7 +426,7 @@ function ShoppingHome() {
             <Swiper
               slidesPerView={1.2}
               spaceBetween={16}
-              navigation={{
+              navigation={{             
                 prevEl: '.swiper-button-prev',
                 nextEl: '.swiper-button-next',
               }}

@@ -111,9 +111,9 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col lg:flex-row space-y-6 lg:space-y-0 lg:space-x-6">
-      {/* Left Section - Form */}
-      <div className="flex-1">
+    <div className="flex flex-col space-y-6">
+      {/* Top Section - Form */}
+      <div className="w-full">
         <Card className="shadow-lg rounded-lg bg-white p-6">
           <CardHeader>
             <CardTitle className="text-xl font-semibold text-gray-800">
@@ -134,8 +134,8 @@ function Address({ setCurrentSelectedAddress, selectedId }) {
         </Card>
       </div>
 
-      {/* Right Section - Address List */}
-      <div className="flex-1">
+      {/* Bottom Section - Address List */}
+      <div className="w-full">
         <Card className="shadow-lg rounded-lg bg-white p-6">
           <CardHeader>
             <CardTitle className="text-xl font-semibold text-gray-800">

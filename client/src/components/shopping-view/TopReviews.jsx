@@ -43,7 +43,7 @@ const TopReviews = () => {
               reviews
                 .filter((review) => review.reviewValue === 5)
                 .map((review, index) => (
-                  <div key={review._id} className={`p-6 shadow-md rounded-lg min-w-[400px] max-w-md ${index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-200'}`}>
+                  <div key={review._id} className={`p-6 shadow-md rounded-lg min-w-[400px] max-w-md ${index % 2 === 0 ? 'bg-gray-50' : 'bg-[#F8F4F0]'}`}>
                     <div className="flex items-center space-x-3">
                       <div className="w-12 h-12 flex items-center justify-center rounded-full bg-gray-300 text-gray-800 font-bold uppercase">
                         {review.userName.charAt(0)}

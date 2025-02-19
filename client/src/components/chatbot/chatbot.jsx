@@ -6,7 +6,7 @@ import { companyInfo } from './companyInfo';
 import './chatBot.css';
 
 const Chatbot = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);  // Default to false, don't open automatically
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   
   // Format current time for the welcome message
@@ -34,10 +34,9 @@ const Chatbot = () => {
   
   const chatBodyRef = useRef();
 
-  // Initial load animation effect
+  // Initial load animation effect (no popup opening)
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsOpen(true);
       setIsInitialLoad(false);
     }, 800); // Slightly faster initial load
 
@@ -91,7 +90,7 @@ const Chatbot = () => {
   };
 
   const toggleChatbot = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(!isOpen);  // Toggle visibility on button click
   };
 
   return (
