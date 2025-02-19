@@ -23,6 +23,7 @@ import AdminProducts from "./pages/admin-view/products";
 import AdminOrders from "./pages/admin-view/orders";
 import AdminFeatures from "./pages/admin-view/features";
 import InquiryPage from "./pages/admin-view/InquiryPage";
+import EmailForm from "./pages/admin-view/EmailForm";  // ✅ Import EmailForm
 
 // Shopping Pages
 import NotFound from "./pages/not-found";
@@ -101,6 +102,7 @@ function App() {
           <Route path="orders" element={<AdminOrders />} />
           <Route path="features" element={<AdminFeatures />} />
           <Route path="inquiries" element={<InquiryPage />} />
+          <Route path="sendEmail" element={<EmailForm />} />  {/* ✅ Added Send Email Route */}
         </Route>
 
         {/* Shopping Routes */}

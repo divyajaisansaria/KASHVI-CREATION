@@ -29,6 +29,7 @@ const contactRoutes = require("./routes/common/contactRoutes");
 const User = require("./models/User"); // ✅ Import User model
 const OTP = require("./models/OTP");   // ✅ Import OTP model from the new file
 
+const emailRoutes = require("./routes/admin/email-routes"); // ✅ Import email routes
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -142,6 +143,9 @@ app.use("/api/common/feature", commonFeatureRouter);
 app.post("/api/send-invoice", sendInvoiceEmail);
 app.use("/api/blogs", blogRouter);
 app.use("/api", contactRoutes);
+
+// ✅ Add Email Routes
+app.use("/api/admin", emailRoutes);
 
 // ✅ Logout Route
 app.post("/api/auth/logout", (req, res) => {

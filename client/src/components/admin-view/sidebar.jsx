@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   ShoppingBasket,
   Mail,
+  Send,
 } from "lucide-react";
 import { Fragment } from "react";
 import { useNavigate } from "react-router-dom";
@@ -35,12 +36,17 @@ const adminSidebarMenuItems = [
     icon: <ChartNoAxesCombined />,
   },
   {
-    id: "inquiries", // Added Inquiry Page
+    id: "inquiries",
     label: "Inquiries",
     path: "/admin/inquiries",
     icon: <Mail />,
   },
-  
+  {
+    id: "send-email",
+    label: "Send Email",
+    path: "/admin/sendEmail",
+    icon: <Send />,
+  },
 ];
 
 function MenuItems({ setOpen }) {
@@ -75,7 +81,6 @@ function AdminSideBar({ open, setOpen }) {
           <div className="flex flex-col  h-full">
             <SheetHeader className="border-b border-[#b2966c]">
               <SheetTitle className="flex gap-2 mt-5 mb-5">
-                {/* <ChartNoAxesCombined size={30} /> */}
                 <h1 className="text-2xl font-extrabold">Admin Panel</h1>
               </SheetTitle>
             </SheetHeader>
@@ -84,12 +89,10 @@ function AdminSideBar({ open, setOpen }) {
         </SheetContent>
       </Sheet>
       <aside className="hidden w-64 flex-col border-r border-[#f8f4f0] bg-[#f8f4f0] p-6 lg:flex">
-
         <div
           onClick={() => navigate("/admin/dashboard")}
           className="flex cursor-pointer items-center gap-2 border-b pb-4 border-[#b2966c]"
         >
-          {/* <ChartNoAxesCombined size={30} /> */}
           <h1 className="text-2xl text-center font-extrabold">Admin Panel</h1>
         </div>
         <MenuItems />
