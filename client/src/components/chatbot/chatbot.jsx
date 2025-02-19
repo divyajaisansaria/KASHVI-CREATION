@@ -3,25 +3,70 @@ import ChatbotIcon from './chatboticon';
 import ChatForm from './chatform';
 import ChatMessage from './chatMessage';
 import { companyInfo } from './companyInfo';
-import './chatBot.css'; 
+import './chatBot.css';
+
 const Chatbot = () => {
-  const [chatHistory, setChatHistory] = useState([{
-    hideInChat: true,
-    role: "model",
-    text: companyInfo
-  }]);
-  
-  // Add state for managing chatbot visibility
   const [isOpen, setIsOpen] = useState(false);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  
+  // Format current time for the welcome message
+  const formatDateTime = () => {
+    const date = new Date();
+    return date.toLocaleTimeString('en-US', { 
+      hour: 'numeric', 
+      minute: '2-digit',
+      hour12: true 
+    });
+  };
+  
+  const [chatHistory, setChatHistory] = useState([
+    {
+      hideInChat: true,
+      role: "model",
+      text: companyInfo
+    },
+    {
+      role: "model",
+      text: `Hi ${window?.userInfo?.login || 'user' } 
+      Welcome to Kashvi Creations! 👋 `
+    }
+  ]);
+  
   const chatBodyRef = useRef();
 
-  const generateBotResponse = async(history)=>{
-    const updateHistory = (text)=>{
-      setChatHistory((prev) => [...prev.filter((msg) => msg.text !== "Thinking...."),
-        { role: "model", text }]);
+  // Initial load animation effect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsOpen(true);
+      setIsInitialLoad(false);
+    }, 800); // Slightly faster initial load
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Auto-scroll effect
+  useEffect(() => {
+    if (isOpen && chatBodyRef.current) {
+      const scrollTimer = setTimeout(() => {
+        chatBodyRef.current.scrollTo({
+          top: chatBodyRef.current.scrollHeight,
+          behavior: "smooth"
+        });
+      }, 100);
+
+      return () => clearTimeout(scrollTimer);
+    }
+  }, [chatHistory, isOpen]);
+
+  const generateBotResponse = async(history) => {
+    const updateHistory = (text) => {
+      setChatHistory((prev) => [
+        ...prev.filter((msg) => msg.text !== "Thinking...."),
+        { role: "model", text }
+      ]);
     }
 
-    history = history.map(({role,text}) => ({role,parts: [{text}]}));
+    history = history.map(({role, text}) => ({role, parts: [{text}]}));
 
     const requestOptions = {
       method: "POST",
@@ -34,7 +79,9 @@ const Chatbot = () => {
       const data = await response.json();
       if(!response.ok) throw new Error(data.error.message || "Something went wrong!");
 
-      const apiResponseText = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g,"$1").trim();
+      const apiResponseText = data.candidates[0].content.parts[0].text
+        .replace(/\*\*(.*?)\*\*/g, "$1")
+        .trim();
       updateHistory(apiResponseText);
 
     } catch(error) {
@@ -42,27 +89,16 @@ const Chatbot = () => {
       return;
     }
   };
-  
-  useEffect(()=>{
-    if (isOpen && chatBodyRef.current) {
-      chatBodyRef.current.scrollTo({
-        top: chatBodyRef.current.scrollHeight,
-        behavior: "smooth"
-      });
-    }
-  },[chatHistory, isOpen]);
 
-  // Toggle function for opening/closing chatbot
   const toggleChatbot = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <div className='container'>
-      {/* Floating button to open chat when closed */}
+    <div className='chatbot-container'>
       {!isOpen && (
         <button 
-          className="chat-toggle-button"
+          className={`chat-toggle-button ${isInitialLoad ? 'initial-load' : ''}`}
           onClick={toggleChatbot}
           aria-label="Open chat"
         >
@@ -70,11 +106,11 @@ const Chatbot = () => {
         </button>
       )}
       
-      <div className={`chatbot-popup ${isOpen ? 'open' : ''}`}>
+      <div className={`chatbot-popup ${isOpen ? 'open' : ''} ${isInitialLoad ? 'initial-load' : ''}`}>
         <div className='chatbot-header'>
           <div className='header-info'>
             <ChatbotIcon />
-            <h2 className="logo-text">Chatbot</h2>
+            <h2 className="logo-text">Kashvi's Bot</h2>
           </div>
           <button 
             type="button" 
@@ -86,15 +122,7 @@ const Chatbot = () => {
         </div>
 
         <div ref={chatBodyRef} className="chat-body">
-          <div className="message bot-message">
-            <ChatbotIcon />
-            <p className="message-text">
-              Hey there<br />
-              How can i help you today?
-            </p>
-          </div>
-
-          {chatHistory.map((chat,index)=>(
+          {chatHistory.map((chat, index) => (
             <ChatMessage key={index} chat={chat}/>
           ))}
         </div>

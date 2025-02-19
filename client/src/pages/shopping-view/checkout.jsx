@@ -20,7 +20,6 @@ function ShoppingCheckout() {
   const totalCartAmount = cartItems?.items?.reduce(
     (sum, currentItem) =>
       sum +
-      (currentItem?.salePrice > 0 ? currentItem?.salePrice : currentItem?.price) *
         currentItem?.quantity,
     0
   ) || 0;
@@ -38,10 +37,10 @@ function ShoppingCheckout() {
     const orderData = {
       userId: user?._id,
       cartId: cartItems?._id,
-      cartItems: cartItems.items.map(({ productId, title, image, quantity }) => ({
+      cartItems: cartItems.items.map(({ productId, title, media, quantity }) => ({
         productId,
         title,
-        image,
+        media,
         quantity,
       })),
       addressInfo: {
@@ -89,8 +88,8 @@ function ShoppingCheckout() {
           ))}
           <div className="mt-8 space-y-4">
             <div className="flex justify-between">
-              <span className="font-bold">Total</span>
-              <span className="font-bold">${totalCartAmount}</span>
+              <span className="font-bold">Total Quantity</span>
+              <span className="font-bold">{totalCartAmount}</span>
             </div>
           </div>
           <div className="mt-4 w-full flex flex-col gap-3">
