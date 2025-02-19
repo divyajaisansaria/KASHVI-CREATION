@@ -32,7 +32,7 @@ export const getReviews = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       console.log("🔵 Fetching reviews for product:", id);
-      const response = await axios.get(`http://localhost:5000/api/shop/review/${id}`);
+      const response = await axios.get(`http://localhost:5000/api/shop/review/product/${id}`);
       console.log("✅ Fetched reviews:", response.data);
       return response.data;
     } catch (error) {

@@ -1,19 +1,19 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import React from "react";
 import { useReactToPrint } from "react-to-print";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import logo from "../../assets/logo.jpg";
+const logo = "https://res.cloudinary.com/doytxxdrl/image/upload/v1739795142/logo_xk1opa.jpg"
 
 const InvoicePreview = () => {
     const invoiceRef = useRef();
     const location = useLocation();
+    const navigate = useNavigate();
     const { user, currentSelectedAddress, cartItems } = location.state || {};
     const orderId = location.state?.orderId; // Get orderId from the location state
-    
-
 
     const invoiceDate = new Date().toLocaleDateString();
     const orderDate = new Date().toLocaleDateString();
@@ -36,6 +36,8 @@ const InvoicePreview = () => {
     };
 
     const sendInvoiceByEmail = async () => {
+        if (!user?.email || !invoiceRef.current) return;
+
         try {
             const response = await fetch("http://localhost:5000/api/send-invoice", {
                 method: "POST",
@@ -47,18 +49,25 @@ const InvoicePreview = () => {
             });
 
             const data = await response.json();
-            
 
             if (response.ok) {
                 toast.success("✅ Invoice sent successfully!", { autoClose: 3000 });
             } else {
                 toast.error(`❌ Error: ${data.message}`, { autoClose: 3000 });
             }
-            
         } catch (error) {
             toast.error("❌ Failed to send email. Try again!", { autoClose: 3000 });
         }
     };
+
+    // Trigger sending email when the page loads OR when orderId changes (new order placed)
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            sendInvoiceByEmail();
+        }, 1000); // Small delay to ensure invoiceRef content is available
+
+        return () => clearTimeout(timer); // Cleanup on unmount
+    }, [orderId]);
 
     return (
         <div className="p-5 text-center font-sans">
@@ -99,29 +108,29 @@ const InvoicePreview = () => {
                 </div>
 
                 <table className="w-full border-collapse mt-5">
-    <thead>
-        <tr>
-            <th className="border border-gray-300 p-2 w-1/6 text-left">Product ID</th>  {/* Smaller Width */}
-            <th className="border border-gray-300 p-2 w-3/5 text-left">Title</th>  {/* Larger Width */}
-            <th className="border border-gray-300 p-2 w-1/6 text-left">Qty</th>  {/* Smaller Width */}
-        </tr>
-    </thead>
-    <tbody>
-        {cartItems?.items?.length > 0 ? (
-            cartItems.items.map((item, index) => (
-                <tr key={index}>
-                    <td className="border border-gray-300 p-2 w-1/6">{item.productId}</td>
-                    <td className="border border-gray-300 p-2 w-3/5">{item.title}</td>
-                    <td className="border border-gray-300 p-2 w-1/6">{item.quantity}</td>
-                </tr>
-            ))
-        ) : (
-            <tr>
-                <td colSpan="3" className="text-center p-3">No items in cart</td>
-            </tr>
-        )}
-    </tbody>
-</table>
+                    <thead>
+                        <tr>
+                            <th className="border border-gray-300 p-2 w-1/6 text-left">Product ID</th>  {/* Smaller Width */}
+                            <th className="border border-gray-300 p-2 w-3/5 text-left">Title</th>  {/* Larger Width */}
+                            <th className="border border-gray-300 p-2 w-1/6 text-left">Qty</th>  {/* Smaller Width */}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {cartItems?.items?.length > 0 ? (
+                            cartItems.items.map((item, index) => (
+                                <tr key={index}>
+                                    <td className="border border-gray-300 p-2 w-1/6">{item.productId}</td>
+                                    <td className="border border-gray-300 p-2 w-3/5">{item.title}</td>
+                                    <td className="border border-gray-300 p-2 w-1/6">{item.quantity}</td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="3" className="text-center p-3">No items in cart</td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
 
             </div>
 
@@ -135,23 +144,16 @@ const InvoicePreview = () => {
                         <img src="/icons/download.svg" alt="Download Icon" className="w-5 h-5 mr-2" />
                         Download PDF
                     </button>
-                    <button onClick={sendInvoiceByEmail} className="flex items-center justify-center bg-[#0a373b] hover:bg-[#085b60] text-white py-2 w-52 border-none cursor-pointer rounded-lg shadow-md transition duration-300">
-                        <img src="/icons/email.svg" alt="Email Icon" className="w-5 h-5 mr-2" />
-                        Send Invoice via Email
+                    <button
+                        onClick={() => navigate("/shop/home")}
+                        className="flex items-center justify-center bg-[#0a373b] hover:bg-[#085b60] text-white py-2 w-52 border-none cursor-pointer rounded-lg shadow-md transition duration-300"
+                    >
+                        <img src="/icons/home.svg" alt="Home Icon" className="w-5 h-5 mr-2" />
+                        Go to Home
                     </button>
                 </div>
             </div>
-
-
         </div>
-
-
-
-
-
-
-
-
     );
 };
 

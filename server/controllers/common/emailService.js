@@ -27,11 +27,11 @@ exports.sendInvoiceEmail = async (req, res) => {
             <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
                 <div style="max-width: 600px; background: #fff; padding: 20px; margin: auto; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1);">
                     <div style="text-align: center;">
-                        <img src="https://your-logo-url.com/logo.png" alt="Kashvi Creations" style="max-width: 150px; margin-bottom: 10px;">
+                        <img src="https://your-logo-url.com/logo.png" alt="Kashvi Creations" style="max-width: 50px; margin-bottom: 10px;">
                         <h2 style="color: #333;">Invoice from Kashvi Creations</h2>
                     </div>
                     
-                    <p style="font-size: 16px; color: #555;">Dear Customer,</p>
+                    <p style="font-size: 16px; color: #555;">Dear Customer, your order has been placed successfully</p>
                     
                     <div style="border: 1px solid #ddd; padding: 15px; border-radius: 8px; background: #f9f9f9;">
                         ${invoiceHtml}

@@ -233,17 +233,15 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
               </SwiperSlide>
             ))}
             <style jsx>{`
-    /* Customizing the navigation buttons */
-    .swiper-button-next,
-    .swiper-button-prev {
-      color:#0a373b ; 
+              .swiper-button-next,
+              .swiper-button-prev {
+                color: #0a373b;
+              }
 
-             }
-
-    .swiper-pagination-bullet-active {
-      background-color: #0a373b ; /* Orange for the active dot */
-    }
-  `}</style>
+              .swiper-pagination-bullet-active {
+                background-color: #0a373b;
+              }
+            `}</style>
           </Swiper>
         </div>
 
@@ -290,17 +288,10 @@ function ProductDetailsDialog({ open, setOpen, productDetails }) {
             <div className="mb-6">
               <h3 className="text-xl font-semibold text-gray-800 mb-2">Average Rating</h3>
               <div className="flex items-center gap-3 rounded-sm">
-                <StarRatingComponent
-                  rating={averageReview}
-                  className="flex gap-1 text-yellow-500"
-                />
-                <span className="text-gray-800 text-sm">
-                  ({averageReview.toFixed(2)})
-                </span>
+                <StarRatingComponent rating={averageReview} className="flex gap-1 text-yellow-500" />
+                <span className="text-gray-800 text-sm">({averageReview.toFixed(2)})</span>
               </div>
             </div>
-
-
 
             <Button
               className="w-full bg-[#0a373b] hover:bg-[#085b60] text-white font-bold text-base py-2"

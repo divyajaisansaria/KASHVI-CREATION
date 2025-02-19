@@ -6,8 +6,7 @@ import UserCartItemsContent from "@/components/shopping-view/cart-items-content"
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { createNewOrder } from "@/store/shop/order-slice";
-// import { emptyCart } from "@/store/shop/cart-slice"; // Uncomment if needed
-import img from "../../assets/account.jpg";
+import { emptyCart } from "@/store/shop/cart-slice"; // Uncommented this line
 
 function ShoppingCheckout() {
   const { cartItems } = useSelector((state) => state.shopCart);
@@ -16,6 +15,7 @@ function ShoppingCheckout() {
   const dispatch = useDispatch();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const img="https://res.cloudinary.com/doytxxdrl/image/upload/v1739934597/Screenshot_2025-02-19_083638_y6f8ht.png"
 
   const totalCartAmount = cartItems?.items?.reduce(
     (sum, currentItem) =>
@@ -62,7 +62,7 @@ function ShoppingCheckout() {
       .then((data) => {
         if (data?.payload?.success) {
           toast({ title: "Order placed successfully." });
-          // dispatch(emptyCart()); // Uncomment if cart should be emptied
+          dispatch(emptyCart()); // Dispatch emptyCart to remove items from the cart
           navigate("/shop/checkout/invoice", {
             state: { user, currentSelectedAddress, cartItems, orderId: data.payload.orderId },
           });

@@ -99,4 +99,3 @@ const getTopReviews = async (req, res) => {
 
 module.exports = { addProductReview, getProductReviews, getTopReviews };
 
-// module.exports = { addProductReview, getProductReviews };

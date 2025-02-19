@@ -50,13 +50,11 @@ const TopReviews = () => {
                       </div>
                       <div>
                         <h3 className="font-semibold text-gray-800">{review.userName}</h3>
-                        <p className="text-sm text-gray-500">from {review.userLocation}</p>
                       </div>
                     </div>
                     <p className="mt-2 font-semibold">{review.reviewTitle}</p>
                     <p className="text-gray-600 text-sm mt-1">{review.reviewMessage}</p>
                     <div className="text-yellow-500 mt-2">★★★★★</div>
-                    <p className="text-gray-400 text-xs mt-2">{new Date(review.reviewDate).toDateString()}</p>
                   </div>
                 ))
             ) : (
