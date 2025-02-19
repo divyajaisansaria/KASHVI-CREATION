@@ -5,6 +5,7 @@ import img1 from '../../components/images/19491-2.png';
 import Footer from '../../components/common/Footer';
 import Head from "../../components/shopping-view/header";
 import WhatsAppButton from "../../components/common/WhatsAppButton";
+import Chatbot from '@/components/chatbot/chatbot';
 const AboutUs = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -281,6 +282,7 @@ const AboutUs = () => {
       </div>
       {/* Enhanced Footer */}
       <div className="fixed bottom-4 right-4 z-50">
+        <Chatbot/>
     <WhatsAppButton />
   </div>
       <Footer />

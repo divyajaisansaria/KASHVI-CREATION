@@ -10,7 +10,7 @@ const WhatsAppButton = () => {
 
   return (
     <div
-      className="fixed bottom-6 right-6 cursor-pointer flex items-center justify-center transition-all duration-300"
+      className="fixed bottom-6 right-6 z-50 cursor-pointer flex items-center justify-center transition-all duration-300"
       onClick={handleClick}
       style={{ width: "70px", height: "70px" }}
     >

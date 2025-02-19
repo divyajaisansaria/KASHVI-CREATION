@@ -23,12 +23,10 @@ const shopReviewRouter = require("./routes/shop/review-routes");
 const commonFeatureRouter = require("./routes/common/feature-routes");
 const { sendInvoiceEmail } = require("./controllers/common/emailService");
 const contactRoutes = require("./routes/common/contactRoutes");
-
 const User = require("./models/User"); // ✅ Import User model
 const OTP = require("./models/OTP");   // ✅ Import OTP model from the new file
 
 const emailRoutes = require("./routes/admin/email-routes"); // ✅ Import email routes
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 

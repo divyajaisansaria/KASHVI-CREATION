@@ -3,7 +3,7 @@ import Footer from "../../components/common/Footer";
 import { BookText, Scale, ShoppingBag, CreditCard, RefreshCcw, Copyright, GavelIcon, FileText, BoxIcon, TruckIcon } from "lucide-react";
 import Head from "../../components/shopping-view/header";
 import WhatsAppButton from "../../components/common/WhatsAppButton";
-
+import Chatbot from "@/components/chatbot/chatbot";
 const TermsConditions = () => {
   const sectionsRef = useRef([]);
 
@@ -141,10 +141,10 @@ const TermsConditions = () => {
           </p>
         </div>
       </main>
+      <Chatbot />
       <WhatsAppButton />
       <Footer />
     </div>
   );
 };
-
 export default TermsConditions;

@@ -50,6 +50,7 @@ import WhatsAppButton from "./components/common/WhatsAppButton";
 import Invoice from "./pages/Invoice/Invoice";
 import ContactUs from "./pages/More/contactus/ContactForm";
 
+
 function App() {
   const { user, isAuthenticated, isLoading } = useSelector(
     (state) => state.auth
@@ -102,6 +103,7 @@ function App() {
           <Route path="features" element={<AdminFeatures />} />
           <Route path="inquiries" element={<InquiryPage />} />
           <Route path="sendEmail" element={<EmailForm />} />  {/* ✅ Added Send Email Route */}
+          
         </Route>
 
         {/* Shopping Routes */}
@@ -140,6 +142,7 @@ function App() {
         <Route path="/whatsappbutton" element={<WhatsAppButton />} />
         <Route path="shop/checkout/invoice" element={<Invoice />} />
         <Route path="/contactus" element={<ContactUs />} />
+        
       </Routes>
     </div>
   );

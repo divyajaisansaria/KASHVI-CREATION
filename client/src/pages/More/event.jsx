@@ -4,6 +4,7 @@ import { Calendar, MapPin, Clock, ArrowRight } from "lucide-react"
 import Footer from '../../components/common/Footer';
 import Head from "../../components/shopping-view/header";
 import WhatsAppButton from "../../components/common/WhatsAppButton";
+import Chatbot from '@/components/chatbot/chatbot';
 export default function Events() {
   const events = [
     {
@@ -92,6 +93,7 @@ export default function Events() {
             </motion.div>
           ))}
         </div>
+        <Chatbot/>
         <WhatsAppButton/>
         <Footer />
       </div>

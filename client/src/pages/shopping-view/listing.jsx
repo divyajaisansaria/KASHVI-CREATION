@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
 import Footer from "@/components/common/Footer";
+import Chatbot from "@/components/chatbot/chatbot";
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
 
@@ -216,6 +217,7 @@ function ShoppingListing() {
         productDetails={productDetails}
       />
       </div>
+      <Chatbot/>
       <WhatsAppButton/>
       <Footer/>
     </div>

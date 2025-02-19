@@ -3,7 +3,7 @@ import Footer from "../../components/common/Footer";
 import { Lock, Shield, Database, Share2, Cookie, Key, UserCheck } from "lucide-react";
 import Head from "../../components/shopping-view/header";
 import WhatsAppButton from "../../components/common/WhatsAppButton";
-
+import Chatbot from "@/components/chatbot/chatbot";
 const PrivacyPolicy = () => {
   const sectionsRef = useRef([]);
 
@@ -136,6 +136,7 @@ const PrivacyPolicy = () => {
           </p>
         </div>
       </main>
+      <Chatbot />
       <WhatsAppButton />
       <Footer />
     </div>

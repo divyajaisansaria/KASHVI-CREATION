@@ -3,7 +3,7 @@ import Footer from "../../components/common/Footer";
 import { ShieldAlert, ScrollText, ExternalLink, Scale, Tag, Clock } from "lucide-react";
 import Head from "../../components/shopping-view/header";
 import WhatsAppButton from "../../components/common/WhatsAppButton";
-
+import Chatbot from "@/components/chatbot/chatbot";
 const Disclaimer = () => {
   const sectionsRef = useRef([]);
 
@@ -123,6 +123,7 @@ const Disclaimer = () => {
           </p>
         </div>
       </main>
+      <Chatbot/>
       <WhatsAppButton />
       <Footer />
     </div>

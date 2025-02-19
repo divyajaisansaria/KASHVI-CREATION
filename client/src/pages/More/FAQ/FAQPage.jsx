@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp, Search, Layers, CreditCard, FileText, Mail, Lightbulb, UserPlus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import Chatbot from "./chatbot";
+import Chatbot from '@/components/chatbot/chatbot';
 import Head from "../../../components/shopping-view/header";
 import Footer from "@/components/common/Footer";
 import WhatsAppButton from "../../../components/common/WhatsAppButton";
@@ -34,9 +34,7 @@ const FAQPage = () => {
         <h1 className="text-4xl font-extrabold text-gray-900 mb-4 text-center">Frequently Asked Questions</h1>
         <p className="text-gray-700 mt-2 text-center">
           Can’t find what you’re looking for?{" "}
-          <button onClick={() => setIsChatbotOpen(!isChatbotOpen)} className="text-blue-600 underline">
-            Chat with us!
-          </button>
+          
         </p>
 
         {isChatbotOpen && (
@@ -119,6 +117,7 @@ const FAQPage = () => {
           </div>
         </div>
       </div>
+      <Chatbot />
       <WhatsAppButton />
       <Footer />
     </div>

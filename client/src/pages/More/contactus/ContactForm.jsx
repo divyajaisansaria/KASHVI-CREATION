@@ -5,6 +5,7 @@ import { useToast } from "@/components/ui/use-toast"
 import Footer from '../../../components/common/Footer';
 import Head from "../../../components/shopping-view/header";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
+import Chatbot from "../../../components/chatbot/chatbot";
 const ContactForm = ({ onClose }) => {
   const { toast } = useToast(); // ✅ Moved inside the component
 
@@ -149,6 +150,7 @@ const ContactForm = ({ onClose }) => {
           </div>
         </div>
       </main>
+      <Chatbot/>
     <WhatsAppButton/>
       <Footer />
     </div>

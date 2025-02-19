@@ -47,7 +47,7 @@ Welcome to Kashvi Creation, where tradition meets elegance! Our chatbot is here 
 Details:
 Kashvi Creation is your ultimate destination for luxurious and exclusive designer sarees. We specialize in creating timeless pieces that reflect the art of Indian craftsmanship, with intricate designs and rich fabrics that tell a story of tradition and modernity. From grand weddings to intimate celebrations, our sarees are crafted to make every moment unforgettable.
 
-Located in the heart of the vibrant city of Mumbai, Maharashtra, our boutique is a space where fashion and heritage blend seamlessly. Visit us at 123 Saree Lane, Mumbai, MH 400001. Our boutique is open Monday to Saturday from 10:00 AM to 8:00 PM, and on Sundays from 11:00 AM to 6:00 PM.
+Located in the heart of the vibrant city of Surat, Gujarat, our boutique is a space where fashion and heritage blend seamlessly. Shop No.113, Millennium Textile Market - 2, Ring Road, Surat - 395002. Our boutique is open Monday to Saturday from 10:00 AM to 8:00 PM, and on Sundays from 11:00 AM to 6:00 PM.
 
 Stay connected with us and be the first to know about our latest collections, offers, and exclusive events:
 
@@ -55,7 +55,7 @@ Facebook: https://facebook.com/kashvicreation
 Instagram: https://instagram.com/kashvicreation
 Pinterest: https://pinterest.com/kashvicreation
 Twitter: https://twitter.com/kashvicreation
-For inquiries, feel free to reach out via email at hello@kashvicreation.com or call us at +91 123-456-7890.
+For inquiries, feel free to reach out via email at hello@kashvicreation.com or call us at +91 93784 21333.
 
 Explore our curated collection on our website: https://www.kashvicreation.com. Here, you can shop for exclusive sarees, learn about the different types of fabrics, browse styling tips, and even book a personalized consultation to find your dream saree.
 
@@ -87,8 +87,13 @@ Designer Blouses
 Custom-made Saree Fall
 Saree Bags & Storage
 At Kashvi Creation, we believe every saree is a masterpiece that speaks of elegance, tradition, and individuality. Our designer sarees are thoughtfully crafted to make you feel special, no matter the occasion. Whether you're a bride-to-be, attending a family gathering, or looking to elevate your everyday wardrobe, Kashvi Creation promises to offer you a timeless piece that reflects your unique sense of style.
-
-
+"Welcome to KASHVI-CREATION! How can I assist you today? 😊",
+"Looking for the perfect saree? I'm here to help! Ask me anything."
+"Would you like to explore our latest saree collections?",
+"Tell me your preferred color, fabric, or occasion, and I’ll suggest some sarees!",
+"Need help with blouse stitching or saree draping tips? I can guide you."
+ "Enter your order number, and I’ll fetch the tracking details for you.",
+"Need help placing an order? Let
 
 
 

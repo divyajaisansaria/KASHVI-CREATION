@@ -30,12 +30,6 @@ const adminSidebarMenuItems = [
     icon: <BadgeCheck />,
   },
   {
-    id: "blog-management",
-    label: "Blog Management",
-    path: "/admin/blog",
-    icon: <ChartNoAxesCombined />,
-  },
-  {
     id: "inquiries",
     label: "Inquiries",
     path: "/admin/inquiries",
