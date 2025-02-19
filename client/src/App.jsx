@@ -46,7 +46,6 @@ import Disclaimer from "./pages/user-policy/Disclaimer";
 import AboutUs from "./pages/More/AboutUs";
 import FAQ from "./pages/More/FAQ/FAQPage";
 import Event from "./pages/More/event";
-import Blog from "./pages/More/blogpage/index";
 import WhatsAppButton from "./components/common/WhatsAppButton";
 import Invoice from "./pages/Invoice/Invoice";
 import ContactUs from "./pages/More/contactus/ContactForm";
@@ -138,7 +137,6 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/reach-us/contact-page" element={<ContactUs />} />
         <Route path="/event" element={<Event />} />
-        <Route path="/blog" element={<Blog />} />
         <Route path="/whatsappbutton" element={<WhatsAppButton />} />
         <Route path="shop/checkout/invoice" element={<Invoice />} />
         <Route path="/contactus" element={<ContactUs />} />

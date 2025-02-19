@@ -22,8 +22,6 @@ const shopReviewRouter = require("./routes/shop/review-routes");
 
 const commonFeatureRouter = require("./routes/common/feature-routes");
 const { sendInvoiceEmail } = require("./controllers/common/emailService");
-
-const blogRouter = require("./routes/common/blogRoutes");
 const contactRoutes = require("./routes/common/contactRoutes");
 
 const User = require("./models/User"); // ✅ Import User model
@@ -141,7 +139,6 @@ app.use("/api/shop/review", shopReviewRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
 app.post("/api/send-invoice", sendInvoiceEmail);
-app.use("/api/blogs", blogRouter);
 app.use("/api", contactRoutes);
 
 // ✅ Add Email Routes
