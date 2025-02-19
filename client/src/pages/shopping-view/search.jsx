@@ -13,18 +13,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import Footer from "@/components/common/Footer";
 import WhatsAppButton from "@/components/common/WhatsAppButton";
+
 function SearchProducts() {
   const [keyword, setKeyword] = useState("");
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useDispatch();
-  const { searchResults } = useSelector((state) => state.shopSearch);
+  const { searchResults = [] } = useSelector((state) => state.shopSearch);
   const { productDetails } = useSelector((state) => state.shopProducts);
 
   const { user } = useSelector((state) => state.auth);
 
   const { cartItems } = useSelector((state) => state.shopCart);
   const { toast } = useToast();
+
   useEffect(() => {
     if (keyword && keyword.trim() !== "" && keyword.trim().length > 3) {
       setTimeout(() => {
@@ -37,7 +39,7 @@ function SearchProducts() {
     }
   }, [keyword]);
 
-  console.log("search",searchResults);
+  console.log("search", searchResults);
 
   function handleAddtoCart(getCurrentProductId, getTotalStock) {
     console.log(cartItems);
@@ -89,48 +91,47 @@ function SearchProducts() {
 
   return (
     <div className="">
-    <div className="container min-h-screen mx-auto md:px-6 px-4 py-8">
-      <div className="flex justify-center mb-8">
-        <div className="w-full flex items-center">
-          <Input
-            value={keyword}
-            name="keyword"
-            onChange={(event) => setKeyword(event.target.value)}
-            className="py-6"
-            placeholder="Search Products..."
-          />
+      <div className="container min-h-screen mx-auto md:px-6 px-4 py-8">
+        <div className="flex justify-center mb-8">
+          <div className="w-full flex items-center">
+            <Input
+              value={keyword}
+              name="keyword"
+              onChange={(event) => setKeyword(event.target.value)}
+              className="py-6"
+              placeholder="Search Products..."
+            />
+          </div>
         </div>
-      </div>
-      {!searchResults.length ? (
-         <div className="flex flex-col items-center justify-center mt-10">
-         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-700">
-           No results found!
-         </h1>
-         <p className="text-gray-500 mt-2">Try searching for something else.</p>
-       </div>
+        {!searchResults.length ? (
+          <div className="flex flex-col items-center justify-center mt-10">
+            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-700">
+              No results found!
+            </h1>
+            <p className="text-gray-500 mt-2">
+              Try searching for something else.
+            </p>
+          </div>
+        ) : null}
 
-      ) : null}
-      
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-        {searchResults.map((item) => (
-          <ShoppingProductTile
-            handleAddtoCart={handleAddtoCart}
-            product={item}
-            handleGetProductDetails={handleGetProductDetails}
-          />
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+          {searchResults.map((item) => (
+            <ShoppingProductTile
+              handleAddtoCart={handleAddtoCart}
+              product={item}
+              handleGetProductDetails={handleGetProductDetails}
+            />
+          ))}
+        </div>
+        <ProductDetailsDialog
+          open={openDetailsDialog}
+          setOpen={setOpenDetailsDialog}
+          productDetails={productDetails}
+        />
       </div>
-      <ProductDetailsDialog
-        open={openDetailsDialog}
-        setOpen={setOpenDetailsDialog}
-        productDetails={productDetails}
-      />
-      
+      <WhatsAppButton />
+      <Footer />
     </div>
-    <WhatsAppButton/>
-    <Footer/>
-    </div>
-    
   );
 }
 
