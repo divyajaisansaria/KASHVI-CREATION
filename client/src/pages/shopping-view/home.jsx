@@ -18,7 +18,7 @@ import { fetchAllFilteredProducts, fetchProductDetails } from "@/store/shop/prod
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice"
 import { getFeatureImages } from "@/store/common-slice"
 import WhatsAppButton from "@/components/common/WhatsAppButton"
-
+import Chatbot from "@/components/chatbot/chatbot"
 
 
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -612,8 +612,9 @@ function ShoppingHome() {
 
 
 <VideoBackground/>
-      <TrustSection />
       <TopReviews/>
+      <TrustSection />
+      <Chatbot/>
       <WhatsAppButton />
       <Footer />
     </div>

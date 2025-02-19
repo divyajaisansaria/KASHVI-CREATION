@@ -55,6 +55,7 @@
     "react-toastify": "^11.0.3",
     "reactstrap": "^9.2.3",
     "redux-persist": "^6.0.0",
+    "styled-components": "^6.1.15",
     "swiper": "^11.2.4",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
