@@ -87,14 +87,5 @@ Designer Blouses
 Custom-made Saree Fall
 Saree Bags & Storage
 At Kashvi Creation, we believe every saree is a masterpiece that speaks of elegance, tradition, and individuality. Our designer sarees are thoughtfully crafted to make you feel special, no matter the occasion. Whether you're a bride-to-be, attending a family gathering, or looking to elevate your everyday wardrobe, Kashvi Creation promises to offer you a timeless piece that reflects your unique sense of style.
-"Welcome to KASHVI-CREATION! How can I assist you today? 😊",
-"Looking for the perfect saree? I'm here to help! Ask me anything."
-"Would you like to explore our latest saree collections?",
-"Tell me your preferred color, fabric, or occasion, and I’ll suggest some sarees!",
-"Need help with blouse stitching or saree draping tips? I can guide you."
- "Enter your order number, and I’ll fetch the tracking details for you.",
-"Need help placing an order? Let
-
-
 
 `;
