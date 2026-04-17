@@ -25,7 +25,7 @@ The platform includes an admin dashboard and a client-side interface, offering f
 - **Invoice Generation:** Automatic invoice creation when an order is placed.
 
 ## Tech Stack
-- **Frontend:** React.js (with Vite for fast development and optimization)
+- **Frontend:** React.js (with Vite for fast development and optimizations)
 - **Backend:** Node.js with Express.js
 - **Database:** MongoDB for storing products, customers, orders, and inquiries
 - **Authentication:** Secure user authentication and admin access
